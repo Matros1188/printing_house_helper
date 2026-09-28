@@ -834,5 +834,353 @@
 </script>
 <!-- PRINTCALC_FLEXO_UI_PATCH_V91_END -->
 
+
+<!-- PRINTCALC_HERO_FINAL_PATCH_START -->
+
+<style id="printcalc-hero-final-patch">
+
+/* ==========================================================
+   PRINTCALC FLEXO — ФИНАЛЬНАЯ КОМПОЗИЦИЯ ПЕРВОГО ЭКРАНА
+   ========================================================== */
+
+/* Убираем старую правую позицию демонстрационного блока */
+.hero-grid.pc-detail-card {
+    display: block !important;
+    min-height: auto !important;
+    padding-top: 58px !important;
+    padding-bottom: 58px !important;
+}
+
+/* Старый текстовый hero полностью убираем */
+.hero-grid.pc-detail-card .hero-copy > .tag,
+.hero-grid.pc-detail-card .hero-copy > h1,
+.hero-grid.pc-detail-card .hero-copy > .lead,
+.hero-grid.pc-detail-card .hero-copy > .hero-actions {
+    display: none !important;
+}
+
+/* Mobile First / 2 режима остаются */
+.hero-grid.pc-detail-card .hero-copy {
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin: 0 auto !important;
+}
+
+/* Блок статистики становится верхним элементом */
+.hero-grid.pc-detail-card .proof {
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin: 0 auto !important;
+}
+
+/* Демонстрационный PRINTCALC FLEXO */
+.hero-grid.pc-detail-card .hero-preview {
+    width: 100% !important;
+    max-width: 760px !important;
+    min-height: 0 !important;
+    margin: 34px auto 0 !important;
+    display: block !important;
+}
+
+/* Сам preview */
+.hero-grid.pc-detail-card .hero-preview .preview {
+    width: 100% !important;
+    max-width: 760px !important;
+    margin: 0 auto !important;
+}
+
+/* ==========================================================
+   УБИРАЕМ САМ ПРИМЕР БЫСТРОГО РАСЧЁТА
+   Оставляем только название PRINTCALC FLEXO.
+   ========================================================== */
+
+.hero-preview .preview-body {
+    padding: 24px !important;
+}
+
+/* Скрываем содержимое демонстрационного расчёта */
+.hero-preview .preview-label,
+.hero-preview .preview-title-row,
+.hero-preview .preview-fields,
+.hero-preview .preview-total,
+.hero-preview .preview-badge,
+.hero-preview .preview-stats {
+    display: none !important;
+}
+
+/* Убираем лишнюю высоту */
+.hero-preview .preview {
+    min-height: 90px !important;
+}
+
+.hero-preview .preview-head {
+    min-height: 74px !important;
+    border-bottom: 0 !important;
+}
+
+.hero-preview .preview-head > div {
+    font-size: 14px !important;
+}
+
+.hero-preview .mini-logo {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 11px !important;
+    font-size: 14px !important;
+}
+
+.hero-preview .live {
+    font-size: 8px !important;
+}
+
+
+/* ==========================================================
+   УБИРАЕМ ЛИШНИЙ СЛОГАН, ЕСЛИ ОН БЫЛ ДОБАВЛЕН РАНЬШЕ
+   ========================================================== */
+
+.pc-selling-slogan,
+.pc-v91-slogan {
+    display: none !important;
+}
+
+
+/* ==========================================================
+   CREATED BY НЕ ДОЛЖЕН ЛОМАТЬ ШАПКУ
+   ========================================================== */
+
+.header-in.pc-created-by {
+    position: relative !important;
+}
+
+.pc-account-button {
+    margin-left: auto !important;
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 700px) {
+
+    .hero-grid.pc-detail-card {
+        padding-top: 30px !important;
+        padding-bottom: 40px !important;
+    }
+
+    .hero-grid.pc-detail-card .proof {
+        margin-top: 0 !important;
+    }
+
+    .hero-grid.pc-detail-card .hero-preview {
+        margin-top: 26px !important;
+    }
+
+    .hero-preview .preview {
+        border-radius: 20px !important;
+    }
+
+    .hero-preview .preview-head {
+        min-height: 66px !important;
+        padding: 0 16px !important;
+    }
+
+    .hero-preview .preview-head > div {
+        font-size: 12px !important;
+    }
+
+    .hero-preview .mini-logo {
+        width: 34px !important;
+        height: 34px !important;
+    }
+}
+
+</style>
+
+
+<script>
+(function () {
+
+    "use strict";
+
+    function applyPrintcalcFinalLayout() {
+
+        var heroGrid = document.querySelector(
+            ".hero-grid.pc-detail-card"
+        );
+
+        if (!heroGrid) {
+            return;
+        }
+
+
+        /* ======================================================
+           УДАЛЯЕМ СТАРЫЙ ТЕКСТОВЫЙ HERO
+           ====================================================== */
+
+        var heroCopy = heroGrid.querySelector(".hero-copy");
+
+        if (heroCopy) {
+
+            var oldTag = heroCopy.querySelector(".tag");
+            var oldTitle = heroCopy.querySelector("h1");
+            var oldLead = heroCopy.querySelector(".lead");
+            var oldActions = heroCopy.querySelector(".hero-actions");
+
+            if (oldTag) {
+                oldTag.remove();
+            }
+
+            if (oldTitle) {
+                oldTitle.remove();
+            }
+
+            if (oldLead) {
+                oldLead.remove();
+            }
+
+            if (oldActions) {
+                oldActions.remove();
+            }
+        }
+
+
+        /* ======================================================
+           ПЕРЕНОСИМ PRINTCALC FLEXO ПОД MOBILE FIRST
+           ====================================================== */
+
+        var proof = heroGrid.querySelector(".proof");
+        var preview = heroGrid.querySelector(".hero-preview");
+
+        if (proof && preview) {
+
+            /*
+             * Если preview ещё находится справа,
+             * переносим его непосредственно после proof.
+             */
+            proof.parentNode.insertBefore(
+                preview,
+                proof.nextSibling
+            );
+        }
+
+
+        /* ======================================================
+           УДАЛЯЕМ ТЕКСТ «БЫСТРЕЕ СЧИТАЕМ...»
+           ГДЕ БЫ ОН НИ НАХОДИЛСЯ
+           ====================================================== */
+
+        var allElements = document.querySelectorAll("body *");
+
+        for (var i = 0; i < allElements.length; i++) {
+
+            var element = allElements[i];
+
+            if (!element.children.length) {
+
+                var text = (element.textContent || "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                if (
+                    text === "Быстрее считаем — меньше ошибок" ||
+                    text === "Быстрее считаем — меньше ошибок."
+                ) {
+                    element.remove();
+                }
+            }
+        }
+
+
+        /* ======================================================
+           УДАЛЯЕМ «ОНЛАЙН-СЕРВИС...» ЕСЛИ ОСТАЛСЯ ГДЕ-ТО
+           ====================================================== */
+
+        var bodyElements = document.querySelectorAll("body *");
+
+        for (var j = 0; j < bodyElements.length; j++) {
+
+            var node = bodyElements[j];
+
+            if (!node.children.length) {
+
+                var nodeText = (node.textContent || "")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .toUpperCase();
+
+                if (
+                    nodeText === "ОНЛАЙН-СЕРВИС ДЛЯ ТИПОГРАФИИ" ||
+                    nodeText === "ОНЛАЙН СЕРВИС ДЛЯ ТИПОГРАФИИ"
+                ) {
+                    node.remove();
+                }
+            }
+        }
+
+
+        /* ======================================================
+           УДАЛЯЕМ ДЕМОНСТРАЦИОННЫЕ ДАННЫЕ,
+           НО СОХРАНЯЕМ PRINTCALC FLEXO
+           ====================================================== */
+
+        if (preview) {
+
+            var selectorsToRemove = [
+                ".preview-label",
+                ".preview-title-row",
+                ".preview-fields",
+                ".preview-total",
+                ".preview-badge",
+                ".preview-stats"
+            ];
+
+            selectorsToRemove.forEach(function (selector) {
+
+                var items = preview.querySelectorAll(selector);
+
+                for (var k = 0; k < items.length; k++) {
+                    items[k].remove();
+                }
+
+            });
+        }
+
+
+        /* ======================================================
+           ФИНАЛЬНАЯ ПРОВЕРКА
+           ====================================================== */
+
+        if (proof && preview) {
+            console.log(
+                "PRINTCALC FLEXO: блок успешно перенесён под MOBILE FIRST."
+            );
+        }
+    }
+
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            applyPrintcalcFinalLayout
+        );
+
+    } else {
+
+        applyPrintcalcFinalLayout();
+
+    }
+
+
+    setTimeout(applyPrintcalcFinalLayout, 300);
+    setTimeout(applyPrintcalcFinalLayout, 1000);
+
+})();
+
+</script>
+
+<!-- PRINTCALC_HERO_FINAL_PATCH_END -->
+
 </body>
 </html>
