@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="style.css?v=86">
+<link rel="stylesheet" href="style.css?v=87">
 <title>Детальный расчёт — PRINTCALC FLEXO</title>
 </head>
 <body class="calculator">
@@ -13,7 +13,7 @@
   <div class="wrap header-in">
     <a class="logo" href="./">
       <span class="logo-p">P</span>
-      <span><b>PRINTCALC</b><small>FLEXO</small></span>
+      <span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
     </a>
     <a class="back" href="./">← На главную</a>
   </div>
@@ -22,11 +22,116 @@
 <main class="calc-main">
 <div class="wrap">
 
-<div class="calc-title">
-  <div>
-    <div class="eyebrow">02 / ЭКОНОМИКА</div>
-    <h1>Детальный расчёт</h1>
-    <p>Полная структура затрат и цена продажи.</p>
+<div class="calc-title calc-title-detail">
+  <div class="pc-detail-title-row">
+
+    <div class="pc-detail-title-icon">
+      <svg
+  class="pc-calculator-icon"
+  viewBox="0 0 48 48"
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient
+      id="pcCalcGrad"
+      x1="8"
+      y1="6"
+      x2="40"
+      y2="42"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0" stop-color="#8b7cff"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+
+  <rect
+    x="10"
+    y="6"
+    width="28"
+    height="36"
+    rx="7"
+    fill="url(#pcCalcGrad)"
+  />
+
+  <rect
+    x="15"
+    y="11"
+    width="18"
+    height="8"
+    rx="2.5"
+    fill="rgba(255,255,255,.92)"
+  />
+
+  <rect
+    x="15"
+    y="23"
+    width="5"
+    height="5"
+    rx="1.5"
+    fill="rgba(255,255,255,.92)"
+  />
+
+  <rect
+    x="21.5"
+    y="23"
+    width="5"
+    height="5"
+    rx="1.5"
+    fill="rgba(255,255,255,.78)"
+  />
+
+  <rect
+    x="28"
+    y="23"
+    width="5"
+    height="5"
+    rx="1.5"
+    fill="rgba(255,255,255,.62)"
+  />
+
+  <rect
+    x="15"
+    y="29.5"
+    width="5"
+    height="5"
+    rx="1.5"
+    fill="rgba(255,255,255,.82)"
+  />
+
+  <rect
+    x="21.5"
+    y="29.5"
+    width="5"
+    height="5"
+    rx="1.5"
+    fill="rgba(255,255,255,.92)"
+  />
+
+  <rect
+    x="28"
+    y="29.5"
+    width="5"
+    height="5"
+    rx="1.5"
+    fill="rgba(255,255,255,.72)"
+  />
+
+  <circle
+    cx="35.5"
+    cy="18.5"
+    r="1.8"
+    fill="#ffffff"
+  />
+</svg>
+    </div>
+
+    <div>
+      <div class="eyebrow">02 / ЭКОНОМИКА</div>
+      <h1>Детальный расчёт</h1>
+      <p>Полная структура затрат и цена продажи.</p>
+    </div>
+
   </div>
 </div>
 
@@ -108,7 +213,7 @@
 </div>
 </main>
 
-<footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span><span>Created by Sergey Pavlov</span></div></footer>
+<footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span></div></footer>
 
 <script src="detail.js?v=86"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
