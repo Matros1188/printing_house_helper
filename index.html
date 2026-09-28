@@ -845,5 +845,44 @@
 
 
 
+
+
+<script id="printcalc-remove-exact-slogan">
+(function () {
+    "use strict";
+
+    var exact = /^\s*СЧИТАЙТЕ\s+БЫСТРЕЕ\s+ПРЕДЛАГАЙТЕ\s+УВЕРЕННЕЕ\s*$/i;
+
+    function removeExactSlogan() {
+
+        document.querySelectorAll("body *").forEach(function (el) {
+
+            if (el.children.length > 0) {
+                return;
+            }
+
+            var text = (el.textContent || "");
+
+            if (exact.test(text)) {
+                el.remove();
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            removeExactSlogan
+        );
+    } else {
+        removeExactSlogan();
+    }
+
+    setTimeout(removeExactSlogan, 300);
+    setTimeout(removeExactSlogan, 1000);
+    setTimeout(removeExactSlogan, 2000);
+})();
+</script>
+
 </body>
 </html>
