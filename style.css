@@ -1196,3 +1196,243 @@ label {
 /* ==========================================================
    END V7 VISUAL FIX
    ========================================================== */
+/* ================================================================
+   PRINTCALC FLEXO V8
+   LANDING PAGE UI FIX
+   ================================================================ */
+
+/* ------------------------------------------------
+   Created by Sergey Pavlov
+   ------------------------------------------------ */
+
+.byline {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.25;
+  letter-spacing: .01em;
+  font-size: 10px;
+}
+
+
+/* ------------------------------------------------
+   Детальный расчёт:
+   тёмная плашка должна быть такого же размера,
+   как синяя плашка быстрого расчёта.
+   ------------------------------------------------ */
+
+.action.secondary .action-icon {
+  width: 43px;
+  height: 43px;
+  min-width: 43px;
+  min-height: 43px;
+  padding: 0;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1;
+  flex: 0 0 43px;
+}
+
+
+/* ------------------------------------------------
+   Правая демонстрационная карточка
+   ------------------------------------------------ */
+
+.preview-body {
+  position: relative;
+}
+
+
+/* ------------------------------------------------
+   Рулонные этикетки + бейдж
+   ------------------------------------------------ */
+
+.preview-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.preview-title-row h3 {
+  min-width: 0;
+  margin: 6px 0 17px;
+}
+
+.preview-badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  border: 1px solid #e3eaf2;
+  border-radius: 10px;
+  background: rgba(255,255,255,.94);
+  color: #64748b;
+  box-shadow: 0 7px 18px rgba(15,23,42,.07);
+  font-size: 7px;
+  line-height: 1.15;
+}
+
+.preview-badge-top {
+  margin-top: 3px;
+  padding: 7px 8px;
+}
+
+.preview-badge-top i {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.preview-badge-top span {
+  color: #64748b;
+}
+
+.preview-badge-top b {
+  color: #0f172a;
+}
+
+
+/* ------------------------------------------------
+   Меньше ручных ошибок
+   Под "Цена клиенту",
+   в самый правый нижний угол блока.
+   ------------------------------------------------ */
+
+.preview-total {
+  position: relative;
+}
+
+.preview-badge-bottom {
+  margin-top: 7px;
+  margin-left: auto;
+  width: fit-content;
+  padding: 6px 8px;
+  background: rgba(248,250,252,.94);
+}
+
+.preview-badge-bottom b {
+  width: 15px;
+  height: 15px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  color: #15803d;
+  background: #ecfdf3;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.preview-badge-bottom span {
+  color: #64748b;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+
+/* ------------------------------------------------
+   Старые плавающие элементы больше не нужны.
+   Даже если они где-то останутся в HTML,
+   они визуально не появятся.
+   ------------------------------------------------ */
+
+.preview-float {
+  display: none !important;
+}
+
+
+/* ------------------------------------------------
+   Старый final-блок должен отсутствовать.
+   Дополнительная страховка CSS.
+   ------------------------------------------------ */
+
+.final {
+  display: none !important;
+}
+
+
+/* ------------------------------------------------
+   Планшет
+   ------------------------------------------------ */
+
+@media (max-width: 700px) {
+
+  .byline {
+    font-size: 9px;
+    white-space: nowrap;
+  }
+
+  .preview-title-row {
+    gap: 7px;
+  }
+
+  .preview-title-row h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .preview-badge-top {
+    max-width: 155px;
+    white-space: normal;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .preview-badge-top span,
+  .preview-badge-top b {
+    font-size: 6.5px;
+  }
+
+  .preview-badge-bottom {
+    margin-top: 7px;
+  }
+}
+
+
+/* ------------------------------------------------
+   Очень маленькие телефоны
+   ------------------------------------------------ */
+
+@media (max-width: 420px) {
+
+  .byline {
+    font-size: 8.5px;
+  }
+
+  .preview-title-row {
+    align-items: center;
+  }
+
+  .preview-title-row h3 {
+    font-size: 17px;
+  }
+
+  .preview-badge-top {
+    max-width: 138px;
+    padding: 6px 7px;
+  }
+
+  .preview-badge-top span,
+  .preview-badge-top b {
+    font-size: 6px;
+  }
+
+  .preview-badge-bottom span {
+    font-size: 6.5px;
+  }
+}
+
+/* ================================================================
+   END PRINTCALC FLEXO V8
+   ================================================================ */
