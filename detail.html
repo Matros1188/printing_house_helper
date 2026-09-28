@@ -1,0 +1,1191 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>Детальный расчёт — PRINTCALC FLEXO</title>
+
+<link
+rel="stylesheet"
+href="style.css"
+>
+
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+
+<div class="brand">
+
+
+<a
+href="index.html"
+class="back"
+>
+←
+</a>
+
+
+<div class="brand-mark">
+P
+</div>
+
+
+<div>
+
+<div class="brand-name">
+PRINTCALC
+</div>
+
+<div class="brand-sub">
+FLEXO
+</div>
+
+</div>
+
+
+</div>
+
+
+<button
+class="ghost-btn"
+id="accountBtn"
+>
+Аккаунт
+</button>
+
+
+</header>
+
+
+
+<main class="page">
+
+
+<section class="page-head">
+
+
+<div>
+
+
+<div class="eyebrow">
+ДЕТАЛЬНЫЙ РАСЧЁТ
+</div>
+
+
+<h1>
+
+Полная
+<span>калькуляция</span>
+
+</h1>
+
+
+<div class="creator-small">
+Created by Sergey Pavlov
+</div>
+
+
+<p>
+Подробный расчёт себестоимости заказа.
+</p>
+
+
+</div>
+
+
+<a
+href="quick.html"
+class="secondary-btn"
+>
+← Быстрый расчёт
+</a>
+
+
+</section>
+
+
+
+<section class="detail-layout">
+
+
+<div class="card">
+
+
+<div class="detail-section">
+
+
+<div class="detail-title">
+
+
+<b>
+01
+</b>
+
+
+<div>
+
+<div class="section-title">
+Заказ
+</div>
+
+<div class="section-caption">
+Тираж и геометрия
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-grid two">
+
+
+<div class="form-group">
+
+<label>
+Тираж
+</label>
+
+<input
+id="dQuantity"
+type="number"
+value="10000"
+min="1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Ручьи
+</label>
+
+<select id="dStreams">
+
+<option>1</option>
+<option selected>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>8</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Ширина, мм
+</label>
+
+<input
+id="dWidth"
+type="number"
+value="100"
+min="1"
+step="0.1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Высота, мм
+</label>
+
+<input
+id="dHeight"
+type="number"
+value="70"
+min="1"
+step="0.1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Repeat, мм
+</label>
+
+<input
+id="dRepeat"
+type="number"
+value="70"
+min="1"
+step="0.1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Рабочая ширина, мм
+</label>
+
+<input
+id="dWebWidth"
+type="number"
+value="330"
+min="20"
+>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="detail-section">
+
+
+<div class="detail-title">
+
+
+<b>
+02
+</b>
+
+
+<div>
+
+<div class="section-title">
+Материал
+</div>
+
+<div class="section-caption">
+Масса и цена
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-grid two">
+
+
+<div class="form-group">
+
+<label>
+Материал
+</label>
+
+<select id="dMaterial">
+
+<option value="pp">
+PP плёнка
+</option>
+
+<option value="pe">
+PE плёнка
+</option>
+
+<option value="pet">
+PET
+</option>
+
+<option value="paper">
+Бумага
+</option>
+
+<option value="adhesive" selected>
+Самоклеящийся материал
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Граммаж, г/м²
+</label>
+
+<input
+id="dGrammage"
+type="number"
+value="80"
+min="1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Цена материала, ₽/кг
+</label>
+
+<input
+id="dMaterialPrice"
+type="number"
+value="175"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Запас, %
+</label>
+
+<input
+id="dWaste"
+type="number"
+value="8"
+min="0"
+>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="detail-section">
+
+
+<div class="detail-title">
+
+
+<b>
+03
+</b>
+
+
+<div>
+
+<div class="section-title">
+Печать
+</div>
+
+<div class="section-caption">
+Машина, скорость и краска
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-grid two">
+
+
+<div class="form-group">
+
+<label>
+Красочность
+</label>
+
+<select id="dColors">
+
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option selected>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Скорость, м/мин
+</label>
+
+<input
+id="dSpeed"
+type="number"
+value="70"
+min="1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Приладка, мин
+</label>
+
+<input
+id="dSetup"
+type="number"
+value="45"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Расход краски, г/м²/цвет
+</label>
+
+<input
+id="dInkConsumption"
+type="number"
+value="1.6"
+min="0"
+step="0.1"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Цена краски, ₽/кг
+</label>
+
+<input
+id="dInkPrice"
+type="number"
+value="850"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Машина, ₽/ч
+</label>
+
+<input
+id="dMachineRate"
+type="number"
+value="3500"
+min="0"
+>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="detail-section">
+
+
+<div class="detail-title">
+
+
+<b>
+04
+</b>
+
+
+<div>
+
+<div class="section-title">
+Труд и накладные
+</div>
+
+<div class="section-caption">
+Полная экономика
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-grid two">
+
+
+<div class="form-group">
+
+<label>
+Оператор, ₽/ч
+</label>
+
+<input
+id="dLaborRate"
+type="number"
+value="1200"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Накладные, %
+</label>
+
+<input
+id="dOverhead"
+type="number"
+value="12"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Административные, %
+</label>
+
+<input
+id="dAdmin"
+type="number"
+value="5"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Наценка, %
+</label>
+
+<input
+id="dMarkup"
+type="number"
+value="35"
+min="0"
+>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="detail-section">
+
+
+<div class="detail-title">
+
+
+<b>
+05
+</b>
+
+
+<div>
+
+<div class="section-title">
+Дополнительные операции
+</div>
+
+<div class="section-caption">
+Добавьте нужные операции
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="detail-checks">
+
+
+<label class="check-card">
+
+
+<input
+id="dUseLam"
+type="checkbox"
+>
+
+
+<span>
+
+<strong>
+Ламинация
+</strong>
+
+<small>
+Площадь + приладка
+</small>
+
+</span>
+
+
+</label>
+
+
+
+<label class="check-card">
+
+
+<input
+id="dUseDie"
+type="checkbox"
+checked
+>
+
+
+<span>
+
+<strong>
+Вырубка
+</strong>
+
+<small>
+Приладка + тираж
+</small>
+
+</span>
+
+
+</label>
+
+
+
+<label class="check-card">
+
+
+<input
+id="dUseSlitting"
+type="checkbox"
+>
+
+
+<span>
+
+<strong>
+Резка
+</strong>
+
+<small>
+Фиксированная операция
+</small>
+
+</span>
+
+
+</label>
+
+
+</div>
+
+
+
+<div class="form-grid two">
+
+
+<div class="form-group">
+
+<label>
+Ламинация, ₽/м²
+</label>
+
+<input
+id="dLamArea"
+type="number"
+value="19"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Приладка ламинации, ₽
+</label>
+
+<input
+id="dLamSetup"
+type="number"
+value="850"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Вырубка — приладка, ₽
+</label>
+
+<input
+id="dDieSetup"
+type="number"
+value="1800"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Вырубка, ₽/шт.
+</label>
+
+<input
+id="dDiePiece"
+type="number"
+value="0.028"
+min="0"
+step="0.001"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Резка, ₽
+</label>
+
+<input
+id="dSlitting"
+type="number"
+value="900"
+min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Минимальный заказ, ₽
+</label>
+
+<input
+id="dMinOrder"
+type="number"
+value="6500"
+min="0"
+>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="detail-actions">
+
+
+<button
+class="calculate-btn"
+id="detailCalculateBtn"
+>
+
+Рассчитать полную себестоимость
+
+<span>
+→
+</span>
+
+</button>
+
+
+<button
+class="secondary-btn"
+id="resetBtn"
+>
+Сбросить
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<aside class="result-column">
+
+
+<div class="card sticky">
+
+
+<div class="eyebrow">
+ДЕТАЛЬНАЯ КАЛЬКУЛЯЦИЯ
+</div>
+
+
+<div
+class="big-price"
+id="dClientPrice"
+>
+0 ₽
+</div>
+
+
+<div class="section-caption">
+Цена клиенту
+</div>
+
+
+
+<div class="metrics">
+
+
+<div class="metric">
+
+<span>
+Метраж
+</span>
+
+<strong id="dMeters">
+0 м
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<span>
+Материал
+</span>
+
+<strong id="dMaterialKg">
+0 кг
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<span>
+Краска
+</span>
+
+<strong id="dInkKg">
+0 кг
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<span>
+Время
+</span>
+
+<strong id="dHours">
+0 ч
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+<div class="breakdown">
+
+
+<div class="breakdown-title">
+Полная себестоимость
+</div>
+
+
+<div class="row">
+<span>Материал</span>
+<strong id="cMaterial">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Краска</span>
+<strong id="cInk">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Машина</span>
+<strong id="cMachine">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Оператор</span>
+<strong id="cLabor">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Накладные</span>
+<strong id="cOverhead">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Административные</span>
+<strong id="cAdmin">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Ламинация</span>
+<strong id="cLam">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Вырубка</span>
+<strong id="cDie">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Резка</span>
+<strong id="cSlit">0 ₽</strong>
+</div>
+
+
+<div class="row total">
+<span>Себестоимость</span>
+<strong id="cTotal">0 ₽</strong>
+</div>
+
+
+<div class="row">
+<span>Наценка</span>
+<strong id="cMarkup">0 ₽</strong>
+</div>
+
+
+</div>
+
+
+
+<div class="manager-price">
+
+
+<span>
+Цена клиенту
+</span>
+
+
+<strong id="dFinalPrice">
+0 ₽
+</strong>
+
+
+</div>
+
+
+
+<div class="actions">
+
+
+<button
+class="secondary-btn"
+id="dSaveBtn"
+>
+Сохранить
+</button>
+
+
+<button
+class="primary-btn"
+id="dCopyBtn"
+>
+Скопировать
+</button>
+
+
+</div>
+
+
+
+<div
+class="warning-box"
+id="warning"
+>
+Проверка расчёта
+</div>
+
+
+</div>
+
+
+</aside>
+
+
+</section>
+
+</main>
+
+
+
+<div
+class="modal"
+id="accountModal"
+>
+
+
+<div class="modal-box">
+
+
+<button
+class="modal-close"
+data-close="accountModal"
+>
+×
+</button>
+
+
+<div class="eyebrow">
+АККАУНТ
+</div>
+
+
+<h3>
+PRINTCALC
+</h3>
+
+
+<div id="accountStatus">
+Проверяем...
+</div>
+
+
+<button
+class="secondary-btn full-width"
+id="logoutBtn"
+>
+Выйти
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<footer class="footer">
+
+
+<span>
+PRINTCALC FLEXO
+</span>
+
+
+<span>
+Created by Sergey Pavlov
+</span>
+
+
+</footer>
+
+
+
+<script>
+
+window.PRINTCALC_SUPABASE_URL =
+"";
+
+window.PRINTCALC_SUPABASE_KEY =
+"";
+
+</script>
+
+
+<script
+src="app-detail.js"
+></script>
+
+
+</body>
+
+</html>

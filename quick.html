@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>Быстрый расчёт — PRINTCALC FLEXO</title>
+
+<link
+rel="stylesheet"
+href="style.css"
+>
+
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+
+<div class="brand">
+
+
+<a
+href="index.html"
+class="back"
+>
+←
+</a>
+
+
+<div class="brand-mark">
+P
+</div>
+
+
+<div>
+
+<div class="brand-name">
+PRINTCALC
+</div>
+
+<div class="brand-sub">
+FLEXO
+</div>
+
+</div>
+
+
+</div>
+
+
+<button
+class="ghost-btn"
+id="accountBtn"
+>
+Аккаунт
+</button>
+
+
+</header>
+
+
+
+<main class="page">
+
+
+<section class="page-head">
+
+
+<div>
+
+
+<div class="eyebrow">
+БЫСТРЫЙ РАСЧЁТ
+</div>
+
+
+<h1>
+
+Цена заказа
+<span>за минуту</span>
+
+</h1>
+
+
+<div class="creator-small">
+Created by Sergey Pavlov
+</div>
+
+
+<p>
+Основные параметры для предварительной цены.
+</p>
+
+
+</div>
+
+
+
+<a
+href="detail.html"
+class="secondary-btn"
+>
+
+Детальный расчёт →
+
+</a>
+
+
+</section>
+
+
+
+<section class="calc-layout">
+
+
+<div class="card">
+
+
+<div class="section-head">
+
+
+<div>
+
+<div class="section-title">
+Основные параметры
+</div>
+
+<div class="section-caption">
+Минимум полей для менеджера
+</div>
+
+</div>
+
+
+<div class="pill">
+Быстро
+</div>
+
+
+</div>
+
+
+
+<div class="form-grid two">
+
+
+<div class="form-group full">
+
+<label>
+Тираж
+</label>
+
+
+<div class="input-wrap big">
+
+<input
+id="quantity"
+type="number"
+min="1"
+value="10000"
+>
+
+
+<span>
+шт.
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Ширина
+</label>
+
+
+<div class="input-wrap">
+
+<input
+id="width"
+type="number"
+min="1"
+step="0.1"
+value="100"
+>
+
+
+<span>
+мм
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Высота
+</label>
+
+
+<div class="input-wrap">
+
+<input
+id="height"
+type="number"
+min="1"
+step="0.1"
+value="70"
+>
+
+
+<span>
+мм
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Ручьи
+</label>
+
+
+<select
+id="streams"
+>
+
+<option value="1">
+1 ручей
+</option>
+
+<option
+value="2"
+selected
+>
+2 ручья
+</option>
+
+<option value="3">
+3 ручья
+</option>
+
+<option value="4">
+4 ручья
+</option>
+
+<option value="5">
+5 ручьёв
+</option>
+
+<option value="6">
+6 ручьёв
+</option>
+
+<option value="8">
+8 ручьёв
+</option>
+
+</select>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Материал
+</label>
+
+
+<select
+id="material"
+>
+
+<option value="pp">
+PP плёнка
+</option>
+
+<option value="pe">
+PE плёнка
+</option>
+
+<option value="pet">
+PET
+</option>
+
+<option value="paper">
+Бумага
+</option>
+
+<option
+value="adhesive"
+selected
+>
+Самоклеящийся материал
+</option>
+
+</select>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Рабочая ширина
+</label>
+
+
+<div class="input-wrap">
+
+<input
+id="webWidth"
+type="number"
+min="20"
+value="330"
+>
+
+
+<span>
+мм
+</span>
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Повтор
+</label>
+
+
+<div class="input-wrap">
+
+<input
+id="repeat"
+type="number"
+min="1"
+value="70"
+>
+
+
+<span>
+мм
+</span>
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Технологический запас
+</label>
+
+
+<div class="range-row">
+
+<input
+id="waste"
+type="range"
+min="0"
+max="20"
+value="8"
+>
+
+
+<strong id="wasteValue">
+8%
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+Красочность
+</label>
+
+
+<select id="colors">
+
+<option value="1">
+1+0
+</option>
+
+<option value="2">
+2+0
+</option>
+
+<option value="3">
+3+0
+</option>
+
+<option
+value="4"
+selected
+>
+4+0
+</option>
+
+<option value="5">
+5+0
+</option>
+
+<option value="6">
+6+0
+</option>
+
+<option value="7">
+7+0
+</option>
+
+<option value="8">
+8+0
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+
+<div class="toggle-row">
+
+
+<div>
+
+<strong>
+Ламинация
+</strong>
+
+
+<small>
+Учесть операцию
+</small>
+
+
+</div>
+
+
+<label class="switch">
+
+<input
+id="lamination"
+type="checkbox"
+>
+
+<span></span>
+
+</label>
+
+
+</div>
+
+
+
+<div class="toggle-row">
+
+
+<div>
+
+<strong>
+Вырубка / резка
+</strong>
+
+
+<small>
+Учесть операцию
+</small>
+
+
+</div>
+
+
+<label class="switch">
+
+<input
+id="dieCut"
+type="checkbox"
+checked
+>
+
+<span></span>
+
+</label>
+
+
+</div>
+
+
+
+<button
+class="calculate-btn"
+id="calculateBtn"
+>
+
+Рассчитать
+
+<span>
+→
+</span>
+
+</button>
+
+
+</div>
+
+
+
+<aside class="result-column">
+
+
+<div class="card">
+
+
+<div class="result-top">
+
+
+<div>
+
+<div class="eyebrow">
+ПРЕДВАРИТЕЛЬНАЯ ЦЕНА
+</div>
+
+
+<div
+class="big-price"
+id="finalPrice"
+>
+0 ₽
+</div>
+
+
+</div>
+
+
+<div class="pill">
+Быстрый режим
+</div>
+
+
+</div>
+
+
+
+<div class="metrics">
+
+
+<div class="metric">
+
+<span>
+Тираж
+</span>
+
+<strong id="resultPieces">
+0
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<span>
+Метраж
+</span>
+
+<strong id="resultMeters">
+0 м
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<span>
+Материал
+</span>
+
+<strong id="resultMaterial">
+0 кг
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<span>
+Время
+</span>
+
+<strong id="resultTime">
+0 ч
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+<div class="breakdown">
+
+
+<div class="breakdown-title">
+Основные затраты
+</div>
+
+
+<div class="row">
+
+<span>
+Материал
+</span>
+
+<strong id="costMaterial">
+0 ₽
+</strong>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Краска
+</span>
+
+<strong id="costInk">
+0 ₽
+</strong>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Печать
+</span>
+
+<strong id="costPrint">
+0 ₽
+</strong>
+
+</div>
+
+
+<div class="row">
+
+<span>
+Доп. операции
+</span>
+
+<strong id="costExtras">
+0 ₽
+</strong>
+
+</div>
+
+
+<div class="row total">
+
+<span>
+Себестоимость
+</span>
+
+<strong id="costTotal">
+0 ₽
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+<div class="manager-price">
+
+<span>
+Цена клиенту
+</span>
+
+
+<strong id="clientPrice">
+0 ₽
+</strong>
+
+</div>
+
+
+
+<div class="actions">
+
+
+<button
+class="secondary-btn"
+id="saveBtn"
+>
+Сохранить расчёт
+</button>
+
+
+<button
+class="primary-btn"
+id="copyBtn"
+>
+Скопировать
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="tip">
+
+
+<div class="tip-icon">
+💡
+</div>
+
+
+<div>
+
+<strong>
+Менеджеру
+</strong>
+
+
+<p id="managerTip">
+Для предварительной цены достаточно основных параметров.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="section-head compact">
+
+
+<div>
+
+<div class="section-title">
+Последние расчёты
+</div>
+
+
+<div class="section-caption">
+Локальная история
+</div>
+
+
+</div>
+
+
+<button
+class="ghost-btn"
+id="clearHistoryBtn"
+>
+Очистить
+</button>
+
+
+</div>
+
+
+<div id="historyList">
+</div>
+
+
+</div>
+
+
+</aside>
+
+
+</section>
+
+</main>
+
+
+
+<div
+class="modal"
+id="accountModal"
+>
+
+
+<div class="modal-box">
+
+
+<button
+class="modal-close"
+data-close="accountModal"
+>
+×
+</button>
+
+
+<div class="eyebrow">
+АККАУНТ
+</div>
+
+
+<h3>
+PRINTCALC
+</h3>
+
+
+<div id="accountStatus">
+Проверяем...
+</div>
+
+
+<button
+class="secondary-btn full-width"
+id="logoutBtn"
+>
+Выйти
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<footer class="footer">
+
+
+<span>
+PRINTCALC FLEXO
+</span>
+
+
+<span>
+Created by Sergey Pavlov
+</span>
+
+
+</footer>
+
+
+
+<script>
+
+window.PRINTCALC_SUPABASE_URL =
+"";
+
+window.PRINTCALC_SUPABASE_KEY =
+"";
+
+</script>
+
+
+<script
+src="app-quick.js"
+></script>
+
+
+</body>
+
+</html>

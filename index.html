@@ -1,974 +1,277 @@
+
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
 
-    <title>PRINTCALC FLEXO</title>
+<meta charset="UTF-8">
 
-    <meta
-        name="description"
-        content="Быстрый калькулятор рулонной флексопечати для менеджеров типографии"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link rel="stylesheet" href="style.css">
+<title>PRINTCALC FLEXO</title>
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+
 </head>
+
 
 <body>
 
+
 <header class="topbar">
 
-    <div class="brand">
-        <div class="brand-mark">P</div>
 
-        <div>
-            <div class="brand-name">PRINTCALC</div>
-            <div class="brand-sub">FLEXO</div>
-        </div>
-    </div>
+<div class="brand">
 
-    <div class="top-actions">
 
-        <button class="ghost-btn" id="historyBtn">
-            История
-        </button>
+<div class="brand-mark">
+P
+</div>
 
-        <button class="primary-btn account-btn" id="accountBtn">
-            Аккаунт
-        </button>
 
-    </div>
+<div>
+
+
+<div class="brand-name">
+PRINTCALC
+</div>
+
+
+<div class="brand-sub">
+FLEXO
+</div>
+
+
+</div>
+
+
+</div>
+
 
 </header>
 
 
-<main class="page">
 
-    <section class="hero">
+<main class="home">
 
-        <div>
-            <div class="eyebrow">
-                РУЛОННАЯ ФЛЕКСОПЕЧАТЬ
-            </div>
 
-            <h1>
-                Рассчитать заказ
-                <span>быстро.</span>
-            </h1>
+<section class="home-hero">
 
-            <p>
-                Введите основные параметры заказа.
-                PRINTCALC сам рассчитает материалы,
-                производство и ориентировочную цену.
-            </p>
-        </div>
 
-    </section>
+<div class="eyebrow">
+РУЛОННАЯ ФЛЕКСОПЕЧАТЬ
+</div>
 
 
-    <!-- =====================================================
-         БЫСТРЫЕ ПРЕСЕТЫ
-    ====================================================== -->
+<h1>
+PRINTCALC
+<span>FLEXO</span>
+</h1>
 
-    <section class="presets-section">
 
-        <div class="section-head">
+<div class="creator">
+Created by Sergey Pavlov
+</div>
 
-            <div>
-                <div class="section-title">
-                    Быстрый старт
-                </div>
 
-                <div class="section-caption">
-                    Можно начать с готового типа заказа
-                </div>
-            </div>
+<p>
 
-        </div>
+Выберите вариант расчёта.
 
-        <div class="preset-grid">
+Быстрый расчёт —
+для обычной работы менеджера.
 
-            <button
-                class="preset-card"
-                data-preset="label"
-            >
-                <span class="preset-icon">🏷️</span>
+Детальный расчёт —
+для полной калькуляции заказа.
 
-                <span>
-                    <strong>Самоклеящаяся этикетка</strong>
-                    <small>Типовой заказ</small>
-                </span>
-            </button>
+</p>
 
 
-            <button
-                class="preset-card"
-                data-preset="film"
-            >
-                <span class="preset-icon">🧴</span>
+</section>
 
-                <span>
-                    <strong>Плёнка</strong>
-                    <small>Рулонный материал</small>
-                </span>
-            </button>
 
 
-            <button
-                class="preset-card"
-                data-preset="package"
-            >
-                <span class="preset-icon">📦</span>
+<section class="mode-grid">
 
-                <span>
-                    <strong>Гибкая упаковка</strong>
-                    <small>Пакет / рукав</small>
-                </span>
-            </button>
 
-        </div>
+<a
+class="mode-card"
+href="quick.html"
+>
 
-    </section>
 
+<div class="mode-icon">
+⚡
+</div>
 
-    <!-- =====================================================
-         КАЛЬКУЛЯТОР
-    ====================================================== -->
 
-    <section class="calculator-layout">
+<div class="mode-label">
+БЫСТРЫЙ РАСЧЁТ
+</div>
 
-        <div class="calculator-card">
 
-            <div class="card-head">
+<h2>
+Быстро посчитать
+и сохранить расчёт
+</h2>
 
-                <div>
-                    <div class="section-title">
-                        Параметры заказа
-                    </div>
 
-                    <div class="section-caption">
-                        Заполните то, что известно менеджеру
-                    </div>
-                </div>
+<p>
 
-                <div class="status-pill">
-                    Быстрый расчёт
-                </div>
+Минимум исходных данных.
+Подходит, когда нужно
+быстро получить ориентировочную
+цену для клиента.
 
-            </div>
+</p>
 
 
-            <!-- ТИРАЖ -->
+<div class="chips">
 
-            <div class="form-group full">
+<span>Тираж</span>
 
-                <label for="quantity">
-                    Тираж
-                </label>
+<span>Размер</span>
 
-                <div class="input-wrap big">
+<span>Ручьи</span>
 
-                    <input
-                        id="quantity"
-                        type="number"
-                        min="1"
-                        step="1"
-                        value="10000"
-                        inputmode="numeric"
-                    >
+<span>Материал</span>
 
-                    <span>шт.</span>
+<span>Красочность</span>
 
-                </div>
+<span>Цена</span>
 
-            </div>
+</div>
 
 
-            <!-- РАЗМЕР -->
+<div class="mode-link">
 
-            <div class="two-col">
+<span>
+Открыть быстрый расчёт
+</span>
 
-                <div class="form-group">
+<strong>
+→
+</strong>
 
-                    <label for="width">
-                        Ширина изделия
-                    </label>
+</div>
 
-                    <div class="input-wrap">
 
-                        <input
-                            id="width"
-                            type="number"
-                            min="1"
-                            step="0.1"
-                            value="100"
-                        >
+</a>
 
-                        <span>мм</span>
 
-                    </div>
 
-                </div>
+<a
+class="mode-card"
+href="detail.html"
+>
 
 
-                <div class="form-group">
+<div class="mode-icon">
+📊
+</div>
 
-                    <label for="height">
-                        Высота изделия
-                    </label>
 
-                    <div class="input-wrap">
+<div class="mode-label">
+ДЕТАЛЬНЫЙ РАСЧЁТ
+</div>
 
-                        <input
-                            id="height"
-                            type="number"
-                            min="1"
-                            step="0.1"
-                            value="70"
-                        >
 
-                        <span>мм</span>
+<h2>
+Полная
+калькуляция заказа
+</h2>
 
-                    </div>
 
-                </div>
+<p>
 
-            </div>
+Расчёт материала, краски,
+машины, труда, накладных
+и дополнительных операций.
 
+</p>
 
-            <!-- РУЧЬИ -->
 
-            <div class="form-group">
+<div class="chips">
 
-                <label for="streams">
+<span>Материал</span>
 
-                    Ручьи
+<span>Машина</span>
 
-                    <button
-                        type="button"
-                        class="info-dot"
-                        title="Количество одинаковых изделий поперёк полотна"
-                    >
-                        ?
-                    </button>
+<span>Труд</span>
 
-                </label>
+<span>Краска</span>
 
-                <select id="streams">
+<span>Операции</span>
 
-                    <option value="1">
-                        1 ручей
-                    </option>
+<span>Наценка</span>
 
-                    <option value="2" selected>
-                        2 ручья
-                    </option>
+</div>
 
-                    <option value="3">
-                        3 ручья
-                    </option>
 
-                    <option value="4">
-                        4 ручья
-                    </option>
+<div class="mode-link">
 
-                    <option value="5">
-                        5 ручьёв
-                    </option>
+<span>
+Открыть детальный расчёт
+</span>
 
-                    <option value="6">
-                        6 ручьёв
-                    </option>
+<strong>
+→
+</strong>
 
-                    <option value="8">
-                        8 ручьёв
-                    </option>
+</div>
 
-                </select>
 
-            </div>
+</a>
 
 
-            <!-- МАТЕРИАЛ -->
+</section>
 
-            <div class="form-group">
 
-                <label for="material">
-                    Материал
-                </label>
 
-                <select id="material">
+<div class="home-note">
 
-                    <option value="pp">
-                        PP плёнка
-                    </option>
 
-                    <option value="pe">
-                        PE плёнка
-                    </option>
+<strong>
+Как пользоваться:
+</strong>
 
-                    <option value="pet">
-                        PET
-                    </option>
 
-                    <option value="paper">
-                        Бумага
-                    </option>
+<span>
 
-                    <option value="adhesive">
-                        Самоклеящийся материал
-                    </option>
+если клиент просто спрашивает цену —
+начинайте с быстрого расчёта.
 
-                    <option value="other">
-                        Другой материал
-                    </option>
+</span>
 
-                </select>
 
-            </div>
+</div>
 
-
-            <!-- ШИРИНА РУЛОНА -->
-
-            <div class="form-group">
-
-                <label for="webWidth">
-                    Рабочая ширина полотна
-                </label>
-
-                <div class="input-wrap">
-
-                    <input
-                        id="webWidth"
-                        type="number"
-                        min="20"
-                        step="1"
-                        value="330"
-                    >
-
-                    <span>мм</span>
-
-                </div>
-
-                <div class="hint">
-                    Можно изменить под конкретную машину.
-                </div>
-
-            </div>
-
-
-            <!-- ПОВТОР -->
-
-            <div class="form-group">
-
-                <label for="repeat">
-                    Повтор
-                </label>
-
-                <div class="input-wrap">
-
-                    <input
-                        id="repeat"
-                        type="number"
-                        min="1"
-                        step="0.1"
-                        value="70"
-                    >
-
-                    <span>мм</span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ЗАПАС -->
-
-            <div class="form-group">
-
-                <label for="waste">
-                    Технологический запас
-                </label>
-
-                <div class="range-line">
-
-                    <input
-                        id="waste"
-                        type="range"
-                        min="0"
-                        max="20"
-                        step="1"
-                        value="8"
-                    >
-
-                    <strong id="wasteValue">
-                        8%
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- КРАСКИ -->
-
-            <div class="form-group">
-
-                <label for="colors">
-                    Красочность
-                </label>
-
-                <select id="colors">
-
-                    <option value="1">
-                        1+0
-                    </option>
-
-                    <option value="2">
-                        2+0
-                    </option>
-
-                    <option value="3">
-                        3+0
-                    </option>
-
-                    <option value="4" selected>
-                        4+0
-                    </option>
-
-                    <option value="5">
-                        5+0
-                    </option>
-
-                    <option value="6">
-                        6+0
-                    </option>
-
-                    <option value="7">
-                        7+0
-                    </option>
-
-                    <option value="8">
-                        8+0
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- ЛАМИНАЦИЯ -->
-
-            <div class="toggle-row">
-
-                <div>
-
-                    <strong>
-                        Ламинация
-                    </strong>
-
-                    <small>
-                        Добавить в расчёт
-                    </small>
-
-                </div>
-
-                <label class="switch">
-
-                    <input
-                        type="checkbox"
-                        id="lamination"
-                    >
-
-                    <span></span>
-
-                </label>
-
-            </div>
-
-
-            <!-- ВЫРУБКА -->
-
-            <div class="toggle-row">
-
-                <div>
-
-                    <strong>
-                        Вырубка / резка
-                    </strong>
-
-                    <small>
-                        Учесть дополнительную операцию
-                    </small>
-
-                </div>
-
-                <label class="switch">
-
-                    <input
-                        type="checkbox"
-                        id="dieCut"
-                        checked
-                    >
-
-                    <span></span>
-
-                </label>
-
-            </div>
-
-
-            <!-- ТИРАЖНЫЕ КОЭФФИЦИЕНТЫ -->
-
-            <div class="form-group">
-
-                <label for="priceMaterial">
-                    Цена материала
-                </label>
-
-                <div class="input-wrap">
-
-                    <input
-                        id="priceMaterial"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value="175"
-                    >
-
-                    <span>₽/кг</span>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="priceInk">
-                    Краска
-                </label>
-
-                <div class="input-wrap">
-
-                    <input
-                        id="priceInk"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value="850"
-                    >
-
-                    <span>₽/кг</span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ЗАПУСК -->
-
-            <button
-                id="calculateBtn"
-                class="calculate-btn"
-            >
-                Рассчитать заказ
-                <span>→</span>
-            </button>
-
-
-            <div class="small-note">
-                Результат является предварительным коммерческим расчётом.
-                Финальная стоимость зависит от утверждённых технологических
-                параметров и условий производства.
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             РЕЗУЛЬТАТ
-        ================================================== -->
-
-        <div class="result-column">
-
-            <div class="result-card">
-
-                <div class="result-top">
-
-                    <div>
-
-                        <div class="eyebrow">
-                            ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ
-                        </div>
-
-                        <h2 id="resultPrice">
-                            0 ₽
-                        </h2>
-
-                    </div>
-
-                    <div
-                        class="confidence"
-                        id="confidence"
-                    >
-                        Готово
-                    </div>
-
-                </div>
-
-
-                <div class="result-main-grid">
-
-                    <div class="metric">
-
-                        <span>
-                            Изделий
-                        </span>
-
-                        <strong id="resultPieces">
-                            0
-                        </strong>
-
-                    </div>
-
-
-                    <div class="metric">
-
-                        <span>
-                            Метраж
-                        </span>
-
-                        <strong id="resultMeters">
-                            0 м
-                        </strong>
-
-                    </div>
-
-
-                    <div class="metric">
-
-                        <span>
-                            Материал
-                        </span>
-
-                        <strong id="resultMaterial">
-                            0 кг
-                        </strong>
-
-                    </div>
-
-
-                    <div class="metric">
-
-                        <span>
-                            Производство
-                        </span>
-
-                        <strong id="resultTime">
-                            0 ч
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="price-breakdown">
-
-                    <div class="breakdown-title">
-                        Из чего получилась цена
-                    </div>
-
-                    <div class="breakdown-row">
-
-                        <span>
-                            Материал
-                        </span>
-
-                        <strong id="costMaterial">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                    <div class="breakdown-row">
-
-                        <span>
-                            Краска
-                        </span>
-
-                        <strong id="costInk">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                    <div class="breakdown-row">
-
-                        <span>
-                            Печать
-                        </span>
-
-                        <strong id="costPrint">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                    <div class="breakdown-row">
-
-                        <span>
-                            Ламинация
-                        </span>
-
-                        <strong id="costLam">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                    <div class="breakdown-row">
-
-                        <span>
-                            Вырубка / резка
-                        </span>
-
-                        <strong id="costDie">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                    <div class="breakdown-row total">
-
-                        <span>
-                            Себестоимость
-                        </span>
-
-                        <strong id="costTotal">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                    <div class="breakdown-row">
-
-                        <span>
-                            Наценка
-                        </span>
-
-                        <strong id="markupResult">
-                            0 ₽
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="manager-price">
-
-                    <span>
-                        Рекомендуемая цена клиенту
-                    </span>
-
-                    <strong id="clientPrice">
-                        0 ₽
-                    </strong>
-
-                </div>
-
-
-                <div class="result-actions">
-
-                    <button
-                        class="secondary-btn"
-                        id="saveBtn"
-                    >
-                        Сохранить
-                    </button>
-
-                    <button
-                        class="primary-btn"
-                        id="copyBtn"
-                    >
-                        Скопировать расчёт
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ПОДСКАЗКА -->
-
-            <div class="manager-tip">
-
-                <div class="tip-icon">
-                    💡
-                </div>
-
-                <div>
-
-                    <strong>
-                        Для менеджера
-                    </strong>
-
-                    <p id="managerTipText">
-                        Введите реальные параметры заказа.
-                        Чем точнее исходные данные, тем ближе
-                        предварительная цена к производственной.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- ИСТОРИЯ -->
-
-            <div
-                class="history-card"
-                id="historyCard"
-            >
-
-                <div class="card-head compact">
-
-                    <div>
-                        <div class="section-title">
-                            Последние расчёты
-                        </div>
-
-                        <div class="section-caption">
-                            Сохранённые расчёты этого браузера
-                        </div>
-                    </div>
-
-                </div>
-
-                <div id="historyList">
-                    <div class="empty-history">
-                        Сохранённых расчётов пока нет.
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
 
 </main>
 
 
-<!-- =========================================================
-     МОДАЛКА АККАУНТА
-========================================================= -->
-
-<div
-    class="modal"
-    id="accountModal"
->
-
-    <div class="modal-box">
-
-        <button
-            class="modal-close"
-            data-close="accountModal"
-        >
-            ×
-        </button>
-
-        <div class="eyebrow">
-            АККАУНТ
-        </div>
-
-        <h3>
-            PRINTCALC
-        </h3>
-
-        <p>
-            Авторизация подключается к существующей
-            Supabase-конфигурации проекта.
-        </p>
-
-        <div id="accountStatus">
-            Проверяем аккаунт...
-        </div>
-
-        <button
-            class="secondary-btn full-width"
-            id="logoutBtn"
-        >
-            Выйти
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     МОДАЛКА ИСТОРИИ
-========================================================= -->
-
-<div
-    class="modal"
-    id="historyModal"
->
-
-    <div class="modal-box large">
-
-        <button
-            class="modal-close"
-            data-close="historyModal"
-        >
-            ×
-        </button>
-
-        <div class="eyebrow">
-            ИСТОРИЯ
-        </div>
-
-        <h3>
-            Все расчёты
-        </h3>
-
-        <div id="fullHistoryList"></div>
-
-    </div>
-
-</div>
-
 
 <footer class="footer">
 
-    <span>
-        PRINTCALC FLEXO V4
-    </span>
+<span>
+PRINTCALC FLEXO
+</span>
 
-    <span>
-        Создано для быстрой работы менеджера типографии
-    </span>
+
+<span>
+Created by Sergey Pavlov
+</span>
+
 
 </footer>
 
 
-<script>
-
-window.PRINTCALC_SUPABASE_URL = "";
-window.PRINTCALC_SUPABASE_KEY = "";
-
-</script>
-
-<script src="app.js"></script>
-
 </body>
+
 </html>
