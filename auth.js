@@ -120,55 +120,6 @@
 
   }
 
-  function addSlogan() {
-
-    const home =
-      location.pathname.endsWith(
-        "/"
-      ) ||
-      location.pathname.endsWith(
-        "index.html"
-      );
-
-    if (!home) {
-      return;
-    }
-
-    if (
-      document.querySelector(
-        ".pc-selling-slogan"
-      )
-    ) {
-      return;
-    }
-
-    const h1 =
-      document.querySelector(
-        "h1"
-      );
-
-    if (!h1) {
-      return;
-    }
-
-    const slogan =
-      document.createElement(
-        "div"
-      );
-
-    slogan.className =
-      "pc-selling-slogan";
-
-    slogan.textContent =
-      "СЧИТАЙТЕ БЫСТРЕЕ. ПРЕДЛАГАЙТЕ УВЕРЕННЕЕ.";
-
-    h1.insertAdjacentElement(
-      "afterend",
-      slogan
-    );
-
-  }
-
   function replaceDetailIcons() {
 
     document
@@ -923,7 +874,6 @@
 
     addAccountButton();
     moveCreator();
-    addSlogan();
     createModal();
 
     setTimeout(
