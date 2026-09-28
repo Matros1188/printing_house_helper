@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="PRINTCALC — онлайн-калькуляторы для полиграфии и производства">
+<meta name="theme-color" content="#08101d">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css">
+<title>PRINTCALC — калькуляторы для полиграфии</title>
+</head>
+
+<body>
+
+<header class="top">
+<div class="wrap nav">
+<a class="brand" href="./">
+<span>PRINT</span>CALC
+</a>
+
+<nav>
+<a href="#calculators">Калькуляторы</a>
+<a href="#history">История</a>
+<a href="#about">О сервисе</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="wrap hero-grid">
+
+<div>
+<div class="eyebrow">
+ОНЛАЙН-СЕРВИС ДЛЯ ПОЛИГРАФИИ
+</div>
+
+<h1>
+Считайте быстрее.<br>
+<em>Продавайте точнее.</em>
+</h1>
+
+<p class="lead">
+Практические калькуляторы для типографий,
+рекламных производств, менеджеров и руководителей.
+</p>
+
+<div class="actions">
+<a class="btn primary" href="#calculators">
+Открыть калькуляторы
+</a>
+
+<a class="btn" href="#about">
+О сервисе
+</a>
+</div>
+</div>
+
+<div class="hero-card">
+
+<div class="eyebrow">
+ИНСТРУМЕНТЫ
+</div>
+
+<div class="big">
+20
+</div>
+
+<p class="lead">
+калькуляторов для производства,
+продаж и экономики заказа
+</p>
+
+<div class="chips">
+<span>Печать</span>
+<span>Материалы</span>
+<span>Отделка</span>
+<span>Финансы</span>
+</div>
+
+</div>
+
+</div>
+</section>
+
+<section id="calculators" class="section wrap">
+
+<div class="section-head">
+
+<div>
+<div class="eyebrow">ИНСТРУМЕНТЫ</div>
+<h2>Калькуляторы</h2>
+</div>
+
+<input
+id="search"
+class="search"
+placeholder="Поиск калькулятора..."
+oninput="renderCards()"
+>
+
+</div>
+
+<div id="cards" class="cards"></div>
+
+</section>
+
+<section id="history" class="section alt">
+
+<div class="wrap">
+
+<div class="section-head">
+
+<div>
+<div class="eyebrow">ЛОКАЛЬНО</div>
+<h2>История расчётов</h2>
+</div>
+
+<button class="btn" onclick="clearHistory()">
+Очистить
+</button>
+
+</div>
+
+<div id="historyList" class="history"></div>
+
+</div>
+
+</section>
+
+<section id="about" class="section wrap about">
+
+<div>
+<div class="eyebrow">
+PRINTCALC
+</div>
+
+<h2>
+Быстрый расчёт без лишней бюрократии.
+</h2>
+</div>
+
+<div>
+
+<p>
+Сервис помогает делать предварительные
+расчёты на телефоне или компьютере.
+</p>
+
+<p>
+Результаты ориентировочные и предназначены
+для оперативной оценки заказа.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+<div class="wrap footer">
+<strong>PRINTCALC</strong>
+<span>
+Онлайн-калькуляторы для печати и производства
+</span>
+</div>
+
+</footer>
+
+<div
+id="modal"
+class="modal"
+onclick="backdrop(event)"
+>
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeModal()"
+>
+×
+</button>
+
+<div id="modalBody"></div>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
