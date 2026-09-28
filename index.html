@@ -388,439 +388,203 @@
 
 }
 </style>
-<style data-printcalc-clean-hero="1">
-.hero-grid.pc-detail-card{
-    grid-template-columns:1fr !important;
-}
-.hero-copy{
-    width:100%;
-    max-width:100%;
-}
-</style>
 
 
-<style data-printcalc-final-polish="1">
-
-/* =========================================================
-   АКЦЕНТ: <span class="pc-steps-highlight"></span>
-   ========================================================= */
-
-.preview-badge-top {
-    position: relative !important;
-    display: inline-flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    justify-content: center !important;
-
-    gap: 3px !important;
-
-    padding: 10px 14px !important;
-
-    border-radius: 14px !important;
-
-    background:
-        linear-gradient(
-            135deg,
-            #eef4ff 0%,
-            #f7faff 100%
-        ) !important;
-
-    border: 1px solid #d8e5ff !important;
-
-    box-shadow:
-        0 8px 22px rgba(37,99,235,.10) !important;
-
-    min-width: 150px !important;
-
-    box-sizing: border-box !important;
-}
-
-.preview-badge-top i {
-    display: block !important;
-
-    width: 7px !important;
-    height: 7px !important;
-
-    border-radius: 50% !important;
-
-    background: #16a34a !important;
-
-    box-shadow:
-        0 0 0 4px rgba(22,163,74,.10) !important;
-
-    margin-bottom: 2px !important;
-}
-
-.preview-badge-top span {
-    display: block !important;
-
-    font-size: 12px !important;
-
-    line-height: 1.15 !important;
-
-    font-weight: 800 !important;
-
-    letter-spacing: .02em !important;
-
-    color: #2563eb !important;
-}
-
-.preview-badge-top b {
-    display: block !important;
-
-    font-size: 16px !important;
-
-    line-height: 1.15 !important;
-
-    font-weight: 850 !important;
-
-    letter-spacing: -.02em !important;
-
-    color: #172033 !important;
-}
-
-/* Если текст находится не в preview-бейдже,
-   этот класс тоже будет выглядеть аккуратно. */
-
-.pc-steps-highlight {
-    display: inline-flex !important;
-    align-items: center !important;
-
-    padding: 9px 14px !important;
-
-    border-radius: 13px !important;
-
-    background: #eef4ff !important;
-
-    border: 1px solid #d8e5ff !important;
-
-    color: #172033 !important;
-
-    font-size: 15px !important;
-
-    font-weight: 800 !important;
-
-    box-shadow:
-        0 7px 20px rgba(37,99,235,.09) !important;
-}
-
-@media (max-width: 520px) {
-
-    .preview-badge-top {
-        min-width: 140px !important;
-        padding: 9px 12px !important;
-    }
-
-    .preview-badge-top b {
-        font-size: 14px !important;
-    }
-
-    .preview-badge-top span {
-        font-size: 11px !important;
-    }
-}
-
-</style>
 
 
-<style id="printcalc-fast-v92-style">
 
-.pc-fast-v92 {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 0 32px;
-}
 
-.pc-fast-v92-inner {
-  width: min(1180px, calc(100% - 32px));
-  margin: 0 auto;
 
-  display: flex;
-  align-items: center;
 
-  gap: 15px;
 
-  padding: 15px 19px;
 
-  box-sizing: border-box;
 
-  border: 1px solid #e1e7f0;
-  border-radius: 17px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff 0%,
-      #f6f9ff 100%
-    );
+<style id="printcalc-professional-hero">
 
-  box-shadow:
-    0 9px 25px rgba(23, 32, 51, .065);
-
-  position: relative;
+.hero {
   overflow: hidden;
 }
 
-.pc-fast-v92-inner::before {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-  top: 0;
-  bottom: 0;
-
-  width: 4px;
-
-  background: #2563eb;
-}
-
-.pc-fast-v92-mark {
-  width: 42px;
-  height: 42px;
-
-  min-width: 42px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 13px;
-
-  background: #eef4ff;
-
-  border: 1px solid #d8e4ff;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.95);
-}
-
-.pc-fast-v92-mark span {
-  font-size: 19px;
-  line-height: 1;
-}
-
-.pc-fast-v92-copy {
-  display: flex;
-  flex-direction: column;
-
-  gap: 3px;
-}
-
-.pc-fast-v92-kicker {
-  font-size: 10px;
-  line-height: 1;
-
-  font-weight: 850;
-
-  letter-spacing: .14em;
-
-  color: #2563eb;
-}
-
-.pc-fast-v92-title {
-  font-size: clamp(19px, 2.3vw, 27px);
-  line-height: 1.05;
-
-  font-weight: 850;
-
-  letter-spacing: -.035em;
-
-  color: #172033;
-}
-
-.pc-fast-v92-title span {
-  color: #2563eb;
-}
-
-@media (max-width: 700px) {
-
-  .pc-fast-v92 {
-    padding-bottom: 25px;
-  }
-
-  .pc-fast-v92-inner {
-    width: calc(100% - 24px);
-
-    padding: 13px 14px;
-
-    gap: 12px;
-
-    border-radius: 15px;
-  }
-
-  .pc-fast-v92-mark {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-
-    border-radius: 11px;
-  }
-
-  .pc-fast-v92-mark span {
-    font-size: 16px;
-  }
-
-  .pc-fast-v92-kicker {
-    font-size: 9px;
-  }
-
-  .pc-fast-v92-title {
-    font-size: 17px;
-  }
-}
-
-</style>
-
-
-<style id="printcalc-fast-top-style">
-
-/* ==========================================================
-   PRINTCALC FLEXO
-   ВЕРХНИЙ АКЦЕНТ БЫСТРОГО РАСЧЁТА
-   ========================================================== */
-
 .hero-grid {
-    display: block !important;
-    min-height: auto !important;
+  min-height: auto !important;
+  padding: 52px 0 46px !important;
+  display: block !important;
 }
 
 .hero-copy {
-    width: 100% !important;
-    max-width: 1180px !important;
-    margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 0 auto !important;
 }
 
-.pc-fast-top {
-    display: inline-flex;
-
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    justify-content: center;
-
-    margin: 0 0 19px;
-
-    padding: 13px 18px 14px;
-
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff 0%,
-            #f5f8ff 100%
-        );
-
-    border:
-        1px solid #dfe7f4;
-
-    box-shadow:
-        0 8px 24px rgba(23,32,51,.065);
-
-    position: relative;
-
-    overflow: hidden;
+.pc-hero-heading {
+  position: relative;
+  padding-left: 19px;
+  margin: 0 0 23px;
 }
 
-.pc-fast-top::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 4px;
-
-    background: #2563eb;
+.pc-hero-heading::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 1px;
+  width: 3px;
+  border-radius: 3px;
+  background: #2563eb;
 }
 
-.pc-fast-top-kicker {
-    margin: 0 0 4px 0;
-
-    color: #2563eb;
-
-    font-size: 10px;
-
-    line-height: 1;
-
-    font-weight: 850;
-
-    letter-spacing: .14em;
+.pc-hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 7px;
+  color: #2563eb;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: .15em;
 }
 
-.pc-fast-top-title {
-    color: #172033;
-
-    font-size: clamp(
-        20px,
-        2.4vw,
-        28px
-    );
-
-    line-height: 1.05;
-
-    font-weight: 850;
-
-    letter-spacing: -.035em;
+.pc-hero-kicker-line {
+  width: 18px;
+  height: 1px;
+  flex: 0 0 18px;
+  background: #2563eb;
 }
 
-.pc-fast-top-title span {
-    color: #2563eb;
+.pc-hero-title {
+  max-width: 820px;
+  margin: 0;
+  color: #172033;
+  font-size: clamp(39px, 5.4vw, 66px);
+  line-height: .96;
+  font-weight: 900;
+  letter-spacing: -.055em;
+}
+
+.pc-hero-title span {
+  color: #2563eb;
 }
 
 .pc-main-lead {
-    display: block !important;
-
-    width: 100% !important;
-
-    max-width: 950px !important;
-
-    margin: 0 0 28px !important;
-
-    color: #718096 !important;
-
-    font-size: 16px !important;
-
-    line-height: 1.55 !important;
+  max-width: 760px !important;
+  margin: 0 0 26px !important;
+  color: #718096 !important;
+  font-size: 16px !important;
+  line-height: 1.62 !important;
 }
 
-.hero-grid .proof {
-    width: 100% !important;
+.hero-copy .proof {
+  max-width: 820px !important;
+  margin-top: 0 !important;
+  padding-top: 17px;
+  border-top: 1px solid #e5e9f0;
+}
 
-    max-width: 1180px !important;
+.hero-copy .proof > div {
+  padding-right: 16px;
+  border-right: 1px solid #e5e9f0;
+}
 
-    margin-left: auto !important;
-    margin-right: auto !important;
+.hero-copy .proof > div:last-child {
+  border-right: 0;
+}
+
+.hero-copy .proof b {
+  color: #172033;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.hero-copy .proof span {
+  color: #718096;
+  font-size: 8px;
+}
+
+.strip-grid > div {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.section {
+  padding-top: 76px;
+  padding-bottom: 76px;
+}
+
+.cards {
+  margin-top: 28px;
+}
+
+.dark {
+  padding-top: 72px;
+  padding-bottom: 72px;
 }
 
 @media (max-width: 700px) {
 
-    .pc-fast-top {
-        margin-bottom: 15px;
+  .hero-grid {
+    padding: 31px 0 36px !important;
+  }
 
-        padding: 11px 14px 12px;
+  .pc-hero-heading {
+    padding-left: 15px;
+    margin-bottom: 18px;
+  }
 
-        border-radius: 14px;
-    }
+  .pc-hero-kicker {
+    gap: 7px;
+    margin-bottom: 6px;
+    font-size: 9px;
+    letter-spacing: .13em;
+  }
 
-    .pc-fast-top-kicker {
-        font-size: 9px;
-    }
+  .pc-hero-kicker-line {
+    width: 13px;
+    flex-basis: 13px;
+  }
 
-    .pc-fast-top-title {
-        font-size: 17px;
-    }
+  .pc-hero-title {
+    max-width: 100%;
+    font-size: clamp(31px, 9.5vw, 43px);
+    line-height: .98;
+    letter-spacing: -.045em;
+  }
 
-    .pc-main-lead {
-        margin-bottom: 23px !important;
+  .pc-main-lead {
+    max-width: 100% !important;
+    margin-bottom: 21px !important;
+    font-size: 14px !important;
+    line-height: 1.54 !important;
+  }
 
-        font-size: 14px !important;
+  .hero-copy .proof {
+    padding-top: 14px;
+  }
 
-        line-height: 1.5 !important;
-    }
+  .hero-copy .proof > div {
+    padding-right: 0;
+  }
+
+  .strip-grid > div {
+    padding-top: 17px;
+    padding-bottom: 17px;
+  }
+
+  .section {
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+
+  .cards {
+    margin-top: 24px;
+  }
+
+  .dark {
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
 }
 
 </style>
@@ -839,35 +603,24 @@
 <main>
 <section class="hero">
 <div class="wrap hero-grid">
+
 <div class="hero-copy">
 
-<div class="pc-fast-top">
-
-    <div class="pc-fast-top-kicker">
-        БЫСТРЫЙ РАСЧЁТ
+  <div class="pc-hero-heading">
+    <div class="pc-hero-kicker">
+      <span class="pc-hero-kicker-line"></span>
+      БЫСТРЫЙ РАСЧЁТ
     </div>
 
-    <div class="pc-fast-top-title">
-        ЗА НЕСКОЛЬКО <span>ШАГОВ</span>
-    </div>
+    <h1 class="pc-hero-title">
+      ЗА НЕСКОЛЬКО <span>ШАГОВ</span>
+    </h1>
+  </div>
 
-</div>
-
-
-<p class="lead pc-main-lead">
+  <p class="lead pc-main-lead">
     PRINTCALC FLEXO помогает менеджеру быстро оценить заказ,
     а при необходимости перейти к подробной экономике производства.
-</p>
-
-
-
-
-
-
-        
-
-
-
+  </p>
 
 <div class="proof">
 <div>
@@ -883,7 +636,9 @@
 <span>удобно с телефона</span>
 </div>
 </div>
+
 </div>
+
 
 </div>
 </section>
