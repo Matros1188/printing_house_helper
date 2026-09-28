@@ -1,446 +1,371 @@
 <!doctype html>
+<!DOCTYPE html>
+
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1220">
-<meta name="description" content="PRINTCALC FLEXO — расчёт заказов для типографии">
-<link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="style.css?v=87">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#0b1220" name="theme-color"/>
+<meta content="PRINTCALC FLEXO — расчёт заказов для типографии" name="description"/>
+<link href="favicon.svg" rel="icon"/>
+<link href="style.css?v=87" rel="stylesheet"/>
 <title>PRINTCALC FLEXO</title>
-</head>
+<style data-printcalc-v8="1">
+/* ============================================================
+   PRINTCALC FLEXO V8
+   FINAL HEADER / CALCULATOR ICON FIX
+   ============================================================ */
 
+/* ------------------------------------------------------------
+   CREATED BY SERGEY PAVLOV
+   ------------------------------------------------------------ */
+
+.pc-created-by {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: auto !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    white-space: nowrap !important;
+    overflow: visible !important;
+
+    font-size: clamp(10px, 2.2vw, 13px) !important;
+
+    line-height: 1.2 !important;
+    letter-spacing: .01em !important;
+}
+
+
+/* ------------------------------------------------------------
+   CARD 02
+   ------------------------------------------------------------ */
+
+.pc-detail-card {
+    overflow: hidden !important;
+}
+
+
+/* ------------------------------------------------------------
+   ICON 02
+   Такая же компактная иконка,
+   без чёрного прямоугольника.
+   ------------------------------------------------------------ */
+
+.pc-detail-card .pc-detail-icon {
+
+    width: 52px !important;
+    height: 52px !important;
+
+    min-width: 52px !important;
+    min-height: 52px !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    padding: 0 !important;
+
+    border-radius: 16px !important;
+
+    background: #eef4ff !important;
+
+    color: #2563eb !important;
+
+    fill: currentColor !important;
+    stroke: currentColor !important;
+
+    box-shadow: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   SVG
+   ------------------------------------------------------------ */
+
+.pc-detail-card .pc-detail-icon svg {
+
+    width: 26px !important;
+    height: 26px !important;
+
+    max-width: 26px !important;
+    max-height: 26px !important;
+
+    background: transparent !important;
+
+    color: #2563eb !important;
+
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+
+/* ------------------------------------------------------------
+   IMG
+   ------------------------------------------------------------ */
+
+.pc-detail-card .pc-detail-icon img {
+
+    width: 26px !important;
+    height: 26px !important;
+
+    object-fit: contain !important;
+
+    background: transparent !important;
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 520px) {
+
+    .pc-created-by {
+
+        font-size: 10px !important;
+
+    }
+
+    .pc-detail-card .pc-detail-icon {
+
+        width: 52px !important;
+        height: 52px !important;
+
+        min-width: 52px !important;
+        min-height: 52px !important;
+
+    }
+
+}
+</style></head>
 <body class="landing">
-
 <header class="header">
-  <div class="wrap header-in">
-    <a class="logo" href="./">
-      <span class="logo-p">P</span>
-      <span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
-    </a>
-    <a class="header-btn" href="quick.html">Открыть расчёт</a>
-  </div>
+<div class="wrap header-in pc-created-by">
+<a class="logo" href="./">
+<span class="logo-p">P</span>
+<span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
+</a>
+<a class="header-btn" href="quick.html">Открыть расчёт</a>
+</div>
 </header>
-
 <main>
-
 <section class="hero">
-  <div class="wrap hero-grid">
-
-    <div class="hero-copy">
-      <div class="tag">ОНЛАЙН-СЕРВИС ДЛЯ ТИПОГРАФИИ</div>
-
-      <h1>
+<div class="wrap hero-grid pc-detail-card">
+<div class="hero-copy">
+<div class="tag">ОНЛАЙН-СЕРВИС ДЛЯ ТИПОГРАФИИ</div>
+<h1>
         Считайте заказ
         <span>быстрее.</span>
-      </h1>
-
-      <p class="lead">
+</h1>
+<p class="lead">
         PRINTCALC FLEXO помогает менеджеру быстро
         оценить заказ, а при необходимости перейти
         к подробной экономике производства.
       </p>
 <div class="hero-actions">
-
-        <a class="action primary" href="quick.html">
-          <span class="action-icon">⚡</span>
-          <span>
-            <b>Быстрый расчёт</b>
-            <small>Для ответа клиенту прямо сейчас</small>
-          </span>
-          <strong>→</strong>
-        </a>
-
-        <a class="action secondary" href="detail.html">
-          <span class="action-icon action-icon-detail"><svg
-  class="pc-calculator-icon"
-  viewBox="0 0 48 48"
-  aria-hidden="true"
->
-  <defs>
-    <linearGradient
-      id="pcCalcGrad"
-      x1="8"
-      y1="6"
-      x2="40"
-      y2="42"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#8b7cff"/>
-      <stop offset="1" stop-color="#2563eb"/>
-    </linearGradient>
-  </defs>
-
-  <rect
-    x="10"
-    y="6"
-    width="28"
-    height="36"
-    rx="7"
-    fill="url(#pcCalcGrad)"
-  />
-
-  <rect
-    x="15"
-    y="11"
-    width="18"
-    height="8"
-    rx="2.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="15"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="21.5"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.78)"
-  />
-
-  <rect
-    x="28"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.62)"
-  />
-
-  <rect
-    x="15"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.82)"
-  />
-
-  <rect
-    x="21.5"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="28"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.72)"
-  />
-
-  <circle
-    cx="35.5"
-    cy="18.5"
-    r="1.8"
-    fill="#ffffff"
-  />
+<a class="action primary" href="quick.html">
+<span class="action-icon">⚡</span>
+<span>
+<b>Быстрый расчёт</b>
+<small>Для ответа клиенту прямо сейчас</small>
+</span>
+<strong>→</strong>
+</a>
+<a class="action secondary" href="detail.html">
+<span class="action-icon action-icon-detail"><svg aria-hidden="true" class="pc-calculator-icon pc-detail-icon" viewbox="0 0 48 48">
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="pcCalcGrad" x1="8" x2="40" y1="6" y2="42">
+<stop offset="0" stop-color="#8b7cff"></stop>
+<stop offset="1" stop-color="#2563eb"></stop>
+</lineargradient>
+</defs>
+<rect fill="url(#pcCalcGrad)" height="36" rx="7" width="28" x="10" y="6"></rect>
+<rect fill="rgba(255,255,255,.92)" height="8" rx="2.5" width="18" x="15" y="11"></rect>
+<rect fill="rgba(255,255,255,.92)" height="5" rx="1.5" width="5" x="15" y="23"></rect>
+<rect fill="rgba(255,255,255,.78)" height="5" rx="1.5" width="5" x="21.5" y="23"></rect>
+<rect fill="rgba(255,255,255,.62)" height="5" rx="1.5" width="5" x="28" y="23"></rect>
+<rect fill="rgba(255,255,255,.82)" height="5" rx="1.5" width="5" x="15" y="29.5"></rect>
+<rect fill="rgba(255,255,255,.92)" height="5" rx="1.5" width="5" x="21.5" y="29.5"></rect>
+<rect fill="rgba(255,255,255,.72)" height="5" rx="1.5" width="5" x="28" y="29.5"></rect>
+<circle cx="35.5" cy="18.5" fill="#ffffff" r="1.8"></circle>
 </svg></span>
-          <span>
-            <b>Детальный расчёт</b>
-            <small>Полная экономика заказа</small>
-          </span>
-          <strong>→</strong>
-        </a>
-
-      </div>
-
-      <div class="proof">
-        <div>
-          <b>2 режима</b>
-          <span>под разные задачи</span>
-        </div>
-        <div>
-          <b>Без установки</b>
-          <span>работает в браузере</span>
-        </div>
-        <div>
-          <b>Mobile first</b>
-          <span>удобно с телефона</span>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="hero-preview">
-
-      <div class="preview">
-
-        <div class="preview-head">
-          <div>
-            <span class="mini-logo">P</span>
-            <b>PRINTCALC FLEXO</b>
-          </div>
-          <span class="live">ONLINE</span>
-        </div>
-
-        <div class="preview-body">
-
-          <span class="preview-label">БЫСТРЫЙ РАСЧЁТ</span>
-          <div class="preview-title-row">
-            <h3>Рулонные этикетки</h3>
-
-            <div class="preview-badge preview-badge-top">
-              <i></i>
-              <span>Расчёт готов</span>
-              <b>за несколько шагов</b>
-            </div>
-          </div>
-
-          <div class="preview-fields">
-            <div><span>Тираж</span><b>50 000 шт.</b></div>
-            <div><span>Размер</span><b>80 × 50 мм</b></div>
-            <div><span>Полотно</span><b>170 мм</b></div>
-            <div><span>Цветность</span><b>4 + 0</b></div>
-          </div>
-
-          <div class="preview-total">
-            <span>Цена клиенту</span>
-            <b>29 900 ₽</b>
-          </div>
-          <div class="preview-badge preview-badge-bottom">
-            <b>✓</b>
-            <span>Меньше ручных ошибок</span>
-          </div>
-
-
-          <div class="preview-stats">
-            <span>1 126 м</span>
-            <span>12,8 кг</span>
-            <span>~18 мин</span>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
+<span>
+<b>Детальный расчёт</b>
+<small>Полная экономика заказа</small>
+</span>
+<strong>→</strong>
+</a>
+</div>
+<div class="proof">
+<div>
+<b>2 режима</b>
+<span>под разные задачи</span>
+</div>
+<div>
+<b>Без установки</b>
+<span>работает в браузере</span>
+</div>
+<div>
+<b>Mobile first</b>
+<span>удобно с телефона</span>
+</div>
+</div>
+</div>
+<div class="hero-preview">
+<div class="preview">
+<div class="preview-head">
+<div>
+<span class="mini-logo">P</span>
+<b>PRINTCALC FLEXO</b>
+</div>
+<span class="live">ONLINE</span>
+</div>
+<div class="preview-body">
+<span class="preview-label">БЫСТРЫЙ РАСЧЁТ</span>
+<div class="preview-title-row">
+<h3>Рулонные этикетки</h3>
+<div class="preview-badge preview-badge-top">
+<i></i>
+<span>Расчёт готов</span>
+<b>за несколько шагов</b>
+</div>
+</div>
+<div class="preview-fields">
+<div><span>Тираж</span><b>50 000 шт.</b></div>
+<div><span>Размер</span><b>80 × 50 мм</b></div>
+<div><span>Полотно</span><b>170 мм</b></div>
+<div><span>Цветность</span><b>4 + 0</b></div>
+</div>
+<div class="preview-total">
+<span>Цена клиенту</span>
+<b>29 900 ₽</b>
+</div>
+<div class="preview-badge preview-badge-bottom">
+<b>✓</b>
+<span>Меньше ручных ошибок</span>
+</div>
+<div class="preview-stats">
+<span>1 126 м</span>
+<span>12,8 кг</span>
+<span>~18 мин</span>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
-
-
 <section class="strip">
-  <div class="wrap strip-grid">
-    <div><b>Быстро</b><span>Предварительная цена</span></div>
-    <div><b>Понятно</b><span>Без лишних полей</span></div>
-    <div><b>Практично</b><span>Метраж и материал</span></div>
-    <div><b>Удобно</b><span>ПК и смартфон</span></div>
-  </div>
+<div class="wrap strip-grid">
+<div><b>Быстро</b><span>Предварительная цена</span></div>
+<div><b>Понятно</b><span>Без лишних полей</span></div>
+<div><b>Практично</b><span>Метраж и материал</span></div>
+<div><b>Удобно</b><span>ПК и смартфон</span></div>
+</div>
 </section>
-
-
 <section class="section">
-  <div class="wrap">
-
-    <div class="eyebrow">ДВА СЦЕНАРИЯ</div>
-
-    <h2>Один сервис для двух рабочих ситуаций.</h2>
-
-    <p class="section-text">
+<div class="wrap">
+<div class="eyebrow">ДВА СЦЕНАРИЯ</div>
+<h2>Один сервис для двух рабочих ситуаций.</h2>
+<p class="section-text">
       Начинайте с минимально необходимого расчёта
       и углубляйтесь в экономику только тогда,
       когда это действительно требуется.
     </p>
-
-    <div class="cards">
-
-      <article class="card active">
-        <span class="card-no">01</span>
-        <div class="card-icon blue">⚡</div>
-        <h3>Быстрый расчёт</h3>
-        <p>
+<div class="cards">
+<article class="card active">
+<span class="card-no">01</span>
+<div class="card-icon blue">⚡</div>
+<h3>Быстрый расчёт</h3>
+<p>
           Для звонка, переписки, предварительного
           предложения и быстрой оценки заказа.
         </p>
-
-        <div class="chips">
-          <span>Тираж</span>
-          <span>Размер</span>
-          <span>Ручьи</span>
-          <span>Материал</span>
-          <span>Краска</span>
-          <span>Цена</span>
-        </div>
-
-        <a href="quick.html">Открыть быстрый расчёт <b>→</b></a>
-      </article>
-
-
-      <article class="card">
-        <span class="card-no">02</span>
-        <div class="card-icon dark card-icon-detail"><svg
-  class="pc-calculator-icon"
-  viewBox="0 0 48 48"
-  aria-hidden="true"
->
-  <defs>
-    <linearGradient
-      id="pcCalcGrad"
-      x1="8"
-      y1="6"
-      x2="40"
-      y2="42"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#8b7cff"/>
-      <stop offset="1" stop-color="#2563eb"/>
-    </linearGradient>
-  </defs>
-
-  <rect
-    x="10"
-    y="6"
-    width="28"
-    height="36"
-    rx="7"
-    fill="url(#pcCalcGrad)"
-  />
-
-  <rect
-    x="15"
-    y="11"
-    width="18"
-    height="8"
-    rx="2.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="15"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="21.5"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.78)"
-  />
-
-  <rect
-    x="28"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.62)"
-  />
-
-  <rect
-    x="15"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.82)"
-  />
-
-  <rect
-    x="21.5"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="28"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.72)"
-  />
-
-  <circle
-    cx="35.5"
-    cy="18.5"
-    r="1.8"
-    fill="#ffffff"
-  />
+<div class="chips">
+<span>Тираж</span>
+<span>Размер</span>
+<span>Ручьи</span>
+<span>Материал</span>
+<span>Краска</span>
+<span>Цена</span>
+</div>
+<a href="quick.html">Открыть быстрый расчёт <b>→</b></a>
+</article>
+<article class="card">
+<span class="card-no">02</span>
+<div class="card-icon dark card-icon-detail"><svg aria-hidden="true" class="pc-calculator-icon" viewbox="0 0 48 48">
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="pcCalcGrad" x1="8" x2="40" y1="6" y2="42">
+<stop offset="0" stop-color="#8b7cff"></stop>
+<stop offset="1" stop-color="#2563eb"></stop>
+</lineargradient>
+</defs>
+<rect fill="url(#pcCalcGrad)" height="36" rx="7" width="28" x="10" y="6"></rect>
+<rect fill="rgba(255,255,255,.92)" height="8" rx="2.5" width="18" x="15" y="11"></rect>
+<rect fill="rgba(255,255,255,.92)" height="5" rx="1.5" width="5" x="15" y="23"></rect>
+<rect fill="rgba(255,255,255,.78)" height="5" rx="1.5" width="5" x="21.5" y="23"></rect>
+<rect fill="rgba(255,255,255,.62)" height="5" rx="1.5" width="5" x="28" y="23"></rect>
+<rect fill="rgba(255,255,255,.82)" height="5" rx="1.5" width="5" x="15" y="29.5"></rect>
+<rect fill="rgba(255,255,255,.92)" height="5" rx="1.5" width="5" x="21.5" y="29.5"></rect>
+<rect fill="rgba(255,255,255,.72)" height="5" rx="1.5" width="5" x="28" y="29.5"></rect>
+<circle cx="35.5" cy="18.5" fill="#ffffff" r="1.8"></circle>
 </svg></div>
-        <h3>Детальный расчёт</h3>
-        <p>
+<h3>Детальный расчёт</h3>
+<p>
           Для разбора себестоимости с учётом
           машины, труда, накладных и операций.
         </p>
-
-        <div class="chips">
-          <span>Материал</span>
-          <span>Краска</span>
-          <span>Машина</span>
-          <span>Работа</span>
-          <span>Операции</span>
-          <span>Наценка</span>
-        </div>
-
-        <a href="detail.html">Открыть детальный расчёт <b>→</b></a>
-      </article>
-
-    </div>
-  </div>
+<div class="chips">
+<span>Материал</span>
+<span>Краска</span>
+<span>Машина</span>
+<span>Работа</span>
+<span>Операции</span>
+<span>Наценка</span>
+</div>
+<a href="detail.html">Открыть детальный расчёт <b>→</b></a>
+</article>
+</div>
+</div>
 </section>
-
-
 <section class="dark">
-  <div class="wrap dark-grid">
-
-    <div>
-      <div class="eyebrow light">РАБОЧИЙ ПОДХОД</div>
-      <h2>
+<div class="wrap dark-grid">
+<div>
+<div class="eyebrow light">РАБОЧИЙ ПОДХОД</div>
+<h2>
         Интерфейс вокруг менеджера,
         а не вокруг таблиц.
       </h2>
-      <p>
+<p>
         Сервис помогает получить цифру без необходимости
         вспоминать формулы или открывать отдельную таблицу.
       </p>
-    </div>
-
-    <div class="benefits">
-      <div><b>✓</b><span>Понятные названия параметров</span></div>
-      <div><b>✓</b><span>Отдельный быстрый сценарий</span></div>
-      <div><b>✓</b><span>Подробная экономика заказа</span></div>
-      <div><b>✓</b><span>Адаптация под смартфон</span></div>
-    </div>
-
-  </div>
+</div>
+<div class="benefits">
+<div><b>✓</b><span>Понятные названия параметров</span></div>
+<div><b>✓</b><span>Отдельный быстрый сценарий</span></div>
+<div><b>✓</b><span>Подробная экономика заказа</span></div>
+<div><b>✓</b><span>Адаптация под смартфон</span></div>
+</div>
+</div>
 </section>
-
 </main>
-
-
 <footer>
-  <div class="wrap footer-in">
-    <div class="logo">
-      <span class="logo-p">P</span>
-      <span>
-        <b>PRINTCALC</b>
-        <small>FLEXO</small>
-      </span>
-    </div></div>
+<div class="wrap footer-in">
+<div class="logo">
+<span class="logo-p">P</span>
+<span>
+<b>PRINTCALC</b>
+<small>FLEXO</small>
+</span>
+</div></div>
 </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=87"></script>
 <script src="auth.js?v=87"></script>
