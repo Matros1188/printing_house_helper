@@ -10,7 +10,7 @@
 <meta content="#0b1220" name="theme-color"/>
 <meta content="PRINTCALC FLEXO — расчёт заказов для типографии" name="description"/>
 <link href="favicon.svg" rel="icon"/>
-<link href="style.css?v=87" rel="stylesheet"/>
+<link href="style.css?v=120" rel="stylesheet"/>
 <title>PRINTCALC FLEXO</title>
 <style data-printcalc-v9="1">
 /* ================================================================
@@ -698,18 +698,12 @@
 
 <div class="hero-copy">
 
-  <div class="pc-hero-heading">
-    <div class="pc-hero-kicker">
-      
-      БЫСТРЫЙ РАСЧЁТ
-    </div>
+  <div class="pc-hero-heading pc-hero-heading-v12">
+  <div class="pc-hero-line-primary">БЫСТРЫЙ РАСЧЁТ</div>
+  <div class="pc-hero-line-secondary">ЗА НЕСКОЛЬКО <span>ШАГОВ</span></div>
+</div>
 
-    <h1 class="pc-hero-title">
-      ЗА НЕСКОЛЬКО <span>ШАГОВ</span>
-    </h1>
-  </div>
-
-  <p class="lead pc-main-lead">
+<p class="lead pc-main-lead">
     PRINTCALC FLEXO помогает менеджеру быстро оценить заказ,
     а при необходимости перейти к подробной экономике производства.
   </p>
@@ -741,6 +735,31 @@
 <div><b>Практично</b><span>Метраж и материал</span></div>
 <div><b>Удобно</b><span>ПК и смартфон</span></div>
 </div>
+</section>
+<section class="section pc-my-machines-section" id="my-machines">
+  <div class="wrap">
+    <div class="pc-my-machines-head">
+      <div>
+        <div class="eyebrow">МОЯ ТИПОГРАФИЯ</div>
+        <h2>Мои станки</h2>
+        <p class="section-text">
+          Добавьте реальные станки вашей типографии один раз —
+          в детальном расчёте их параметры будут подставляться автоматически.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="pc-machine-add-btn"
+        id="pc-open-machine-modal"
+      >
+        <span class="pc-machine-add-icon">+</span>
+        ДОБАВИТЬ СТАНОК
+      </button>
+    </div>
+
+    <div id="pc-machine-list" class="pc-machine-list"></div>
+  </div>
 </section>
 <section class="section">
 <div class="wrap">
@@ -839,6 +858,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=87"></script>
 <script src="auth.js?v=87"></script>
+<script src="machines.js?v=120"></script>
 
 
 
