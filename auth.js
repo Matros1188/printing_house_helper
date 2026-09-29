@@ -4,12 +4,11 @@
   const core = window.PRINTCALC_AUTH_CORE || {};
   const client = core.getClient ? core.getClient() : null;
   const LAST_USER_KEY = "printcalc_last_account_v3";
-  const HISTORY_PREFIX = "printcalc_history_cache_v6::";
+  const HISTORY_PREFIX = "printcalc_history_cache_v7::";
 
   let currentUser = null;
   let authMode = "login";
   let saveTimer = 0;
-  let lastFingerprint = "";
   let signedOutCheckTimer = 0;
   let initialized = false;
 
@@ -99,7 +98,7 @@
         <button type="button" class="pc-auth-close" aria-label="Закрыть">×</button>
 
         <div class="pc-auth-brand pc-auth-brand-v16">
-          <img src="brand-mark.svg?v=180" alt="" aria-hidden="true">
+          <img src="brand-mark.svg?v=190" alt="" aria-hidden="true">
           <span>
             <b>PRINTCALC</b>
             <small>FLEXO</small>
@@ -308,16 +307,46 @@
     return $("result") || document.querySelector(".result");
   }
 
-  async function saveCalculation() {
-    if (!currentUser) return;
+  async function getLiveUser() {
+    // Всегда перепроверяем реальную persisted-session перед сохранением.
+    if (!client) return currentUser;
+
+    try {
+      const response = await client.auth.getSession();
+      const session = response.data?.session || null;
+      const user = session?.user || null;
+
+      if (user) {
+        currentUser = user;
+        rememberUser(user);
+        renderAuth();
+        return user;
+      }
+    } catch (error) {
+      console.warn("PRINTCALC session before history save:", error);
+    }
+
+    return currentUser;
+  }
+
+  function makeHistoryId() {
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return "pc-" + Date.now() + "-" + Math.random().toString(36).slice(2, 12);
+  }
+
+  async function saveCalculation(reason = "manual") {
+    const user = await getLiveUser();
+    if (!user?.id) return null;
 
     const result = getResultElement();
-    if (!result) return;
+    if (!result) return null;
 
     const resultText =
       (result.innerText || result.textContent || "").trim();
 
-    if (resultText.length < 20) return;
+    // До расчёта в result лежит приглашение.
+    // Не создаём запись для стартового экрана.
+    if (resultText.length < 25) return null;
 
     const mode = window.location.pathname
       .toLowerCase()
@@ -326,74 +355,88 @@
       : "quick";
 
     const inputs = collectSnapshot(mode);
-    const fingerprint = stableStringify({ mode, inputs, resultText });
-
-    if (fingerprint === lastFingerprint) return;
-    lastFingerprint = fingerprint;
-
     const savedAt = new Date().toISOString();
+    const clientId = makeHistoryId();
+
     const calculationData = {
       title: mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт",
       result_text: resultText,
       inputs,
+      reason,
+      client_id: clientId,
       saved_at_client: savedAt,
     };
 
     const localItem = {
-      id: "local-" + Date.now() + "-" + Math.random().toString(36).slice(2, 9),
-      user_id: currentUser.id,
+      id: "local-" + clientId,
+      user_id: user.id,
       mode,
       calculation_data: calculationData,
       created_at: savedAt,
-      local_fingerprint: fingerprint,
+      local: true,
     };
 
+    // СНАЧАЛА сохраняем локально.
+    // Даже если Supabase временно недоступен, история остаётся на устройстве.
     const localRows = readLocalHistory();
     localRows.unshift(localItem);
     writeLocalHistory(localRows);
 
-    if (!client) return;
+    // Показываем текущий статус для других частей приложения.
+    window.dispatchEvent(new CustomEvent("printcalc:history-saved", {
+      detail: { item: localItem, cloud: false }
+    }));
+
+    if (!client) return localItem;
 
     try {
       const response = await client
         .from("calculations")
         .insert({
-          user_id: currentUser.id,
+          user_id: user.id,
           mode,
           calculation_data: calculationData,
         })
         .select("id,user_id,mode,calculation_data,created_at")
         .single();
 
-      if (!response.error && response.data) {
+      if (response.error) {
+        throw response.error;
+      }
+
+      if (response.data) {
+        // Заменяем локальный дубль облачной записью,
+        // сохраняя client_id внутри calculation_data.
         const rows = readLocalHistory().filter(
           (item) => item.id !== localItem.id
         );
         rows.unshift(response.data);
         writeLocalHistory(rows);
+
+        window.dispatchEvent(new CustomEvent("printcalc:history-saved", {
+          detail: { item: response.data, cloud: true }
+        }));
+
+        return response.data;
       }
     } catch (error) {
-      console.warn("PRINTCALC history cloud save:", error);
+      console.warn("PRINTCALC cloud history save failed; local copy kept:", error);
     }
+
+    return localItem;
   }
 
-  function scheduleSave() {
+  function scheduleSave(reason = "calculate") {
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveCalculation, 700);
+    saveTimer = setTimeout(() => {
+      saveCalculation(reason);
+    }, 250);
   }
 
   function watchResult() {
-    const result = getResultElement();
-    if (!result || result.__pcV18Observed) return;
-    result.__pcV18Observed = true;
-
-    const observer = new MutationObserver(() => scheduleSave());
-    observer.observe(result, {
-      subtree: true,
-      childList: true,
-      characterData: true,
-      attributes: true,
-    });
+    // В V19 НЕ сохраняем расчёт через MutationObserver.
+    // Он вызывал сохранение в неподходящий момент и создавал гонку с auth.
+    // История пишется только после явного действия «Рассчитать».
   }
 
   async function submitAuth() {
@@ -472,8 +515,8 @@
   }
 
   function installAuthListener() {
-    if (!client || client.__PRINTCALC_V18_AUTH_LISTENER__) return;
-    client.__PRINTCALC_V18_AUTH_LISTENER__ = true;
+    if (!client || client.__PRINTCALC_V19_AUTH_LISTENER__) return;
+    client.__PRINTCALC_V19_AUTH_LISTENER__ = true;
 
     client.auth.onAuthStateChange((event, sessionData) => {
       if (sessionData?.user) {
@@ -520,7 +563,6 @@
     } catch (_) {}
 
     currentUser = null;
-    lastFingerprint = "";
     forgetUser();
     renderAuth();
     closeAccount();
@@ -551,11 +593,17 @@
     installAuthListener();
 
     document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!target?.closest) return;
+
       if (
-        event.target.closest("#calc") ||
-        event.target.closest("[data-calculate]")
+        target.closest("#calc") ||
+        target.closest("[data-calculate]")
       ) {
-        scheduleSave();
+        // calculate.js уже успел обновить #result, когда событие
+        // доходит сюда по bubble-фазе. Небольшая задержка даёт
+        // Supabase-сессии время восстановиться.
+        scheduleSave("calculate");
       }
     });
 
@@ -573,6 +621,7 @@
     getUser: () => currentUser,
     getClient: () => client,
     saveCalculation,
+    saveNow: () => saveCalculation("manual"),
     getLocalHistory: readLocalHistory,
     refreshSession,
     authStorageKey: core.storageKey || "printcalc-flexo-auth",
