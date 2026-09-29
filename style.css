@@ -8329,3 +8329,163 @@ body::before {
   }
 
 }
+
+/* ============================================================
+   PRINTORA V25 — PREMIUM BRAND SYSTEM
+   ============================================================ */
+:root {
+  --pr-bg: #F1F4F8;
+  --pr-surface: #FFFFFF;
+  --pr-surface-soft: #F8FAFD;
+  --pr-ink: #142033;
+  --pr-ink-soft: #46546A;
+  --pr-muted: #7B8798;
+  --pr-line: #DCE2EB;
+  --pr-line-soft: #E9EDF3;
+  --pr-blue: #315FE4;
+  --pr-blue-deep: #203FA8;
+  --pr-blue-soft: #EEF3FF;
+  --pr-teal: #2EA69E;
+  --pr-teal-soft: #ECF8F6;
+}
+
+body {
+  background:
+    radial-gradient(900px 460px at 4% -8%, rgba(49,95,228,.060), transparent 66%),
+    radial-gradient(720px 420px at 100% 7%, rgba(46,166,158,.040), transparent 68%),
+    linear-gradient(180deg, #F4F7FA 0%, #F1F4F8 52%, #EDF1F6 100%) !important;
+  color: var(--pr-ink);
+}
+
+body::before {
+  opacity: .12 !important;
+  background-image:
+    linear-gradient(rgba(49,95,228,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49,95,228,.035) 1px, transparent 1px) !important;
+  background-size: 38px 38px !important;
+}
+
+header {
+  background: rgba(255,255,255,.82) !important;
+  border-bottom: 1px solid rgba(220,226,235,.76) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.panel, .card, .calculator-card, .section-card {
+  background: linear-gradient(145deg, #FFFFFF, #FBFCFE) !important;
+  border-color: var(--pr-line-soft) !important;
+  box-shadow: 0 12px 34px rgba(20,32,51,.055) !important;
+}
+
+.panel:hover, .card:hover, .section-card:hover {
+  box-shadow: 0 18px 42px rgba(20,32,51,.085) !important;
+}
+
+input, select, textarea {
+  background: #FFFFFF !important;
+  color: var(--pr-ink) !important;
+  border-color: #D9E0EA !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--pr-blue) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.075) !important;
+}
+
+button, .btn-primary, button.primary, button[type="submit"] {
+  background: linear-gradient(180deg, #3768EF, #315FE4) !important;
+  border-color: #315FE4 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(49,95,228,.17) !important;
+}
+
+button:hover, .btn-primary:hover, button.primary:hover, button[type="submit"]:hover {
+  background: linear-gradient(180deg, #3D6FF2, #284FC9) !important;
+  box-shadow: 0 11px 25px rgba(49,95,228,.22) !important;
+}
+
+.btn-secondary, button.secondary {
+  background: #FFFFFF !important;
+  color: var(--pr-ink) !important;
+  border-color: var(--pr-line) !important;
+  box-shadow: 0 4px 12px rgba(20,32,51,.035) !important;
+}
+
+.panel-label, .eyebrow { color: var(--pr-blue) !important; }
+
+.pc-ready-badge {
+  background: var(--pr-teal-soft) !important;
+  border-color: #D0ECE7 !important;
+  color: #258E87 !important;
+}
+
+/* ------------------------------------------------------------
+   PRINTORA logo
+   ------------------------------------------------------------ */
+.pr-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  color: var(--pr-ink);
+  text-decoration: none !important;
+}
+
+.pr-logo-mark {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  object-fit: contain;
+  transition: transform .22s ease, filter .22s ease;
+}
+
+.pr-logo:hover .pr-logo-mark {
+  transform: translateY(-1px) scale(1.015);
+  filter: drop-shadow(0 7px 12px rgba(49,95,228,.16));
+}
+
+.pr-logo-text {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 0;
+  padding-bottom: 11px;
+}
+
+.pr-logo-name {
+  color: var(--pr-ink);
+  font-size: 17px;
+  line-height: .92;
+  font-weight: 900;
+  letter-spacing: -.055em;
+}
+
+.pr-logo-sub {
+  margin-top: 4px;
+  color: var(--pr-blue);
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 850;
+  letter-spacing: .21em;
+}
+
+.pr-logo-created {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  color: #929DAC;
+  font-size: 6.5px;
+  line-height: 1;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .pr-logo { gap: 9px; }
+  .pr-logo-mark { width: 42px; height: 42px; flex-basis: 42px; }
+  .pr-logo-name { font-size: 15px; }
+  .pr-logo-sub { font-size: 7px; }
+  .pr-logo-created { font-size: 6px; }
+}
