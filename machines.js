@@ -736,7 +736,7 @@
 
     select.value = machines.some(item => item.id === targetId) ? targetId : "";
 
-    setReadonlyMachineFields(true);
+    setReadonlyMachineFields(false);
 
     select.onchange = () => {
       const machine = machines.find(item => item.id === select.value) || null;
@@ -786,6 +786,7 @@
           await switchNamespace();
           renderMachineList();
           populateMachineSelect();
+          initMachineSearch();
         }, 0);
       });
     }
@@ -801,6 +802,76 @@
       populateMachineSelect();
     }
   };
+
+
+
+  function updateManualModeVisual(fromUserInput = false) {
+    const note = document.getElementById("pc-manual-mode-note");
+    const select = document.getElementById("machineSelect");
+
+    if (!note) return;
+
+    if (select && select.value && fromUserInput) {
+      note.innerHTML = '<span class="pc-mode-dot pc-mode-dot-manual"></span> Значения станка скорректированы вручную';
+      note.classList.add("is-manual");
+    } else if (select && select.value) {
+      note.innerHTML = '<span class="pc-mode-dot"></span> Значения подставлены из вашего станка — их можно изменить';
+      note.classList.remove("is-manual");
+    } else {
+      note.innerHTML = '<span class="pc-mode-dot pc-mode-dot-manual"></span> Ручной ввод производственных параметров';
+      note.classList.add("is-manual");
+    }
+  }
+
+  function bindProductionManualInputs() {
+    ["speed", "power", "setup", "machine", "labor", "powerRate"].forEach(id => {
+      const field = document.getElementById(id);
+      if (!field || field.dataset.pcManualBound === "1") return;
+      field.dataset.pcManualBound = "1";
+      field.addEventListener("input", () => updateManualModeVisual(true));
+    });
+
+    const select = document.getElementById("machineSelect");
+    if (select && select.dataset.pcManualBound !== "1") {
+      select.dataset.pcManualBound = "1";
+      select.addEventListener("change", () => updateManualModeVisual(false));
+    }
+
+    updateManualModeVisual(false);
+  }
+
+
+
+  function initMachineSearch() {
+    const search = document.getElementById("pc-machine-search");
+    const list = document.getElementById("pc-machine-list");
+    if (!search || !list || search.dataset.bound === "1") return;
+
+    search.dataset.bound = "1";
+
+    search.addEventListener("input", () => {
+      const query = search.value.trim().toLocaleLowerCase("ru-RU");
+      const cards = list.querySelectorAll(".pc-machine-card");
+      let visible = 0;
+
+      cards.forEach(card => {
+        const text = card.textContent.toLocaleLowerCase("ru-RU");
+        const show = !query || text.includes(query);
+        card.style.display = show ? "" : "none";
+        if (show) visible += 1;
+      });
+
+      let emptySearch = list.querySelector(".pc-machine-search-empty");
+      if (!emptySearch) {
+        emptySearch = document.createElement("div");
+        emptySearch.className = "pc-machine-search-empty";
+        emptySearch.textContent = "По вашему запросу станков не найдено.";
+        list.appendChild(emptySearch);
+      }
+
+      emptySearch.hidden = !query || visible !== 0;
+    });
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
