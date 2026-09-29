@@ -7464,3 +7464,649 @@ body::before {
   .pc-history-filter-actions-v21 { justify-content:space-between; }
   .pc-customer-field-v21 { grid-column:auto; }
 }
+
+/* ============================================================
+   PRINTCALC FLEXO V22 — HISTORY UI
+   ============================================================ */
+
+.pc-history-v22-section {
+  margin-top: 28px;
+}
+
+.pc-history-v22-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.pc-history-v22-heading {
+  min-width: 220px;
+}
+
+.pc-history-v22-heading h2 {
+  margin: 7px 0 5px;
+  font-size: 28px;
+  line-height: 1.06;
+  letter-spacing: -.045em;
+  color: #172033;
+}
+
+.pc-history-v22-heading p {
+  margin: 0;
+  color: #7a8799;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.pc-history-v22-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  min-width: 0;
+}
+
+.pc-history-v22-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px;
+  border: 1px solid #dfe5ed;
+  border-radius: 14px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 7px 23px rgba(23,32,51,.045), inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.pc-history-v22-filter-caption {
+  margin: 0 2px 0 7px;
+  color: #8792a4;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .11em;
+  white-space: nowrap;
+}
+
+.pc-history-v22-type,
+.pc-history-v22-fields input,
+.pc-history-v22-fields select {
+  height: 38px;
+  border: 1px solid #dce3ec;
+  border-radius: 10px;
+  background: #fbfcfe;
+  color: #172033;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  outline: none;
+}
+
+.pc-history-v22-type {
+  min-width: 124px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.pc-history-v22-type:focus,
+.pc-history-v22-fields input:focus {
+  border-color: #315fe4;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(49,95,228,.08);
+}
+
+.pc-history-v22-fields {
+  min-width: 0;
+}
+
+.pc-history-date-input-v22 {
+  width: 148px;
+  padding: 0 10px;
+}
+
+.pc-history-period-fields-v22 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pc-history-period-fields-v22 label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pc-history-period-fields-v22 label > span {
+  color: #8691a2;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.pc-history-period-fields-v22 input {
+  width: 126px;
+  padding: 0 9px;
+}
+
+.pc-history-customer-search-v22 {
+  position: relative;
+}
+
+#pc-history-filter-customer-v22 {
+  width: 218px;
+  padding: 0 11px;
+}
+
+.pc-history-suggestions-v22 {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  width: 100%;
+  z-index: 30;
+  padding: 5px;
+  border: 1px solid #dfe5ed;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 15px 32px rgba(23,32,51,.13);
+}
+
+.pc-history-suggestion-v22 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #273348;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pc-history-suggestion-v22:hover {
+  background: #f1f5ff;
+  color: #315fe4;
+}
+
+.pc-history-suggestion-v22 b {
+  color: #9aa5b5;
+  font-size: 12px;
+}
+
+.pc-history-v22-toolbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc-history-v22-count {
+  color: #8792a4;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.pc-history-v22-refresh {
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  border: 1px solid #dfe5ed !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: #4b5870 !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+}
+
+.pc-history-v22-refresh:hover {
+  border-color: #ccd6e4 !important;
+  color: #315fe4 !important;
+  background: #f8faff !important;
+}
+
+.pc-refresh-icon {
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.pc-history-v22-list {
+  display: grid;
+  gap: 14px;
+}
+
+.pc-history-card-v22 {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #dfe5ed;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 9px 28px rgba(23,32,51,.055), inset 0 1px 0 rgba(255,255,255,.9);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.pc-history-card-v22:hover {
+  transform: translateY(-2px);
+  border-color: #d4dcea;
+  box-shadow: 0 15px 34px rgba(23,32,51,.075), inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+.pc-history-card-v22::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg,#315fe4,#7897ef);
+}
+
+.pc-history-card-head-v22 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px 14px 22px;
+}
+
+.pc-history-card-ident-v22 {
+  min-width: 0;
+}
+
+.pc-history-kind-v22 {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #315fe4;
+  background: #eff4ff;
+  border: 1px solid #dce6ff;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .10em;
+}
+
+.pc-history-kind-v22.quick {
+  color: #6d5bd0;
+  background: #f3f0ff;
+  border-color: #e6e0ff;
+}
+
+.pc-history-kind-dot-v22 {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px rgba(49,95,228,.08);
+}
+
+.pc-history-card-head-v22 h3 {
+  margin: 9px 0 5px;
+  color: #172033;
+  font-size: 19px;
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+
+.pc-history-card-meta-v22 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #8994a6;
+  font-size: 10px;
+}
+
+.pc-history-customer-v22 {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 0 8px;
+  border-radius: 7px;
+  background: #f7f9fc;
+  border: 1px solid #e7ebf1;
+  color: #536078;
+  font-weight: 800;
+}
+
+.pc-history-ready-v22 {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #effaf5;
+  border: 1px solid #d9f1e5;
+  color: #198754;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.pc-history-ready-v22 i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22a66f;
+}
+
+.pc-history-finance-v22 {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr .85fr;
+  gap: 10px;
+  margin: 0 20px 13px 22px;
+}
+
+.pc-history-finance-main-v22,
+.pc-history-finance-v22.cost,
+.pc-history-finance-v22.margin {
+  min-height: 82px;
+  padding: 14px 15px;
+  border-radius: 13px;
+  border: 1px solid #e1e6ee;
+  background: #fbfcfe;
+}
+
+.pc-history-finance-main-v22 {
+  background: linear-gradient(145deg,#eef4ff,#f8faff);
+  border-color: #d7e2fa;
+}
+
+.pc-history-finance-v22.margin {
+  background: linear-gradient(145deg,#f0fbf8,#f9fdfc);
+  border-color: #d9eee9;
+}
+
+.pc-history-finance-v22 span,
+.pc-history-finance-main-v22 > span {
+  display: block;
+  color: #7e899b;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.pc-history-finance-v22 strong,
+.pc-history-finance-main-v22 strong {
+  display: block;
+  margin-top: 9px;
+  color: #172033;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.pc-history-finance-main-v22 strong {
+  color: #315fe4;
+}
+
+.pc-history-finance-main-v22 small {
+  display: block;
+  margin-top: 7px;
+  color: #8290a5;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.pc-history-order-v22,
+.pc-history-production-v22 {
+  margin: 0 20px 13px 22px;
+  padding: 13px 14px;
+  border: 1px solid #e8ecf2;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.pc-history-group-title-v22 {
+  margin-bottom: 9px;
+  color: #8a95a6;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+
+.pc-history-data-grid-v22,
+.pc-history-metrics-grid-v22 {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 9px;
+}
+
+.pc-history-metrics-grid-v22 {
+  grid-template-columns: repeat(5,minmax(0,1fr));
+}
+
+.pc-history-data-grid-v22 > div,
+.pc-history-metrics-grid-v22 > div {
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.pc-history-data-grid-v22 span,
+.pc-history-metrics-grid-v22 span {
+  display: block;
+  color: #939dad;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.pc-history-data-grid-v22 b,
+.pc-history-metrics-grid-v22 b {
+  display: block;
+  overflow: hidden;
+  margin-top: 5px;
+  color: #26334b;
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pc-history-details-v22 {
+  margin: 0 20px 18px 22px;
+  border-top: 1px solid #edf0f4;
+}
+
+.pc-history-details-v22 summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 2px;
+  color: #6b778b;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+}
+
+.pc-history-details-v22 summary::-webkit-details-marker {
+  display: none;
+}
+
+.pc-details-arrow {
+  color: #9ba5b5;
+  font-size: 17px;
+  transition: transform .18s ease;
+}
+
+.pc-history-details-v22[open] .pc-details-arrow {
+  transform: rotate(180deg);
+}
+
+.pc-history-detail-grid-v22 {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 8px;
+  padding: 8px 0 0;
+}
+
+.pc-history-detail-item {
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.pc-history-detail-item span {
+  display: block;
+  color: #929dae;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.pc-history-detail-item b {
+  display: block;
+  margin-top: 4px;
+  color: #41506a;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.pc-history-empty-v22 {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 42px 22px;
+  border: 1px dashed #dce2ea;
+  border-radius: 17px;
+  background: linear-gradient(145deg,#fff,#fafbfd);
+  text-align: center;
+}
+
+.pc-history-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: #f1f4f8;
+  color: #718096;
+  font-size: 23px;
+}
+
+.pc-history-empty-v22 strong {
+  color: #2b374e;
+  font-size: 14px;
+}
+
+.pc-history-empty-v22 span {
+  color: #8a95a6;
+  font-size: 11px;
+}
+
+@media (max-width: 900px) {
+  .pc-history-v22-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pc-history-v22-toolbar {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 720px) {
+  .pc-history-v22-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pc-history-v22-filter {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .pc-history-v22-filter-caption {
+    width: 100%;
+    margin: 0 5px 0;
+  }
+
+  .pc-history-v22-type {
+    flex: 1 1 110px;
+  }
+
+  .pc-history-v22-fields {
+    flex: 1 1 190px;
+  }
+
+  .pc-history-date-input-v22,
+  #pc-history-filter-customer-v22 {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pc-history-period-fields-v22 {
+    width: 100%;
+  }
+
+  .pc-history-period-fields-v22 label {
+    flex: 1 1 0;
+  }
+
+  .pc-history-period-fields-v22 input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pc-history-v22-toolbar-meta {
+    justify-content: space-between;
+  }
+
+  .pc-history-finance-v22 {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-history-data-grid-v22,
+  .pc-history-metrics-grid-v22 {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .pc-history-detail-grid-v22 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  .pc-history-v22-heading h2 {
+    font-size: 24px;
+  }
+
+  .pc-history-card-head-v22 {
+    padding: 15px 14px 12px 17px;
+  }
+
+  .pc-history-finance-v22,
+  .pc-history-order-v22,
+  .pc-history-production-v22,
+  .pc-history-details-v22 {
+    margin-left: 17px;
+    margin-right: 14px;
+  }
+
+  .pc-history-finance-v22 strong {
+    font-size: 21px;
+  }
+
+  .pc-history-data-grid-v22,
+  .pc-history-metrics-grid-v22,
+  .pc-history-detail-grid-v22 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pc-history-ready-v22 {
+    font-size: 7px;
+  }
+}
