@@ -1,94 +1,81 @@
 <!doctype html>
+<!DOCTYPE html>
+
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="style.css?v=87">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<link href="favicon.svg" rel="icon"/>
+<link href="style.css?v=87" rel="stylesheet"/>
 <title>Быстрый расчёт — PRINTCALC FLEXO</title>
 </head>
 <body class="calculator">
-
 <header class="header">
-  <div class="wrap header-in">
-    <a class="logo" href="./">
-      <span class="logo-p">P</span>
-      <span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
-    </a>
-    <a class="back" href="./">← На главную</a>
-  </div>
+<div class="wrap header-in">
+<a class="logo" href="./">
+<span class="logo-p">P</span>
+<span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
+</a>
+<a class="back" href="./">← На главную</a>
+</div>
 </header>
-
 <main class="calc-main">
 <div class="wrap">
-
 <div class="calc-title">
-  <div>
-    <div class="eyebrow">01 / МЕНЕДЖЕР</div>
-    <h1>Быстрый расчёт</h1>
-    <p>Оцените заказ за несколько действий.</p>
-  </div>
+<div>
+<div class="eyebrow">01 / МЕНЕДЖЕР</div>
+<h1>Быстрый расчёт</h1>
+<p>Оцените заказ за несколько действий.</p>
 </div>
-
+</div>
 <div class="calc-grid">
-
 <section class="panel">
-  <span class="panel-label">ЗАКАЗ</span>
-  <h2>Основные параметры</h2>
-
-  <div class="fields">
-    <label class="field"><span>Тираж, шт.</span><input id="qty" type="number" value="50000"></label>
-    <label class="field"><span>Ручьи</span><input id="streams" type="number" value="2"></label>
-    <label class="field"><span>Ширина, мм</span><input id="width" type="number" value="80"></label>
-    <label class="field"><span>Высота, мм</span><input id="height" type="number" value="50"></label>
-    <label class="field"><span>Ширина полотна, мм</span><input id="web" type="number" value="170"></label>
-    <label class="field"><span>Раппорт, мм</span><input id="repeat" type="number" value="55"></label>
-  </div>
+<span class="panel-label">ЗАКАЗ</span>
+<h2>Основные параметры</h2>
+<div class="fields">
+<label class="field"><span>Тираж, шт.</span><input id="qty" type="number" value="50000"/></label>
+<label class="field"><span>Ручьи</span><input id="streams" type="number" value="2"/></label>
+<label class="field"><span>Ширина, мм</span><input id="width" type="number" value="80"/></label>
+<label class="field"><span>Высота, мм</span><input id="height" type="number" value="50"/></label>
+<label class="field"><span>Ширина полотна, мм</span><input id="web" type="number" value="170"/></label>
+<label class="field"><span>Раппорт, мм</span><input id="repeat" type="number" value="55"/></label>
+</div>
 </section>
-
 <section class="panel">
-  <span class="panel-label">МАТЕРИАЛ</span>
-  <h2>Материал и производство</h2>
-
-  <div class="fields">
-    <label class="field"><span>Цена материала, ₽/кг</span><input id="matPrice" type="number" value="420"></label>
-    <label class="field"><span>Граммаж, г/м²</span><input id="gsm" type="number" value="80"></label>
-    <label class="field"><span>Отход, %</span><input id="waste" type="number" value="7"></label>
-    <label class="field"><span>Цветов</span><input id="colors" type="number" value="4"></label>
-    <label class="field"><span>Цена краски, ₽/кг</span><input id="inkPrice" type="number" value="900"></label>
-    <label class="field"><span>Расход краски, г/м²</span><input id="inkUse" type="number" value="1.6"></label>
-  </div>
-
-  <div class="checks">
-    <label class="check-row"><input id="lam" type="checkbox"> Ламинация</label>
-    <label class="check-row"><input id="die" type="checkbox" checked> Вырубка</label>
-  </div>
-
-  <button class="calc-btn" id="calc">Рассчитать заказ →</button>
+<span class="panel-label">МАТЕРИАЛ</span>
+<h2>Материал и производство</h2>
+<div class="fields">
+<label class="field"><span>Цена материала, ₽/кг</span><input id="matPrice" type="number" value="420"/></label>
+<label class="field"><span>Граммаж, г/м²</span><input id="gsm" type="number" value="80"/></label>
+<label class="field"><span>Отход, %</span><input id="waste" type="number" value="7"/></label>
+<label class="field"><span>Цветов</span><input id="colors" type="number" value="4"/></label>
+<label class="field"><span>Цена краски, ₽/кг</span><input id="inkPrice" type="number" value="900"/></label>
+<label class="field"><span>Расход краски, г/м²</span><input id="inkUse" type="number" value="1.6"/></label>
+</div>
+<div class="checks">
+<label class="check-row"><input id="lam" type="checkbox"/> Ламинация</label>
+<label class="check-row"><input checked="" id="die" type="checkbox"/> Вырубка</label>
+</div>
+<button class="calc-btn" id="calc">Рассчитать заказ →</button>
 </section>
-
 <section class="result" id="result">
-  <div class="result-top">
-    <div>
-      <span>РЕЗУЛЬТАТ</span>
-      <h2>Введите данные и нажмите расчёт</h2>
-    </div>
-  </div>
-
-  <div class="note">
+<div class="result-top">
+<div>
+<span>РЕЗУЛЬТАТ</span>
+<h2>Введите данные и нажмите расчёт</h2>
+</div>
+</div>
+<div class="note">
     Это предварительный менеджерский расчёт. Фактическая стоимость зависит от утверждённых производственных норм.
   </div>
 </section>
-
 </div>
 </div>
 </main>
-
 <footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span></div></footer>
-
 <script src="quick.js?v=86"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=86"></script>
 <script src="auth.js?v=86"></script>
-</body>
+<script src="proposal.js?v=130"></script></body>
 </html>
