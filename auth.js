@@ -2,30 +2,14 @@
   "use strict";
 
   const config = window.PRINTCALC_CONFIG || {};
-  const supabaseLib = window.supabase || null;
-
-  const client =
-    supabaseLib &&
-    config.SUPABASE_URL &&
-    config.SUPABASE_ANON_KEY
-      ? supabaseLib.createClient(
-          config.SUPABASE_URL,
-          config.SUPABASE_ANON_KEY
-        )
-      : null;
+  const client = window.supabase && config.SUPABASE_URL && config.SUPABASE_ANON_KEY
+    ? window.supabase.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY)
+    : null;
 
   let currentUser = null;
   let authMode = "login";
 
-  function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[char]));
-  }
+  const $ = id => document.getElementById(id);
 
   function addAccountButton() {
     let button = document.querySelector(".pc-account-button");
@@ -35,32 +19,43 @@
       button.type = "button";
       button.className = "pc-account-button";
 
-      const header =
-        document.querySelector(".header-in") ||
-        document.querySelector(".header") ||
-        document.body;
-
-      header.appendChild(button);
-      button.addEventListener("click", openAccount);
+      const header = document.querySelector(".header-in") || document.querySelector(".header");
+      (header || document.body).appendChild(button);
     }
 
-    button.textContent = currentUser
-      ? "Аккаунт · ●"
-      : "Аккаунт";
+    button.onclick = () => {
+      if (currentUser) {
+        window.location.href = "account.html";
+      } else {
+        openAccount();
+      }
+    };
+
+    renderAccountButton();
   }
 
-  function ensureCreator() {
-    const logo = document.querySelector(".logo-text");
-    if (!logo || logo.querySelector(".pc-brand-credit")) return;
+  function renderAccountButton() {
+    const button = document.querySelector(".pc-account-button");
+    if (!button) return;
 
-    const credit = document.createElement("em");
-    credit.className = "pc-brand-credit";
-    credit.textContent = "Created by Sergey Pavlov";
-    logo.appendChild(credit);
+    const loggedIn = Boolean(currentUser);
+
+    button.textContent = loggedIn
+      ? "ЛИЧНЫЙ КАБИНЕТ"
+      : "АККАУНТ";
+
+    button.classList.toggle(
+      "pc-account-authenticated",
+      loggedIn
+    );
+
+    button.title = loggedIn
+      ? "Открыть личный кабинет"
+      : "Войти в аккаунт";
   }
 
   function createModal() {
-    if (document.getElementById("pc-auth-modal")) return;
+    if ($("pc-auth-modal")) return;
 
     const modal = document.createElement("div");
     modal.id = "pc-auth-modal";
@@ -69,10 +64,13 @@
 
     modal.innerHTML = `
       <div class="pc-auth-card" role="dialog" aria-modal="true" aria-labelledby="pc-auth-title">
-        <button type="button" class="pc-auth-close" id="pc-auth-close" aria-label="Закрыть">×</button>
+        <button type="button" class="pc-auth-close" aria-label="Закрыть">×</button>
+
         <div class="pc-auth-brand">PRINTCALC FLEXO</div>
         <h2 id="pc-auth-title">Ваш рабочий аккаунт</h2>
-        <p class="pc-auth-lead">Сохраняйте расчёты и свои станки в аккаунте и открывайте их с другого устройства.</p>
+        <p class="pc-auth-lead">
+          Сохраняйте расчёты и открывайте историю из личного кабинета.
+        </p>
 
         <div class="pc-auth-tabs">
           <button type="button" data-auth-mode="login">Войти</button>
@@ -82,31 +80,33 @@
         <div id="pc-auth-message" class="pc-auth-message"></div>
 
         <div id="pc-auth-form">
-          <label class="pc-auth-field">
-            <span>Email</span>
+          <label>
+            Email
             <input id="pc-email" type="email" autocomplete="email" placeholder="name@company.ru">
           </label>
-          <label class="pc-auth-field">
-            <span>Пароль</span>
+
+          <label>
+            Пароль
             <input id="pc-password" type="password" autocomplete="current-password" placeholder="Минимум 6 символов">
           </label>
+
           <button id="pc-submit" class="pc-submit" type="button">Войти</button>
         </div>
 
         <div id="pc-session" hidden>
           <div class="pc-session-label">ВЫ ВОШЛИ</div>
           <div id="pc-session-email" class="pc-session-email"></div>
-
-          <div class="pc-history-head">
-            <span>История расчётов</span>
-            <button id="pc-refresh" type="button">Обновить</button>
-          </div>
-          <div id="pc-history" class="pc-history"></div>
-
-          <button id="pc-logout" class="pc-logout" type="button">Выйти</button>
+          <a class="pc-modal-account-link" href="account.html">
+            Открыть личный кабинет →
+          </a>
+          <button id="pc-logout" class="pc-logout" type="button">
+            Выйти из аккаунта
+          </button>
         </div>
 
-        <div class="pc-auth-foot">Каждый аккаунт видит только собственные данные.</div>
+        <div class="pc-auth-foot">
+          Каждый аккаунт видит только собственные расчёты.
+        </div>
       </div>
     `;
 
@@ -116,42 +116,40 @@
       if (event.target === modal) closeAccount();
     });
 
-    document.getElementById("pc-auth-close")?.addEventListener("click", closeAccount);
-    document.getElementById("pc-submit")?.addEventListener("click", submitAuth);
-    document.getElementById("pc-refresh")?.addEventListener("click", loadHistory);
-    document.getElementById("pc-logout")?.addEventListener("click", logout);
+    modal.querySelector(".pc-auth-close")?.addEventListener(
+      "click",
+      closeAccount
+    );
 
     modal.querySelectorAll("[data-auth-mode]").forEach(button => {
       button.addEventListener("click", () => {
-        authMode = button.dataset.authMode || "login";
+        authMode = button.dataset.authMode;
         renderAuth();
       });
     });
+
+    $("pc-submit")?.addEventListener("click", submitAuth);
+    $("pc-logout")?.addEventListener("click", logout);
 
     renderAuth();
   }
 
   function setMessage(text, type = "") {
-    const box = document.getElementById("pc-auth-message");
+    const box = $("pc-auth-message");
     if (!box) return;
+
     box.textContent = text || "";
     box.className = "pc-auth-message " + type;
   }
 
   function renderAuth() {
-    addAccountButton();
-    createModal();
+    const form = $("pc-auth-form");
+    const session = $("pc-session");
+    const email = $("pc-session-email");
+    const submit = $("pc-submit");
 
-    const form = document.getElementById("pc-auth-form");
-    const session = document.getElementById("pc-session");
-    const email = document.getElementById("pc-session-email");
-    const submit = document.getElementById("pc-submit");
-
-    if (!form || !session) return;
-
-    form.hidden = Boolean(currentUser);
-    session.hidden = !currentUser;
-
+    if (form) form.hidden = Boolean(currentUser);
+    if (session) session.hidden = !currentUser;
     if (email) email.textContent = currentUser?.email || "";
 
     document.querySelectorAll("[data-auth-mode]").forEach(button => {
@@ -167,12 +165,29 @@
         : "Войти";
     }
 
-    const account = document.querySelector(".pc-account-button");
-    if (account) {
-      account.textContent = currentUser
-        ? "Аккаунт · ●"
-        : "Аккаунт";
+    renderAccountButton();
+  }
+
+  function openAccount() {
+    if (currentUser) {
+      window.location.href = "account.html";
+      return;
     }
+
+    createModal();
+
+    const modal = $("pc-auth-modal");
+    if (modal) modal.hidden = false;
+
+    const email = $("pc-email");
+    if (email) {
+      window.setTimeout(() => email.focus(), 50);
+    }
+  }
+
+  function closeAccount() {
+    const modal = $("pc-auth-modal");
+    if (modal) modal.hidden = true;
   }
 
   async function submitAuth() {
@@ -181,8 +196,9 @@
       return;
     }
 
-    const email = document.getElementById("pc-email")?.value.trim() || "";
-    const password = document.getElementById("pc-password")?.value || "";
+    const email = ($("pc-email")?.value || "").trim();
+    const password = $("pc-password")?.value || "";
+    const submit = $("pc-submit");
 
     if (!email || !email.includes("@")) {
       setMessage("Введите корректный email.", "error");
@@ -194,7 +210,6 @@
       return;
     }
 
-    const submit = document.getElementById("pc-submit");
     if (submit) submit.disabled = true;
 
     try {
@@ -205,23 +220,36 @@
       if (response.error) throw response.error;
 
       const sessionResponse = await client.auth.getSession();
-      currentUser = sessionResponse?.data?.session?.user || null;
+      currentUser = sessionResponse.data?.session?.user || null;
 
       if (authMode === "register" && !currentUser) {
-        setMessage("Аккаунт создан. Проверьте почту.", "success");
-      } else {
-        setMessage("Вход выполнен.", "success");
+        setMessage(
+          "Аккаунт создан. Проверьте почту для подтверждения.",
+          "success"
+        );
+        renderAuth();
+        return;
       }
 
-      renderAuth();
       if (currentUser) {
-        await loadHistory();
-        await loadSnapshotFromUrl();
-      }
+        renderAuth();
 
-      window.dispatchEvent(new CustomEvent("printcalc:auth-changed", {
-        detail: currentUser
-      }));
+        // Ключевое изменение V15:
+        // после успешного входа окно больше НЕ остаётся на экране.
+        closeAccount();
+
+        try {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get("auth") === "1") {
+            params.delete("auth");
+            const clean = window.location.pathname +
+              (params.toString() ? "?" + params.toString() : "");
+            window.history.replaceState({}, "", clean);
+          }
+        } catch (_) {
+          // ignore
+        }
+      }
     } catch (error) {
       setMessage(
         error?.message || "Ошибка авторизации.",
@@ -235,250 +263,130 @@
   async function logout() {
     try {
       if (client) await client.auth.signOut();
-    } catch (error) {
-      console.warn("PRINTCALC logout:", error);
+    } finally {
+      currentUser = null;
+      renderAuth();
+      closeAccount();
     }
-
-    currentUser = null;
-    renderAuth();
-    setMessage("Вы вышли из аккаунта.", "success");
-
-    window.dispatchEvent(new CustomEvent("printcalc:auth-changed", {
-      detail: null
-    }));
   }
 
-  async function loadHistory() {
-    if (!client || !currentUser) return;
+  function collectCalculationSnapshot(mode) {
+    const ids = mode === "detail"
+      ? [
+          "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
+          "matPrice", "colors", "inkPrice", "inkUse",
+          "machineSelect", "speed", "power", "setup", "machine", "labor", "powerRate",
+          "lam", "die", "lamEnabled", "dieEnabled",
+          "overhead", "admin", "markup", "minimum"
+        ]
+      : [
+          "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
+          "matPrice", "colors", "inkPrice", "inkUse", "lam", "die"
+        ];
 
-    const box = document.getElementById("pc-history");
-    if (!box) return;
+    const inputs = {};
 
-    box.innerHTML = "<div class='pc-empty'>Загрузка...</div>";
+    ids.forEach(id => {
+      const element = $(id);
+      if (!element) return;
 
-    const response = await client
-      .from("calculations")
-      .select("id,mode,calculation_data,created_at")
-      .neq("mode", "machine")
-      .order("created_at", { ascending: false })
-      .limit(50);
-
-    if (response.error) {
-      box.innerHTML = `<div class="pc-empty">${escapeHtml(response.error.message)}</div>`;
-      return;
-    }
-
-    if (!response.data?.length) {
-      box.innerHTML = "<div class='pc-empty'>Сохранённых расчётов пока нет.</div>";
-      return;
-    }
-
-    response.data.forEach(item => {
-      try {
-        localStorage.setItem(
-          "printcalc_history_snapshot::" + item.id,
-          JSON.stringify(item.calculation_data || {})
-        );
-      } catch (error) {
-        // ignore
+      if (element.type === "checkbox") {
+        inputs[id] = element.checked;
+      } else {
+        inputs[id] = element.value;
       }
     });
 
-    box.innerHTML = response.data.map(item => {
-      const data = item.calculation_data || {};
-      const title = data.title || "Расчёт заказа";
-      const date = new Date(item.created_at).toLocaleString("ru-RU");
-      const label = item.mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт";
+    if (mode === "detail") {
+      const select = $("machineSelect");
+      if (select && select.value) {
+        const option = select.options[select.selectedIndex];
+        inputs.machineName = option?.textContent || "";
+      }
+    }
 
-      return `
-        <button type="button" class="pc-history-item pc-history-clickable"
-          data-history-id="${escapeHtml(item.id)}"
-          data-history-mode="${escapeHtml(item.mode)}">
-          <span class="pc-history-type">${label}</span>
-          <strong>${escapeHtml(title)}</strong>
-          <small>${escapeHtml(date)}</small>
-          <span class="pc-history-open">Открыть →</span>
-        </button>
-      `;
-    }).join("");
+    return inputs;
   }
 
-  async function saveCalculation(payload) {
-    payload = payload || window.PRINTCALC_LAST_CALC || null;
-    if (!payload) return;
+  async function saveCalculation() {
+    if (!client || !currentUser) return;
 
-    const mode = payload.mode ||
-      (location.pathname.toLowerCase().includes("detail") ? "detail" : "quick");
+    const result = $("result") || document.querySelector(".result");
+    if (!result) return;
 
-    const result =
-      document.querySelector("#result") ||
-      document.querySelector(".result");
+    const resultText = (result.innerText || "").trim();
+    if (resultText.length < 20) return;
 
-    const calculationData = {
-      title: payload.title || "Расчёт заказа",
-      mode,
-      snapshot: payload,
-      result_text: (result?.innerText || "").trim()
-    };
+    const mode = window.location.pathname
+      .toLowerCase()
+      .includes("detail")
+      ? "detail"
+      : "quick";
 
-    if (!client || !currentUser) {
-      try {
-        localStorage.setItem(
-          "printcalc_last_guest_calculation",
-          JSON.stringify(calculationData)
-        );
-      } catch (error) {
-        // ignore
-      }
-      return;
-    }
+    const inputs = collectCalculationSnapshot(mode);
 
     const response = await client
       .from("calculations")
       .insert({
         user_id: currentUser.id,
         mode,
-        calculation_data: calculationData
-      })
-      .select("id")
-      .maybeSingle();
+        calculation_data: {
+          title: mode === "detail"
+            ? "Детальный расчёт"
+            : "Быстрый расчёт",
+          result_text: resultText,
+          inputs,
+          saved_at_client: new Date().toISOString()
+        }
+      });
 
     if (response.error) {
-      console.warn("PRINTCALC save:", response.error.message);
-      return;
-    }
-
-    try {
-      if (response.data?.id) {
-        localStorage.setItem(
-          "printcalc_history_snapshot::" + response.data.id,
-          JSON.stringify(calculationData)
-        );
-      }
-    } catch (error) {
-      // ignore
-    }
-
-    await loadHistory();
-  }
-
-  async function loadSnapshotFromUrl() {
-    const loadId = new URLSearchParams(location.search).get("load");
-    if (!loadId) return;
-
-    try {
-      const raw = localStorage.getItem(
-        "printcalc_history_snapshot::" + loadId
+      console.warn(
+        "PRINTCALC saveCalculation:",
+        response.error.message
       );
-      const localData = raw ? JSON.parse(raw) : null;
-
-      if (localData?.snapshot) {
-        window.setTimeout(() => {
-          window.dispatchEvent(new CustomEvent("printcalc:load-snapshot", {
-            detail: localData.snapshot
-          }));
-        }, 120);
-        return;
-      }
-    } catch (error) {
-      // ignore
     }
-
-    if (!client || !currentUser) return;
-
-    try {
-      const response = await client
-        .from("calculations")
-        .select("id,mode,calculation_data")
-        .eq("id", loadId)
-        .eq("user_id", currentUser.id)
-        .maybeSingle();
-
-      if (response.error || !response.data) return;
-
-      const data = response.data.calculation_data || {};
-
-      try {
-        localStorage.setItem(
-          "printcalc_history_snapshot::" + loadId,
-          JSON.stringify(data)
-        );
-      } catch (error) {
-        // ignore
-      }
-
-      window.setTimeout(() => {
-        window.dispatchEvent(new CustomEvent("printcalc:load-snapshot", {
-          detail: data.snapshot || data
-        }));
-      }, 120);
-    } catch (error) {
-      console.warn("PRINTCALC history load:", error);
-    }
-  }
-
-  function openAccount() {
-    createModal();
-    const modal = document.getElementById("pc-auth-modal");
-    if (modal) modal.hidden = false;
-    if (currentUser) loadHistory();
-  }
-
-  function closeAccount() {
-    const modal = document.getElementById("pc-auth-modal");
-    if (modal) modal.hidden = true;
   }
 
   async function init() {
     addAccountButton();
-    ensureCreator();
     createModal();
 
-    document.addEventListener("printcalc:save-request", event => {
-      saveCalculation(event.detail || window.PRINTCALC_LAST_CALC);
-    });
-
-    document.addEventListener("click", event => {
-      const item = event.target.closest("[data-history-id]");
-      if (!item) return;
-
-      const id = item.getAttribute("data-history-id");
-      const mode = item.getAttribute("data-history-mode") || "quick";
-      const target = mode === "detail" ? "detail.html" : "quick.html";
-      location.href = `${target}?load=${encodeURIComponent(id)}`;
-    });
-
-    if (!client) {
-      renderAuth();
-      return;
-    }
+    if (!client) return;
 
     const sessionResponse = await client.auth.getSession();
-    currentUser = sessionResponse?.data?.session?.user || null;
+    currentUser = sessionResponse.data?.session?.user || null;
     renderAuth();
 
-    if (currentUser) {
-      await loadHistory();
-      await loadSnapshotFromUrl();
-    }
-
-    client.auth.onAuthStateChange((_event, session) => {
-      currentUser = session?.user || null;
+    client.auth.onAuthStateChange((event, sessionData) => {
+      currentUser = sessionData?.user || null;
       renderAuth();
-      window.dispatchEvent(new CustomEvent("printcalc:auth-changed", {
-        detail: currentUser
-      }));
-      if (currentUser) {
-        loadHistory();
-        loadSnapshotFromUrl();
+
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        if (currentUser) closeAccount();
       }
     });
-  }
 
-  window.PRINTCALC_AUTH = {
-    getUser: () => currentUser,
-    getClient: () => client
-  };
+    // Сохраняем расчёт только после фактического нажатия на кнопку расчёта.
+    document.addEventListener("click", event => {
+      if (
+        event.target.closest("#calc") ||
+        event.target.closest("[data-calculate]")
+      ) {
+        window.setTimeout(saveCalculation, 700);
+      }
+    });
+
+    // Прямая ссылка account.html → главная + открытие входа.
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("auth") === "1" && !currentUser) {
+        window.setTimeout(openAccount, 120);
+      }
+    } catch (_) {
+      // ignore
+    }
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
