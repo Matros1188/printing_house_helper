@@ -8110,3 +8110,222 @@ body::before {
     font-size: 7px;
   }
 }
+
+/* ============================================================
+   PRINTCALC FLEXO V23
+   CUSTOMER BADGE IN HISTORY
+   ============================================================ */
+
+.pc-history-card-head-v23 {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 18px;
+
+  padding:
+    18px 20px 14px 22px;
+}
+
+
+.pc-history-card-ident-v23 {
+
+  min-width: 0;
+}
+
+
+.pc-history-type-row-v23 {
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+}
+
+
+/*
+   КЛЮЧЕВАЯ ЧАСТЬ:
+   заказчик стоит непосредственно справа
+   от БЫСТРЫЙ РАСЧЁТ / ДЕТАЛЬНЫЙ РАСЧЁТ.
+*/
+
+.pc-history-customer-v23 {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 26px;
+
+  padding:
+    0 10px;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #EEF4FF,
+      #E8EEFF
+    );
+
+  border:
+    1px solid #D5E1FA;
+
+  color:
+    #315FE4;
+
+  font-size: 10px;
+
+  font-weight: 850;
+
+  letter-spacing: .01em;
+
+  white-space: nowrap;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.9);
+}
+
+
+.pc-history-customer-v23::before {
+
+  content: "";
+
+  width: 6px;
+
+  height: 6px;
+
+  margin-right: 6px;
+
+  border-radius: 50%;
+
+  background:
+    #5BB5AD;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(91,181,173,.10);
+}
+
+
+.pc-history-customer-v23.is-empty {
+
+  color:
+    #98A1AF;
+
+  background:
+    #F7F8FA;
+
+  border-color:
+    #E5E8ED;
+}
+
+
+.pc-history-customer-v23.is-empty::before {
+
+  background:
+    #B5BCC7;
+
+  box-shadow:
+    none;
+}
+
+
+/*
+   Второе отображение заказчика в старой meta-строке
+   больше не нужно.
+*/
+
+.pc-history-card-meta-v22
+.pc-history-customer-v22 {
+
+  display: none !important;
+}
+
+
+.pc-history-date-v23 {
+
+  margin-top: 7px;
+
+  color:
+    #8994A6;
+
+  font-size: 9px;
+
+  font-weight: 650;
+}
+
+
+/* ============================================================
+   ПОЛЕ ЗАКАЗЧИКА В КАЛЬКУЛЯТОРЕ
+   ============================================================ */
+
+.pc-customer-field-v23 input {
+
+  border-color:
+    #D8E1EF;
+
+  background:
+    linear-gradient(
+      180deg,
+      #FFFFFF,
+      #FAFCFF
+    );
+}
+
+
+.pc-customer-field-v23 input::placeholder {
+
+  color:
+    #A2ACBA;
+}
+
+
+.pc-customer-field-v23 input:focus {
+
+  border-color:
+    #315FE4;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(49,95,228,.08);
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 620px) {
+
+  .pc-history-card-head-v23 {
+
+    padding:
+      15px 14px 12px 17px;
+  }
+
+
+  .pc-history-type-row-v23 {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+
+  .pc-history-customer-v23 {
+
+    font-size: 9px;
+  }
+
+}
