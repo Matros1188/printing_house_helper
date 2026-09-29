@@ -8833,3 +8833,550 @@ button.secondary {
   .printora-wordmark-v32 em{margin-top:3px !important;font-size:6.3px !important}
   .printora-header-v32 .pc-account-button{min-height:33px !important;padding:0 9px !important;border-radius:10px !important;font-size:8.5px !important}
 }
+
+/* ================================================================
+   PRINTORA V34 — CLEAN, COMPACT HEADER
+   ================================================================ */
+
+.printora-header-v34 {
+
+  position: relative !important;
+
+  z-index: 50 !important;
+
+  width: 100% !important;
+
+  margin: 0 !important;
+
+  padding: 9px 0 !important;
+
+  background:
+    rgba(255,255,255,.96) !important;
+
+  border-bottom:
+    1px solid #e6eaf0 !important;
+
+  box-shadow:
+    0 7px 22px
+    rgba(23,32,51,.055) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(135%) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(135%) !important;
+
+}
+
+
+.printora-header-inner-v34 {
+
+  min-height: 48px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  gap: 16px !important;
+
+  min-width: 0 !important;
+
+}
+
+
+.printora-brand-v34 {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  gap: 9px !important;
+
+  min-width: 0 !important;
+
+  color: #172033 !important;
+
+  text-decoration: none !important;
+
+  flex: 0 1 auto !important;
+
+}
+
+
+.printora-mark-v34 {
+
+  display: block !important;
+
+  width: 30px !important;
+
+  height: 30px !important;
+
+  min-width: 30px !important;
+
+  max-width: 30px !important;
+
+  min-height: 30px !important;
+
+  max-height: 30px !important;
+
+  object-fit: contain !important;
+
+  flex: 0 0 30px !important;
+
+}
+
+
+.printora-brand-text-v34 {
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-items: flex-start !important;
+
+  justify-content: center !important;
+
+  min-width: 0 !important;
+
+}
+
+
+.printora-brand-text-v34 strong {
+
+  display: block !important;
+
+  margin: 0 !important;
+
+  color: #172033 !important;
+
+  font:
+    900 17px/1
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif !important;
+
+  letter-spacing:
+    -.045em !important;
+
+  white-space:
+    nowrap !important;
+
+}
+
+
+.printora-brand-text-v34 small {
+
+  display: block !important;
+
+  margin: 3px 0 0 !important;
+
+  color: #718096 !important;
+
+  font:
+    800 7px/1
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif !important;
+
+  letter-spacing:
+    .12em !important;
+
+  white-space:
+    nowrap !important;
+
+}
+
+
+.printora-brand-text-v34 em {
+
+  display: block !important;
+
+  margin: 3px 0 0 !important;
+
+  color: #9aa5b5 !important;
+
+  font:
+    700 6.5px/1
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif !important;
+
+  font-style:
+    normal !important;
+
+  letter-spacing:
+    .01em !important;
+
+  white-space:
+    nowrap !important;
+
+}
+
+
+.printora-header-actions-v34 {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: flex-end !important;
+
+  gap: 7px !important;
+
+  margin-left: auto !important;
+
+  flex: 0 0 auto !important;
+
+  min-width: 0 !important;
+
+}
+
+
+.printora-back-v34 {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  min-height: 34px !important;
+
+  padding: 0 7px !important;
+
+  color: #718096 !important;
+
+  background: transparent !important;
+
+  border: 0 !important;
+
+  text-decoration: none !important;
+
+  font:
+    750 9px/1
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif !important;
+
+  white-space:
+    nowrap !important;
+
+}
+
+
+.printora-account-button-v34,
+.printora-cabinet-button-v34 {
+
+  box-sizing:
+    border-box !important;
+
+  display:
+    inline-flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    center !important;
+
+  min-height:
+    35px !important;
+
+  border-radius:
+    11px !important;
+
+  white-space:
+    nowrap !important;
+
+  font:
+    850 9px/1
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif !important;
+
+  letter-spacing:
+    .035em !important;
+
+  transition:
+    .18s ease !important;
+
+}
+
+
+.printora-account-button-v34 {
+
+  min-width:
+    78px !important;
+
+  padding:
+    0 11px !important;
+
+  border:
+    1px solid #dce3eb !important;
+
+  background:
+    #ffffff !important;
+
+  color:
+    #172033 !important;
+
+  box-shadow:
+    0 5px 13px
+    rgba(23,32,51,.055) !important;
+
+  cursor:
+    pointer !important;
+
+}
+
+
+.printora-cabinet-button-v34 {
+
+  min-width:
+    127px !important;
+
+  padding:
+    0 13px !important;
+
+  border:
+    1px solid #2563eb !important;
+
+  background:
+    #2563eb !important;
+
+  color:
+    #ffffff !important;
+
+  text-decoration:
+    none !important;
+
+  box-shadow:
+    0 6px 15px
+    rgba(37,99,235,.15) !important;
+
+}
+
+
+.printora-account-button-v34:hover {
+
+  border-color:
+    #cbd5e1 !important;
+
+  box-shadow:
+    0 7px 16px
+    rgba(23,32,51,.08) !important;
+
+}
+
+
+.printora-cabinet-button-v34:hover {
+
+  border-color:
+    #1d4ed8 !important;
+
+  background:
+    #1d4ed8 !important;
+
+  box-shadow:
+    0 8px 18px
+    rgba(37,99,235,.20) !important;
+
+}
+
+
+.printora-account-button-v34:active,
+.printora-cabinet-button-v34:active {
+
+  transform:
+    translateY(1px) !important;
+
+}
+
+
+.printora-account-button-v34[hidden],
+.printora-cabinet-button-v34[hidden] {
+
+  display:
+    none !important;
+
+}
+
+
+/* Старые правила больше не могут раздувать P
+   или позиционировать старые элементы поверх. */
+
+.printora-header-v34 .logo,
+.printora-header-v34 .logo-p,
+.printora-header-v34 .logo-text,
+.printora-header-v34 .header-btn,
+.printora-header-v34 .back:not(.printora-back-v34) {
+
+  all: unset !important;
+
+}
+
+
+@media (max-width: 700px) {
+
+  .printora-header-v34 {
+
+    padding:
+      8px 0 !important;
+
+  }
+
+
+  .printora-header-inner-v34 {
+
+    min-height:
+      43px !important;
+
+    gap:
+      8px !important;
+
+  }
+
+
+  .printora-brand-v34 {
+
+    gap:
+      7px !important;
+
+    min-width:
+      0 !important;
+
+  }
+
+
+  .printora-mark-v34 {
+
+    width:
+      27px !important;
+
+    height:
+      27px !important;
+
+    min-width:
+      27px !important;
+
+    max-width:
+      27px !important;
+
+    min-height:
+      27px !important;
+
+    max-height:
+      27px !important;
+
+    flex-basis:
+      27px !important;
+
+  }
+
+
+  .printora-brand-text-v34 strong {
+
+    font-size:
+      15px !important;
+
+  }
+
+
+  .printora-brand-text-v34 small {
+
+    margin-top:
+      2px !important;
+
+    font-size:
+      6px !important;
+
+    letter-spacing:
+      .085em !important;
+
+  }
+
+
+  .printora-brand-text-v34 em {
+
+    margin-top:
+      2px !important;
+
+    font-size:
+      5.5px !important;
+
+  }
+
+
+  .printora-header-actions-v34 {
+
+    gap:
+      4px !important;
+
+  }
+
+
+  .printora-back-v34 {
+
+    min-height:
+      31px !important;
+
+    padding:
+      0 3px !important;
+
+    font-size:
+      7px !important;
+
+  }
+
+
+  .printora-account-button-v34,
+  .printora-cabinet-button-v34 {
+
+    min-height:
+      32px !important;
+
+    border-radius:
+      9px !important;
+
+    padding:
+      0 7px !important;
+
+    font-size:
+      7.3px !important;
+
+    letter-spacing:
+      .01em !important;
+
+  }
+
+
+  .printora-account-button-v34 {
+
+    min-width:
+      64px !important;
+
+  }
+
+
+  .printora-cabinet-button-v34 {
+
+    min-width:
+      100px !important;
+
+  }
+
+}
