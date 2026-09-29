@@ -1922,3 +1922,1454 @@ label {
   }
 
 }
+
+/* ============================================================
+   PRINTCALC FLEXO V11
+   VISUAL UPGRADE
+   ============================================================ */
+
+:root {
+
+  --pc-bg: #f3f5f8;
+  --pc-panel: #ffffff;
+
+  --pc-text: #172033;
+  --pc-muted: #718096;
+  --pc-border: #e5e9f0;
+
+  --pc-blue: #2563eb;
+  --pc-blue-dark: #1d4ed8;
+
+  --pc-success: #16a34a;
+  --pc-warning: #d97706;
+
+  --pc-radius-sm: 10px;
+  --pc-radius-md: 14px;
+  --pc-radius-lg: 18px;
+
+  --pc-shadow:
+    0 8px 30px rgba(23, 32, 51, .055);
+
+  --pc-shadow-hover:
+    0 12px 35px rgba(23, 32, 51, .085);
+}
+
+
+/* ============================================================
+   1. ОСНОВА СТРАНИЦЫ
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(37, 99, 235, .035),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(37, 99, 235, .025),
+      transparent 28%
+    ),
+    var(--pc-bg);
+
+  color: var(--pc-text);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* ============================================================
+   2. ГЛАВНАЯ ВЕРХНЯЯ ОБЛАСТЬ
+   ============================================================ */
+
+header,
+.hero,
+.page-header,
+.top-header {
+
+  position: relative;
+}
+
+
+/*
+   Делаем верх более спокойным.
+*/
+
+header {
+
+  padding-top: 22px;
+  padding-bottom: 18px;
+}
+
+
+/* ============================================================
+   3. БРЕНД
+   ============================================================ */
+
+.brand,
+.logo,
+.logo-block {
+
+  letter-spacing: -.025em;
+}
+
+
+.brand h1,
+.logo h1,
+.logo-block h1 {
+
+  color: var(--pc-text);
+
+  font-weight: 800;
+
+  letter-spacing: -.045em;
+
+  line-height: .95;
+}
+
+
+/*
+   FLEXO становится отдельной частью бренда.
+*/
+
+.brand .flexo,
+.logo .flexo,
+.logo-block .flexo {
+
+  color: var(--pc-blue);
+
+  font-weight: 700;
+
+  letter-spacing: .04em;
+}
+
+
+/* ============================================================
+   4. ВИЗУАЛЬНАЯ ЛИНИЯ БРЕНДА
+   ============================================================ */
+
+.brand::after,
+.logo::after,
+.logo-block::after {
+
+  content: "";
+
+  display: block;
+
+  width: 42px;
+  height: 3px;
+
+  margin-top: 10px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--pc-blue),
+      rgba(37,99,235,.15)
+    );
+}
+
+
+/* ============================================================
+   5. СЛОГАН / ПОДЗАГОЛОВОК
+   ============================================================ */
+
+.hero-subtitle,
+.subtitle,
+.brand-subtitle,
+.lead {
+
+  color: var(--pc-muted);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  max-width: 620px;
+}
+
+
+/* ============================================================
+   6. ОБЩИЙ ВОЗДУХ
+   ============================================================ */
+
+main {
+
+  padding-bottom: 50px;
+}
+
+
+/* ============================================================
+   7. ПАНЕЛИ
+   ============================================================ */
+
+.panel,
+.card,
+.calculator-card,
+.section-card {
+
+  position: relative;
+
+  background: var(--pc-panel);
+
+  border: 1px solid var(--pc-border);
+
+  border-radius: var(--pc-radius-lg);
+
+  box-shadow: var(--pc-shadow);
+
+  transition:
+    box-shadow .22s ease,
+    transform .22s ease,
+    border-color .22s ease;
+}
+
+
+/*
+   Не поднимаем каждую карточку.
+   Только при наведении.
+*/
+
+.panel:hover,
+.card:hover,
+.section-card:hover {
+
+  box-shadow: var(--pc-shadow-hover);
+}
+
+
+/* ============================================================
+   8. ВАЖНЫЕ ПАНЕЛИ
+   ============================================================ */
+
+.panel.pc-production-panel,
+.panel.pc-operations-panel {
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   9. АКЦЕНТНАЯ ЛИНИЯ
+   ============================================================ */
+
+.panel.pc-production-panel::before,
+.panel.pc-operations-panel::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--pc-blue),
+      rgba(37,99,235,.22)
+    );
+}
+
+
+/* ============================================================
+   10. ЗАГОЛОВКИ ПАНЕЛЕЙ
+   ============================================================ */
+
+.panel h2,
+.card h2,
+.section-card h2 {
+
+  color: var(--pc-text);
+
+  font-weight: 750;
+
+  letter-spacing: -.025em;
+
+  line-height: 1.15;
+}
+
+
+/* ============================================================
+   11. PANEL LABEL
+   ============================================================ */
+
+.panel-label {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--pc-blue);
+
+  font-size: 10px;
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: .13em;
+}
+
+
+/*
+   Маленькая точка перед служебным заголовком.
+*/
+
+.panel-label::before {
+
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--pc-blue);
+
+  box-shadow:
+    0 0 0 4px rgba(37,99,235,.08);
+}
+
+
+/* ============================================================
+   12. PRODUCTION HEADER
+   ============================================================ */
+
+.pc-production-row {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 22px;
+}
+
+
+/* ============================================================
+   13. ВЫБОР СТАНКА
+   ============================================================ */
+
+.pc-machine-select-wrap {
+
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  min-width: 265px;
+}
+
+
+.pc-machine-select-wrap > span {
+
+  color: var(--pc-muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: .10em;
+}
+
+
+/*
+   Сам select превращаем в премиальный контрол.
+*/
+
+.pc-machine-select-wrap select {
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+
+  min-height: 46px;
+
+  padding:
+    0 42px 0 44px;
+
+  border:
+    1px solid var(--pc-border);
+
+  border-radius: 12px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,.035),
+      #fff
+    );
+
+  color: var(--pc-text);
+
+  font: inherit;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  outline: none;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+
+.pc-machine-select-wrap::before {
+
+  content: "⚙";
+
+  position: absolute;
+
+  left: 15px;
+  bottom: 13px;
+
+  z-index: 2;
+
+  color: var(--pc-blue);
+
+  font-size: 16px;
+
+  pointer-events: none;
+}
+
+
+.pc-machine-select-wrap::after {
+
+  content: "⌄";
+
+  position: absolute;
+
+  right: 16px;
+  bottom: 10px;
+
+  z-index: 2;
+
+  color: var(--pc-muted);
+
+  font-size: 20px;
+
+  pointer-events: none;
+}
+
+
+.pc-machine-select-wrap select:hover {
+
+  border-color:
+    rgba(37,99,235,.35);
+}
+
+
+.pc-machine-select-wrap select:focus {
+
+  border-color: var(--pc-blue);
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 4px rgba(37,99,235,.09);
+}
+
+
+/* ============================================================
+   14. MACHINE HINT
+   ============================================================ */
+
+.pc-machine-hint {
+
+  display: flex;
+
+  align-items: center;
+
+  min-height: 40px;
+
+  margin:
+    14px 0 20px;
+
+  padding:
+    9px 13px;
+
+  border:
+    1px solid rgba(37,99,235,.10);
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37,99,235,.055),
+      rgba(37,99,235,.018)
+    );
+
+  color: var(--pc-muted);
+
+  font-size: 12px;
+
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   15. FIELDS
+   ============================================================ */
+
+.fields {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 14px;
+}
+
+
+/*
+   Все field одинаковые.
+*/
+
+.field {
+
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+/* ============================================================
+   16. LABEL
+   ============================================================ */
+
+.field > span {
+
+  color: var(--pc-muted);
+
+  font-size: 11px;
+
+  line-height: 1.25;
+
+  font-weight: 650;
+
+  transition:
+    color .18s ease;
+}
+
+
+/* ============================================================
+   17. INPUT
+   ============================================================ */
+
+.field input,
+.field select,
+.field textarea {
+
+  width: 100%;
+
+  min-height: 44px;
+
+  box-sizing: border-box;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid var(--pc-border);
+
+  border-radius: 11px;
+
+  background: #fff;
+
+  color: var(--pc-text);
+
+  font: inherit;
+
+  font-size: 14px;
+
+  font-weight: 650;
+
+  outline: none;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease,
+    background .18s ease;
+}
+
+
+.field input:hover,
+.field select:hover {
+
+  border-color:
+    #d2d9e5;
+}
+
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+
+  border-color:
+    var(--pc-blue);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(37,99,235,.08);
+
+  background: #fff;
+}
+
+
+.field:focus-within > span {
+
+  color: var(--pc-blue);
+}
+
+
+/* ============================================================
+   18. ЧИСЛА
+   ============================================================ */
+
+.field input[type="number"] {
+
+  font-variant-numeric: tabular-nums;
+
+  letter-spacing: -.01em;
+}
+
+
+/* ============================================================
+   19. УБИРАЕМ ЛИШНИЕ СТРЕЛКИ В INPUT
+   ============================================================ */
+
+.field input[type="number"]::-webkit-inner-spin-button,
+.field input[type="number"]::-webkit-outer-spin-button {
+
+  opacity: .45;
+}
+
+
+/* ============================================================
+   20. АВТОПОДСТАВЛЕННЫЕ ПОЛЯ
+   ============================================================ */
+
+.field input:not(:focus) {
+
+  background:
+    linear-gradient(
+      180deg,
+      #fff,
+      #fbfcfe
+    );
+}
+
+
+/* ============================================================
+   21. ГРУППИРОВКА ПРОИЗВОДСТВА
+   ============================================================ */
+
+.pc-production-panel .fields {
+
+  margin-top: 4px;
+}
+
+
+/*
+   Визуально отделяем основные производственные
+   параметры от второстепенных.
+*/
+
+.pc-production-panel .field:nth-child(-n+2) {
+
+  position: relative;
+}
+
+
+.pc-production-panel .field:nth-child(-n+2)::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(37,99,235,.35);
+}
+
+
+/* ============================================================
+   22. ОПЕРАЦИИ
+   ============================================================ */
+
+.pc-service-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 14px;
+}
+
+
+.pc-service-item {
+
+  position: relative;
+
+  padding: 16px;
+
+  border:
+    1px solid var(--pc-border);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff,
+      #fafbfd
+    );
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+
+/* ============================================================
+   23. OPERATION ACTIVE
+   ============================================================ */
+
+.pc-service-item:has(
+  input[type="checkbox"]:checked
+) {
+
+  border-color:
+    rgba(37,99,235,.30);
+
+  box-shadow:
+    0 7px 20px
+    rgba(37,99,235,.07);
+
+  transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   24. OPERATION DISABLED
+   ============================================================ */
+
+.pc-service-item:not(:has(
+  input[type="checkbox"]:checked
+)) {
+
+  opacity: .72;
+}
+
+
+.pc-service-item:not(:has(
+  input[type="checkbox"]:checked
+)) .field {
+
+  opacity: .58;
+}
+
+
+/* ============================================================
+   25. CHECK ROW
+   ============================================================ */
+
+.check-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-height: 24px;
+
+  color: var(--pc-text);
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   26. CUSTOM CHECKBOX
+   ============================================================ */
+
+.check-row input {
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 20px;
+  height: 20px;
+
+  flex: 0 0 20px;
+
+  margin: 0;
+
+  border:
+    1.5px solid #cfd6e2;
+
+  border-radius: 6px;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  position: relative;
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+
+.check-row input:hover {
+
+  border-color:
+    rgba(37,99,235,.5);
+}
+
+
+.check-row input:checked {
+
+  border-color:
+    var(--pc-blue);
+
+  background:
+    var(--pc-blue);
+
+  box-shadow:
+    0 4px 10px
+    rgba(37,99,235,.20);
+}
+
+
+.check-row input:checked::after {
+
+  content: "✓";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -54%);
+
+  color: #fff;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   27. РЕЗУЛЬТАТЫ
+   ============================================================ */
+
+.result,
+.results,
+.calculation-result,
+.total,
+.result-card {
+
+  border-radius:
+    var(--pc-radius-lg);
+}
+
+
+/*
+   Главный итог должен визуально выделяться.
+*/
+
+.total,
+.result-card.total,
+.calculation-result.primary {
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f7f9fc
+    );
+
+  border:
+    1px solid
+    rgba(37,99,235,.16);
+
+  box-shadow:
+    0 12px 35px
+    rgba(37,99,235,.07);
+}
+
+
+/* ============================================================
+   28. ИТОГОВАЯ СТОИМОСТЬ
+   ============================================================ */
+
+.total-value,
+.result-value,
+.final-price,
+.total-price {
+
+  color: var(--pc-text);
+
+  font-weight: 850;
+
+  letter-spacing: -.045em;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ============================================================
+   29. MINI RESULT BLOCKS
+   ============================================================ */
+
+.result-grid,
+.results-grid,
+.summary-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(145px, 1fr)
+    );
+
+  gap: 10px;
+}
+
+
+.result-item,
+.summary-item {
+
+  padding: 12px 13px;
+
+  border:
+    1px solid var(--pc-border);
+
+  border-radius: 11px;
+
+  background: #fff;
+}
+
+
+/* ============================================================
+   30. ГОТОВНОСТЬ РАСЧЁТА
+   ============================================================ */
+
+.pc-ready-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    7px 10px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(22,163,74,.08);
+
+  border:
+    1px solid
+    rgba(22,163,74,.13);
+
+  color:
+    var(--pc-success);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: .08em;
+}
+
+
+.pc-ready-badge::before {
+
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--pc-success);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(22,163,74,.08);
+}
+
+
+/* ============================================================
+   31. КНОПКИ
+   ============================================================ */
+
+button,
+.btn,
+.button {
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    background .16s ease,
+    border-color .16s ease;
+}
+
+
+button:hover,
+.btn:hover,
+.button:hover {
+
+  transform:
+    translateY(-1px);
+}
+
+
+button:active,
+.btn:active,
+.button:active {
+
+  transform:
+    translateY(0);
+}
+
+
+/*
+   Основная кнопка.
+*/
+
+.btn-primary,
+button.primary,
+button[type="submit"] {
+
+  border-color:
+    var(--pc-blue);
+
+  background:
+    var(--pc-blue);
+
+  color: #fff;
+
+  box-shadow:
+    0 7px 18px
+    rgba(37,99,235,.18);
+}
+
+
+.btn-primary:hover,
+button.primary:hover,
+button[type="submit"]:hover {
+
+  background:
+    var(--pc-blue-dark);
+
+  box-shadow:
+    0 10px 23px
+    rgba(37,99,235,.24);
+}
+
+
+/* ============================================================
+   32. ВТОРИЧНЫЕ КНОПКИ
+   ============================================================ */
+
+.btn-secondary,
+button.secondary {
+
+  border:
+    1px solid var(--pc-border);
+
+  background: #fff;
+
+  color: var(--pc-text);
+}
+
+
+.btn-secondary:hover,
+button.secondary:hover {
+
+  border-color:
+    #cdd6e4;
+
+  background:
+    #f9fafc;
+}
+
+
+/* ============================================================
+   33. ИКОНКИ
+   ============================================================ */
+
+.icon,
+.card-icon,
+.feature-icon {
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    rgba(37,99,235,.07);
+
+  color:
+    var(--pc-blue);
+}
+
+
+/* ============================================================
+   34. ИНФОРМАЦИОННЫЕ БЛОКИ
+   ============================================================ */
+
+.info,
+.hint,
+.notice {
+
+  border-radius: 11px;
+
+  border:
+    1px solid var(--pc-border);
+
+  background:
+    #fafbfd;
+
+  color:
+    var(--pc-muted);
+}
+
+
+/* ============================================================
+   35. МОБИЛЬНАЯ ВЕРСИЯ
+   ============================================================ */
+
+@media (max-width: 760px) {
+
+  header {
+
+    padding-top: 16px;
+    padding-bottom: 12px;
+  }
+
+
+  .pc-production-row {
+
+    flex-direction: column;
+
+    gap: 13px;
+  }
+
+
+  .pc-machine-select-wrap {
+
+    width: 100%;
+
+    min-width: 0;
+  }
+
+
+  .pc-machine-select-wrap select {
+
+    width: 100%;
+  }
+
+
+  .fields {
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+
+  .pc-service-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+
+  .panel,
+  .card,
+  .calculator-card,
+  .section-card {
+
+    border-radius:
+      15px;
+  }
+
+
+  .pc-production-panel,
+  .pc-operations-panel {
+
+    padding-left:
+      15px;
+
+    padding-right:
+      15px;
+  }
+
+}
+
+
+/* ============================================================
+   36. МАЛЕНЬКИЕ ЭКРАНЫ
+   ============================================================ */
+
+@media (max-width: 460px) {
+
+  .pc-machine-hint {
+
+    font-size: 11px;
+
+    padding:
+      9px 10px;
+  }
+
+
+  .field input,
+  .field select {
+
+    min-height: 46px;
+
+    font-size: 15px;
+  }
+
+
+  .check-row {
+
+    font-size: 13px;
+  }
+
+}
+
+
+/* ============================================================
+   37. МЯГКИЕ АНИМАЦИИ
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .pc-machine-hint {
+
+    animation:
+      pcHintIn .28s ease-out;
+  }
+
+
+  .pc-service-item {
+
+    animation:
+      pcCardIn .25s ease-out;
+  }
+
+}
+
+
+@keyframes pcHintIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(-3px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes pcCardIn {
+
+  from {
+
+    opacity: .75;
+
+    transform:
+      translateY(3px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+/* ============================================================
+   38. ФОНОВЫЙ ПРОМЫШЛЕННЫЙ МОТИВ
+   ============================================================ */
+
+body::before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  opacity: .22;
+
+  background-image:
+    linear-gradient(
+      rgba(37,99,235,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(37,99,235,.018) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    34px 34px;
+
+}
+
+
+/* ============================================================
+   39. ФОКУС КАЛЬКУЛЯТОРА
+   ============================================================ */
+
+.calculator,
+.calculator-card,
+.detail-calculator {
+
+  position: relative;
+}
+
+
+/* ============================================================
+   40. УБИРАЕМ ИЗЛИШНЮЮ "САЙТОВОСТЬ"
+   ============================================================ */
+
+hr {
+
+  border: 0;
+
+  border-top:
+    1px solid var(--pc-border);
+
+  margin:
+    20px 0;
+}
+
+
+/* ============================================================
+   41. ССЫЛКИ
+   ============================================================ */
+
+a {
+
+  transition:
+    color .16s ease;
+}
+
+
+a:hover {
+
+  color:
+    var(--pc-blue);
+}
+
+
+/* ============================================================
+   42. FOOTER
+   ============================================================ */
+
+footer {
+
+  color:
+    var(--pc-muted);
+
+  font-size:
+    12px;
+}
+
+
+/* ============================================================
+   END V11
+   ============================================================ */
