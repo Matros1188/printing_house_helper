@@ -1,352 +1,182 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="style.css?v=120">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<link href="favicon.svg" rel="icon"/>
+<link href="style.css?v=130" rel="stylesheet"/>
 <title>Детальный расчёт — PRINTCALC FLEXO</title>
 </head>
 <body class="calculator">
-
 <header class="header pc-v11-header">
-  <div class="wrap header-in">
-    <a class="logo" href="./">
-      <span class="logo-p">P</span>
-      <span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
-    </a>
-    <a class="back" href="./">← На главную</a>
-  </div>
+<div class="wrap header-in">
+<a class="logo" href="./">
+<span class="logo-p">P</span>
+<span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
+</a>
+<a class="back" href="./">← На главную</a>
+</div>
 </header>
-
 <main class="calc-main">
 <div class="wrap">
-
 <div class="calc-title calc-title-detail">
-  <div class="pc-detail-title-row">
-
-    <div class="pc-detail-title-icon">
-      <svg
-  class="pc-calculator-icon"
-  viewBox="0 0 48 48"
-  aria-hidden="true"
->
-  <defs>
-    <linearGradient
-      id="pcCalcGrad"
-      x1="8"
-      y1="6"
-      x2="40"
-      y2="42"
-      gradientUnits="userSpaceOnUse"
-    >
-      <stop offset="0" stop-color="#8b7cff"/>
-      <stop offset="1" stop-color="#2563eb"/>
-    </linearGradient>
-  </defs>
-
-  <rect
-    x="10"
-    y="6"
-    width="28"
-    height="36"
-    rx="7"
-    fill="url(#pcCalcGrad)"
-  />
-
-  <rect
-    x="15"
-    y="11"
-    width="18"
-    height="8"
-    rx="2.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="15"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="21.5"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.78)"
-  />
-
-  <rect
-    x="28"
-    y="23"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.62)"
-  />
-
-  <rect
-    x="15"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.82)"
-  />
-
-  <rect
-    x="21.5"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.92)"
-  />
-
-  <rect
-    x="28"
-    y="29.5"
-    width="5"
-    height="5"
-    rx="1.5"
-    fill="rgba(255,255,255,.72)"
-  />
-
-  <circle
-    cx="35.5"
-    cy="18.5"
-    r="1.8"
-    fill="#ffffff"
-  />
+<div class="pc-detail-title-row">
+<div class="pc-detail-title-icon">
+<svg aria-hidden="true" class="pc-calculator-icon" viewbox="0 0 48 48">
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="pcCalcGrad" x1="8" x2="40" y1="6" y2="42">
+<stop offset="0" stop-color="#8b7cff"></stop>
+<stop offset="1" stop-color="#2563eb"></stop>
+</lineargradient>
+</defs>
+<rect fill="url(#pcCalcGrad)" height="36" rx="7" width="28" x="10" y="6"></rect>
+<rect fill="rgba(255,255,255,.92)" height="8" rx="2.5" width="18" x="15" y="11"></rect>
+<rect fill="rgba(255,255,255,.92)" height="5" rx="1.5" width="5" x="15" y="23"></rect>
+<rect fill="rgba(255,255,255,.78)" height="5" rx="1.5" width="5" x="21.5" y="23"></rect>
+<rect fill="rgba(255,255,255,.62)" height="5" rx="1.5" width="5" x="28" y="23"></rect>
+<rect fill="rgba(255,255,255,.82)" height="5" rx="1.5" width="5" x="15" y="29.5"></rect>
+<rect fill="rgba(255,255,255,.92)" height="5" rx="1.5" width="5" x="21.5" y="29.5"></rect>
+<rect fill="rgba(255,255,255,.72)" height="5" rx="1.5" width="5" x="28" y="29.5"></rect>
+<circle cx="35.5" cy="18.5" fill="#ffffff" r="1.8"></circle>
 </svg>
-    </div>
+</div>
+<div>
+<div class="eyebrow">02 / ЭКОНОМИКА</div>
+<h1>Детальный расчёт</h1>
+<p>Полная структура затрат и цена продажи.</p>
+</div>
+</div>
+</div>
+<div class="calc-grid">
+<section class="panel">
+<span class="panel-label">ЗАКАЗ</span>
+<h2>Размер заказа</h2>
+<div class="fields">
+<label class="field"><span>Тираж, шт.</span><input id="qty" type="number" value="50000"/></label>
+<label class="field"><span>Ручьи</span><input id="streams" type="number" value="2"/></label>
+<label class="field"><span>Ширина, мм</span><input id="width" type="number" value="80"/></label>
+<label class="field"><span>Высота, мм</span><input id="height" type="number" value="50"/></label>
+<label class="field"><span>Полотно, мм</span><input id="web" type="number" value="170"/></label>
+<label class="field"><span>Раппорт, мм</span><input id="repeat" type="number" value="55"/></label>
+<label class="field"><span>Граммаж</span><input id="gsm" type="number" value="80"/></label>
+<label class="field"><span>Отход, %</span><input id="waste" type="number" value="7"/></label>
+</div>
+</section>
+<section class="panel">
+<span class="panel-label">МАТЕРИАЛ</span>
+<h2>Материал и краска</h2>
+<div class="fields">
+<label class="field"><span>Материал, ₽/кг</span><input id="matPrice" type="number" value="420"/></label>
+<label class="field"><span>Цветов</span><input id="colors" type="number" value="4"/></label>
+<label class="field"><span>Краска, ₽/кг</span><input id="inkPrice" type="number" value="900"/></label>
+<label class="field"><span>Расход, г/м²</span><input id="inkUse" type="number" value="1.6"/></label>
+</div>
+</section>
+<section class="panel pc-production-panel">
+<div class="pc-production-header">
+<div>
+<span class="panel-label">ПРОИЗВОДСТВО</span>
+<h2>Станок и работа</h2>
 
-    <div>
-      <div class="eyebrow">02 / ЭКОНОМИКА</div>
-      <h1>Детальный расчёт</h1>
-      <p>Полная структура затрат и цена продажи.</p>
-    </div>
-
-  </div>
 </div>
 
-<div class="calc-grid">
-
-<section class="panel">
-  <span class="panel-label">ЗАКАЗ</span>
-  <h2>Размер заказа</h2>
-
-  <div class="fields">
-    <label class="field"><span>Тираж, шт.</span><input id="qty" type="number" value="50000"></label>
-    <label class="field"><span>Ручьи</span><input id="streams" type="number" value="2"></label>
-    <label class="field"><span>Ширина, мм</span><input id="width" type="number" value="80"></label>
-    <label class="field"><span>Высота, мм</span><input id="height" type="number" value="50"></label>
-    <label class="field"><span>Полотно, мм</span><input id="web" type="number" value="170"></label>
-    <label class="field"><span>Раппорт, мм</span><input id="repeat" type="number" value="55"></label>
-    <label class="field"><span>Граммаж</span><input id="gsm" type="number" value="80"></label>
-    <label class="field"><span>Отход, %</span><input id="waste" type="number" value="7"></label>
-  </div>
+</div>
+<label class="pc-machine-select-field">
+<span>МОЙ СТАНОК</span>
+<select id="machineSelect">
+<option value="">Выберите станок</option>
+</select>
+</label>
+<div class="pc-machine-empty" hidden="" id="machineEmpty">
+<div class="pc-machine-empty-icon">⚙</div>
+<div>
+<strong>Станков пока нет</strong>
+<span>Добавьте первый станок на главной странице.</span>
+</div>
+<a href="./#my-machines">Добавить станок</a>
+</div>
+<div class="pc-machine-preview" hidden="" id="machinePreview">
+<div class="pc-machine-preview-name">
+<span class="pc-machine-status-dot"></span>
+<strong id="machinePreviewName">Станок</strong>
+</div>
+<div class="pc-machine-metrics">
+<div><span>СКОРОСТЬ</span><b id="machinePreviewSpeed">—</b><small>м/мин</small></div>
+<div><span>МОЩНОСТЬ</span><b id="machinePreviewPower">—</b><small>кВт</small></div>
+<div><span>НАЛАДКА</span><b id="machinePreviewSetup">—</b><small>мин</small></div>
+<div><span>МАШИНА</span><b id="machinePreviewRate">—</b><small>₽/ч</small></div>
+<div><span>РАБОТА</span><b id="machinePreviewLabor">—</b><small>₽/ч</small></div>
+<div><span>ЭЛЕКТРОЭНЕРГИЯ</span><b id="machinePreviewPowerRate">—</b><small>₽/кВт⋅ч</small></div>
+</div>
+</div>
+<div class="fields pc-machine-fields pc-machine-fields-hidden">
+<label class="field"><span>Скорость, м/мин</span><input id="speed" readonly="" type="number" value=""/></label>
+<label class="field"><span>Электропотребление, кВт</span><input id="power" readonly="" type="number" value=""/></label>
+<label class="field"><span>Наладка, мин</span><input id="setup" readonly="" type="number" value=""/></label>
+<label class="field"><span>Машина, ₽/час</span><input id="machine" readonly="" type="number" value=""/></label>
+<label class="field"><span>Работа, ₽/час</span><input id="labor" readonly="" type="number" value=""/></label>
+<label class="field"><span>Тариф электроэнергии, ₽/кВт⋅ч</span><input id="powerRate" readonly="" type="number" value=""/></label>
+</div>
 </section>
-
-
-<section class="panel">
-  <span class="panel-label">МАТЕРИАЛ</span>
-  <h2>Материал и краска</h2>
-
-  <div class="fields">
-    <label class="field"><span>Материал, ₽/кг</span><input id="matPrice" type="number" value="420"></label>
-    <label class="field"><span>Цветов</span><input id="colors" type="number" value="4"></label>
-    <label class="field"><span>Краска, ₽/кг</span><input id="inkPrice" type="number" value="900"></label>
-    <label class="field"><span>Расход, г/м²</span><input id="inkUse" type="number" value="1.6"></label>
-  </div>
-</section>
-
-
-<section class="panel pc-production-panel">
-  <div class="pc-production-header">
-    <div>
-      <span class="panel-label">ПРОИЗВОДСТВО</span>
-      <h2>Станок и работа</h2>
-      <p class="pc-machine-source-note">
-        Выберите станок из раздела «Мои станки». Его производственные параметры
-        подставятся в расчёт автоматически.
-      </p>
-    </div>
-
-    <a class="pc-machine-manage-link" href="./#my-machines">
-      Управлять станками →
-    </a>
-  </div>
-
-  <label class="pc-machine-select-field">
-    <span>МОЙ СТАНОК</span>
-    <select id="machineSelect">
-      <option value="">Выберите станок</option>
-    </select>
-  </label>
-
-  <div id="machineEmpty" class="pc-machine-empty" hidden>
-    <div class="pc-machine-empty-icon">⚙</div>
-    <div>
-      <strong>Станков пока нет</strong>
-      <span>Добавьте первый станок на главной странице.</span>
-    </div>
-    <a href="./#my-machines">Добавить станок</a>
-  </div>
-
-  <div id="machinePreview" class="pc-machine-preview" hidden>
-    <div class="pc-machine-preview-name">
-      <span class="pc-machine-status-dot"></span>
-      <strong id="machinePreviewName">Станок</strong>
-    </div>
-    <div class="pc-machine-metrics">
-      <div><span>СКОРОСТЬ</span><b id="machinePreviewSpeed">—</b><small>м/мин</small></div>
-      <div><span>МОЩНОСТЬ</span><b id="machinePreviewPower">—</b><small>кВт</small></div>
-      <div><span>НАЛАДКА</span><b id="machinePreviewSetup">—</b><small>мин</small></div>
-      <div><span>МАШИНА</span><b id="machinePreviewRate">—</b><small>₽/ч</small></div>
-      <div><span>РАБОТА</span><b id="machinePreviewLabor">—</b><small>₽/ч</small></div>
-      <div><span>ЭЛЕКТРОЭНЕРГИЯ</span><b id="machinePreviewPowerRate">—</b><small>₽/кВт⋅ч</small></div>
-    </div>
-  </div>
-
-  <div class="fields pc-machine-fields">
-    <label class="field"><span>Скорость, м/мин</span><input id="speed" type="number" value="" readonly></label>
-    <label class="field"><span>Электропотребление, кВт</span><input id="power" type="number" value="" readonly></label>
-    <label class="field"><span>Наладка, мин</span><input id="setup" type="number" value="" readonly></label>
-    <label class="field"><span>Машина, ₽/час</span><input id="machine" type="number" value="" readonly></label>
-    <label class="field"><span>Работа, ₽/час</span><input id="labor" type="number" value="" readonly></label>
-    <label class="field"><span>Тариф электроэнергии, ₽/кВт⋅ч</span><input id="powerRate" type="number" value="" readonly></label>
-  </div>
-</section>
-
 <section class="panel pc-operations-panel">
-  <span class="panel-label">ОПЕРАЦИИ</span>
-  <h2>Дополнительная обработка</h2>
-
-  <div class="pc-service-grid">
-    <div class="pc-service-item">
-      <label class="check-row">
-        <input id="lamEnabled" type="checkbox">
-        <span>Ламинация</span>
-      </label>
-      <label class="field">
-        <span>Стоимость, ₽/м²</span>
-        <input id="lam" type="number" value="70" min="0" step="0.01">
-      </label>
-    </div>
-
-    <div class="pc-service-item">
-      <label class="check-row">
-        <input id="dieEnabled" type="checkbox">
-        <span>Резка / вырубка</span>
-      </label>
-      <label class="field">
-        <span>Стоимость, ₽/1000</span>
-        <input id="die" type="number" value="180" min="0" step="0.01">
-      </label>
-    </div>
-  </div>
-</section>
-
-<section class="panel pc-operations-panel">
-
-  <span class="panel-label">ОПЕРАЦИИ</span>
-
-  <h2>Ламинация и резка</h2>
-
-  <div class="pc-service-grid">
-
-    <div class="pc-service-item">
-
-      <label class="check-row">
-        <input id="lamEnabled" type="checkbox">
-        <span>Ламинация</span>
-      </label>
-
-      <label class="field">
-        <span>Стоимость, ₽/м²</span>
-        <input
-          id="lam"
-          type="number"
-          value="70"
-          min="0"
-          step="0.01"
-        >
-      </label>
-
-    </div>
-
-    <div class="pc-service-item">
-
-      <label class="check-row">
-        <input id="dieEnabled" type="checkbox">
-        <span>Резка / вырубка</span>
-      </label>
-
-      <label class="field">
-        <span>Стоимость, ₽/1000</span>
-        <input
-          id="die"
-          type="number"
-          value="180"
-          min="0"
-          step="0.01"
-        >
-      </label>
-
-    </div>
-
-  </div>
-
+<span class="panel-label">ОПЕРАЦИИ</span>
+<h2>Дополнительная обработка</h2>
+<div class="pc-service-grid">
+<div class="pc-service-item">
+<label class="check-row">
+<input id="lamEnabled" type="checkbox"/>
+<span>Ламинация</span>
+</label>
+<label class="field">
+<span>Стоимость, ₽/м²</span>
+<input id="lam" min="0" step="0.01" type="number" value="70"/>
+</label>
+</div>
+<div class="pc-service-item">
+<label class="check-row">
+<input id="dieEnabled" type="checkbox"/>
+<span>Резка / вырубка</span>
+</label>
+<label class="field">
+<span>Стоимость, ₽/1000</span>
+<input id="die" min="0" step="0.01" type="number" value="180"/>
+</label>
+</div>
+</div>
 </section>
 
 
 <section class="panel">
-  <span class="panel-label">ЭКОНОМИКА</span>
-  <h2>Расходы и цена</h2>
-
-  <div class="fields">
-    <label class="field"><span>Накладные, %</span><input id="overhead" type="number" value="8"></label>
-    <label class="field"><span>Административные, %</span><input id="admin" type="number" value="3"></label>
-    <label class="field"><span>Наценка, %</span><input id="markup" type="number" value="35"></label>
-    <label class="field"><span>Минимальный заказ, ₽</span><input id="minimum" type="number" value="6500"></label>
-  </div>
-
-  <button class="calc-btn" id="calc">Рассчитать экономику →</button>
+<span class="panel-label">ЭКОНОМИКА</span>
+<h2>Расходы и цена</h2>
+<div class="fields">
+<label class="field"><span>Накладные, %</span><input id="overhead" type="number" value="8"/></label>
+<label class="field"><span>Административные, %</span><input id="admin" type="number" value="3"/></label>
+<label class="field"><span>Наценка, %</span><input id="markup" type="number" value="35"/></label>
+<label class="field"><span>Минимальный заказ, ₽</span><input id="minimum" type="number" value="6500"/></label>
+</div>
+<button class="calc-btn" id="calc">Рассчитать экономику →</button>
 </section>
-
-
 <section class="result" id="result">
-  <div class="result-top">
-
+<div class="result-top">
 <span class="pc-ready-badge">РАСЧЁТ ГОТОВ</span>
-
-
-    <div>
-      <span>РЕЗУЛЬТАТ</span>
-      <h2>Здесь появится экономика заказа</h2>
-    </div>
-  </div>
-  <div class="note">
+<div>
+<span>РЕЗУЛЬТАТ</span>
+<h2>Здесь появится экономика заказа</h2>
+</div>
+</div>
+<div class="note">
     Заполните параметры и нажмите «Рассчитать экономику».
   </div>
 </section>
-
 </div>
 </div>
 </main>
-
 <footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span></div></footer>
-
-<script src="detail.js?v=120"></script>
+<script src="detail.js?v=130"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=86"></script>
 <script src="auth.js?v=86"></script>
-<script src="machines.js?v=120"></script>
-</body>
+<script src="machines.js?v=130"></script>
+<script src="proposal.js?v=130"></script></body>
 </html>
