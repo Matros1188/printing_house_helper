@@ -3,7 +3,7 @@
 
   const core = window.PRINTCALC_AUTH_CORE || {};
   const client = core.getClient ? core.getClient() : null;
-  const HISTORY_PREFIX = "printcalc_history_cache_v6::";
+  const HISTORY_PREFIX = "printcalc_history_cache_v7::";
   const $ = (id) => document.getElementById(id);
 
   function escapeHtml(value) {
@@ -38,12 +38,30 @@
   }
 
   function localHistory(userId) {
-    try {
-      const data = JSON.parse(localStorage.getItem(localKey(userId)) || "[]");
-      return Array.isArray(data) ? data : [];
-    } catch (_) {
-      return [];
+    const keys = [
+      HISTORY_PREFIX + userId,
+      "printcalc_history_cache_v6::" + userId,
+      "printcalc_history_cache_v5::" + userId,
+      "printcalc_history_cache_v4::" + userId,
+    ];
+
+    const all = [];
+
+    for (const key of keys) {
+      try {
+        const data = JSON.parse(localStorage.getItem(key) || "[]");
+        if (Array.isArray(data)) all.push(...data);
+      } catch (_) {}
     }
+
+    const seen = new Set();
+    return all.filter((item) => {
+      const data = item?.calculation_data || {};
+      const key = data.client_id || item?.id;
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
 
   function stableStringify(value) {
@@ -53,8 +71,9 @@
   }
 
   function fingerprint(item) {
-    if (item.local_fingerprint) return item.local_fingerprint;
     const data = item.calculation_data || {};
+    if (data.client_id) return "client:" + data.client_id;
+    if (item.id) return "id:" + item.id;
     return stableStringify({
       mode: item.mode || "quick",
       result: data.result_text || "",
@@ -215,6 +234,15 @@
   function init() {
     $("pc-account-logout")?.addEventListener("click", logout);
     $("pc-account-refresh")?.addEventListener("click", loadAccount);
+
+    // Если расчёт был сохранён в другой вкладке/странице,
+    // кабинет автоматически обновится при его событии.
+    window.addEventListener("storage", (event) => {
+      if (event.key && event.key.includes("printcalc_history_cache_")) {
+        loadAccount();
+      }
+    });
+
     loadAccount();
   }
 
