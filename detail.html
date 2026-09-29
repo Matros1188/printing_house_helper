@@ -4,15 +4,862 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <link href="favicon.svg" rel="icon"/>
-<link href="style.css?v=130" rel="stylesheet"/>
+<link href="style.css?v=140" rel="stylesheet"/>
 <title>Детальный расчёт — PRINTCALC FLEXO</title>
+<style id="printcalc-v14-design">
+
+/* ============================================================
+   PRINTCALC FLEXO V14 — DESIGN SYSTEM
+   ============================================================ */
+
+:root {
+  --pc14-bg: #f4f6f9;
+  --pc14-bg-deep: #edf1f6;
+  --pc14-surface: #ffffff;
+  --pc14-surface-soft: #f8fafc;
+  --pc14-surface-blue: #f5f8ff;
+  --pc14-text: #172238;
+  --pc14-text-soft: #30405a;
+  --pc14-muted: #738096;
+  --pc14-muted-2: #98a3b4;
+  --pc14-border: #dee5ee;
+  --pc14-border-soft: #e9edf3;
+  --pc14-blue: #315fe4;
+  --pc14-blue-dark: #254fc7;
+  --pc14-indigo: #646fde;
+  --pc14-teal: #2ca6a0;
+  --pc14-green: #218b62;
+  --pc14-amber: #c58a33;
+  --pc14-shadow: 0 10px 32px rgba(24,34,56,.055), 0 2px 6px rgba(24,34,56,.035);
+  --pc14-shadow-hover: 0 18px 42px rgba(24,34,56,.085), 0 4px 10px rgba(24,34,56,.04);
+}
+
+html { background: var(--pc14-bg); }
+body {
+  background:
+    radial-gradient(circle at 8% -5%, rgba(49,95,228,.048), transparent 28%),
+    radial-gradient(circle at 95% 8%, rgba(100,111,222,.042), transparent 24%),
+    linear-gradient(180deg, #f6f8fb 0%, var(--pc14-bg) 58%, #f1f4f7 100%);
+  color: var(--pc14-text);
+}
+
+body::before {
+  opacity: .10 !important;
+  background-image:
+    linear-gradient(rgba(49,95,228,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49,95,228,.03) 1px, transparent 1px) !important;
+  background-size: 36px 36px !important;
+}
+
+/* ============================================================
+   ЛОГОТИП
+   ============================================================ */
+
+.pc-logo-v14 {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 11px !important;
+  width: max-content !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-decoration: none !important;
+  overflow: visible !important;
+}
+
+.pc-brand-mark {
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+  display: block !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 7px 12px rgba(49,95,228,.16));
+}
+
+.pc-brand-wordmark {
+  display: grid !important;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 7px;
+  row-gap: 1px;
+  position: relative !important;
+  min-width: 0 !important;
+  padding-bottom: 12px !important;
+}
+
+.pc-brand-wordmark b {
+  grid-column: 1 / 2;
+  color: var(--pc14-text) !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -.045em !important;
+}
+
+.pc-brand-wordmark small {
+  grid-column: 2 / 3;
+  align-self: end;
+  color: var(--pc14-blue) !important;
+  font-size: 9px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: .16em !important;
+}
+
+.pc-brand-wordmark em {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  color: var(--pc14-muted) !important;
+  font-size: 7px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: .015em !important;
+  white-space: nowrap !important;
+}
+
+.pc-logo-footer .pc-brand-mark { width: 34px !important; height: 34px !important; flex-basis: 34px !important; }
+.pc-logo-footer .pc-brand-wordmark { padding-bottom: 0 !important; }
+.pc-logo-footer .pc-brand-wordmark b { font-size: 13px !important; }
+.pc-logo-footer .pc-brand-wordmark small { font-size: 8px !important; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header {
+  background: rgba(255,255,255,.82) !important;
+  border-bottom: 1px solid rgba(222,229,238,.82) !important;
+  box-shadow: 0 4px 18px rgba(24,34,56,.025) !important;
+  backdrop-filter: blur(14px);
+}
+
+.header-in {
+  min-height: 70px !important;
+}
+
+.header-btn,
+.back {
+  border-radius: 11px !important;
+  border: 1px solid var(--pc14-border) !important;
+  background: rgba(255,255,255,.82) !important;
+  color: var(--pc14-text) !important;
+  box-shadow: 0 4px 12px rgba(24,34,56,.035) !important;
+}
+
+.header-btn:hover,
+.back:hover {
+  border-color: rgba(49,95,228,.28) !important;
+  background: var(--pc14-surface-blue) !important;
+  color: var(--pc14-blue) !important;
+}
+
+/* ============================================================
+   ГЛАВНЫЙ HERO
+   ============================================================ */
+
+.hero {
+  background: transparent !important;
+}
+
+.hero-grid {
+  padding: 58px 0 48px !important;
+}
+
+.hero-copy {
+  max-width: 880px !important;
+}
+
+.pc-hero-heading,
+.pc-hero-heading-v13 {
+  padding-left: 18px !important;
+  margin-bottom: 18px !important;
+}
+
+.pc-hero-heading::before,
+.pc-hero-heading-v13::before {
+  width: 4px !important;
+  background: linear-gradient(180deg, var(--pc14-blue), var(--pc14-indigo)) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.055);
+}
+
+.pc-hero-kicker,
+.pc-hero-line-primary {
+  color: var(--pc14-blue) !important;
+  font-size: clamp(26px, 3.4vw, 34px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.04em !important;
+}
+
+.pc-hero-title,
+.pc-hero-line-secondary {
+  color: var(--pc14-text) !important;
+  font-size: clamp(30px, 3.8vw, 39px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.045em !important;
+}
+
+.pc-hero-title span,
+.pc-hero-line-secondary span { color: var(--pc14-indigo) !important; }
+
+.pc-main-lead {
+  color: var(--pc14-muted) !important;
+  max-width: 720px !important;
+  font-size: 15px !important;
+  line-height: 1.62 !important;
+}
+
+.proof,
+.strip {
+  border-color: var(--pc14-border-soft) !important;
+}
+
+.proof b,
+.strip b { color: var(--pc14-text) !important; }
+.proof span,
+.strip span { color: var(--pc14-muted) !important; }
+
+/* ============================================================
+   ОБЩИЕ ПАНЕЛИ
+   ============================================================ */
+
+.panel,
+.card,
+.result,
+.section-card {
+  border-color: var(--pc14-border) !important;
+  border-radius: 17px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: var(--pc14-shadow) !important;
+}
+
+.panel:hover,
+.card:hover {
+  box-shadow: var(--pc14-shadow-hover) !important;
+}
+
+.panel-label {
+  color: var(--pc14-blue) !important;
+}
+
+.panel-label::before {
+  background: var(--pc14-blue) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.07) !important;
+}
+
+.panel h2,
+.card h3,
+.result h2 {
+  color: var(--pc14-text) !important;
+}
+
+.section-text,
+.note,
+.pc-main-lead {
+  color: var(--pc14-muted) !important;
+}
+
+/* ============================================================
+   ИНФОРМАЦИОННАЯ СЕКЦИЯ
+   ============================================================ */
+
+.pc-info-section {
+  padding-top: 62px !important;
+  padding-bottom: 62px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(239,243,248,.25));
+}
+
+.pc-info-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.pc-info-heading h2 {
+  margin: 7px 0 10px;
+  color: var(--pc14-text);
+  font-size: clamp(26px, 3.2vw, 36px);
+  letter-spacing: -.045em;
+}
+
+.pc-info-side-note {
+  max-width: 250px;
+  padding: 13px 15px;
+  border: 1px solid var(--pc14-border);
+  border-radius: 13px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 5px 16px rgba(24,34,56,.028);
+}
+
+.pc-info-side-note span {
+  display: block;
+  color: var(--pc14-muted-2);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.pc-info-side-note b {
+  display: block;
+  margin-top: 6px;
+  color: var(--pc14-text-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.pc-info-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.pc-info-card {
+  position: relative;
+  min-height: 182px;
+  padding: 18px;
+  border: 1px solid var(--pc14-border-soft);
+  border-radius: 15px;
+  background: linear-gradient(145deg, #ffffff, #f9fbfd);
+  box-shadow: 0 7px 20px rgba(24,34,56,.04);
+}
+
+.pc-info-card-accent {
+  border-color: rgba(49,95,228,.17);
+  background: linear-gradient(145deg, #f9fbff, #f2f5ff);
+}
+
+.pc-info-card-result {
+  border-color: rgba(44,166,160,.16);
+  background: linear-gradient(145deg, #fbfefd, #f3faf9);
+}
+
+.pc-info-number {
+  position: absolute;
+  right: 14px;
+  top: 13px;
+  color: #a2adbc;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.pc-info-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: #eef3ff;
+  border: 1px solid #dde6ff;
+  color: var(--pc14-blue);
+  font-weight: 900;
+}
+
+.pc-info-card-result .pc-info-icon {
+  background: #edf9f6;
+  border-color: #d7efeb;
+  color: var(--pc14-teal);
+}
+
+.pc-info-card h3 {
+  margin: 15px 0 7px;
+  color: var(--pc14-text);
+  font-size: 16px;
+  letter-spacing: -.02em;
+}
+
+.pc-info-card p {
+  margin: 0;
+  color: var(--pc14-muted);
+  font-size: 12px;
+  line-height: 1.52;
+}
+
+.pc-info-arrow {
+  display: grid;
+  place-items: center;
+  color: #a4afbf;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   МОИ СТАНКИ
+   ============================================================ */
+
+.pc-my-machines-section {
+  padding-top: 66px !important;
+  padding-bottom: 70px !important;
+  background: linear-gradient(180deg, rgba(239,243,248,.25), rgba(255,255,255,.52));
+}
+
+.pc-my-machines-head {
+  align-items: flex-end !important;
+}
+
+.pc-my-machines-head h2 {
+  color: var(--pc14-text) !important;
+  font-size: clamp(27px, 3vw, 37px) !important;
+}
+
+.pc-my-machines-head .section-text {
+  max-width: 690px;
+}
+
+.pc-machine-add-btn {
+  min-height: 47px !important;
+  border-color: rgba(49,95,228,.24) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, var(--pc14-blue), #4b69df) !important;
+  box-shadow: 0 10px 24px rgba(49,95,228,.17) !important;
+}
+
+.pc-machine-add-btn:hover {
+  background: linear-gradient(135deg, var(--pc14-blue-dark), #5562ce) !important;
+}
+
+.pc-machine-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 14px;
+  padding: 11px 12px 11px 14px;
+  border: 1px solid var(--pc14-border-soft);
+  border-radius: 12px;
+  background: rgba(255,255,255,.66);
+}
+
+.pc-machine-toolbar-label {
+  color: var(--pc14-muted-2);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.pc-machine-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: min(280px, 100%);
+  min-height: 37px;
+  padding: 0 10px;
+  border: 1px solid var(--pc14-border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.pc-machine-search-wrap > span {
+  color: var(--pc14-muted-2);
+  font-size: 17px;
+}
+
+.pc-machine-search-wrap input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--pc14-text);
+  font: inherit;
+  font-size: 12px;
+}
+
+.pc-machine-list {
+  gap: 14px !important;
+}
+
+.pc-machine-card,
+.pc-machine-empty-home {
+  border-color: var(--pc14-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--pc14-shadow) !important;
+}
+
+.pc-machine-card:hover {
+  box-shadow: var(--pc14-shadow-hover) !important;
+}
+
+.pc-machine-card-icon {
+  background: linear-gradient(145deg, #edf3ff, #f0effd) !important;
+  border-color: #dfe6f8 !important;
+  color: var(--pc14-blue) !important;
+}
+
+.pc-machine-card-title h3 {
+  color: var(--pc14-text) !important;
+}
+
+.pc-machine-card-metrics > div {
+  border-color: var(--pc14-border-soft) !important;
+  background: var(--pc14-surface-soft) !important;
+}
+
+/* ============================================================
+   DETAIL: ПРОИЗВОДСТВО
+   ============================================================ */
+
+.pc-production-panel {
+  overflow: hidden;
+}
+
+.pc-production-panel::before {
+  background: linear-gradient(180deg, var(--pc14-blue), var(--pc14-indigo)) !important;
+  box-shadow: 1px 0 0 rgba(255,255,255,.42);
+}
+
+.pc-production-header,
+.pc-operation-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pc-machine-source-note {
+  max-width: 640px;
+  margin: 7px 0 0;
+  color: var(--pc14-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.pc-machine-manage-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--pc14-border);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--pc14-blue);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.pc-production-choice {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 20px;
+}
+
+.pc-machine-select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.pc-machine-select-field > span {
+  color: var(--pc14-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.pc-machine-select-field > span em {
+  margin-left: 5px;
+  color: var(--pc14-muted-2);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.pc-machine-select-field select {
+  width: 100%;
+  min-height: 45px;
+  padding: 0 40px 0 13px;
+  border: 1px solid var(--pc14-border);
+  border-radius: 11px;
+  background: linear-gradient(145deg, #fff, #f8faff);
+  color: var(--pc14-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+}
+
+.pc-machine-select-field select:focus {
+  border-color: var(--pc14-blue);
+  box-shadow: 0 0 0 4px rgba(49,95,228,.08);
+}
+
+.pc-manual-mode-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 45px;
+  padding: 0 12px;
+  border: 1px solid #dfe9e7;
+  border-radius: 11px;
+  background: #f8fcfb;
+  color: var(--pc14-green);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pc-manual-mode-note.is-manual {
+  border-color: #e4e8ee;
+  background: #fafbfd;
+  color: var(--pc14-muted);
+}
+
+.pc-mode-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pc14-green);
+  box-shadow: 0 0 0 4px rgba(33,139,98,.08);
+}
+
+.pc-mode-dot-manual { background: #8490a1; box-shadow: 0 0 0 4px rgba(132,144,161,.08); }
+
+.pc-machine-preview {
+  margin-top: 13px;
+  padding: 13px;
+  border: 1px solid rgba(49,95,228,.12);
+  border-radius: 13px;
+  background: linear-gradient(145deg, #fbfcff, #f5f8ff);
+}
+
+.pc-machine-preview-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pc14-text);
+}
+
+.pc-machine-preview-label {
+  margin-left: 4px;
+  padding: 5px 7px;
+  border-radius: 999px;
+  background: #edf3ff;
+  color: var(--pc14-blue);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.pc-machine-metrics {
+  gap: 8px !important;
+  margin-top: 10px;
+}
+
+.pc-machine-metrics > div {
+  border-color: #e2e9f4 !important;
+  background: rgba(255,255,255,.68) !important;
+}
+
+.pc-production-fields {
+  margin-top: 15px;
+}
+
+.pc-production-fields .field {
+  position: relative;
+}
+
+.pc-production-fields input {
+  background: #fff !important;
+}
+
+.pc-production-fields input:focus {
+  border-color: var(--pc14-blue) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.08) !important;
+}
+
+.pc-field-origin {
+  color: var(--pc14-muted-2);
+  font-size: 8px;
+  line-height: 1;
+}
+
+/* ============================================================
+   ОПЕРАЦИИ
+   ============================================================ */
+
+.pc-operation-note {
+  color: var(--pc14-muted-2);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.pc-operations-panel {
+  border-color: var(--pc14-border) !important;
+}
+
+.pc-service-item {
+  border-color: var(--pc14-border-soft) !important;
+  background: linear-gradient(145deg, #fff, #fafbfd) !important;
+}
+
+.pc-service-item:has(input[type="checkbox"]:checked) {
+  border-color: rgba(49,95,228,.24) !important;
+  box-shadow: 0 8px 22px rgba(49,95,228,.06) !important;
+}
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
+.field input,
+.field select,
+.field textarea {
+  border-color: var(--pc14-border) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--pc14-text) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+.field input:hover,
+.field select:hover {
+  border-color: #cfd8e4 !important;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--pc14-blue) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.075) !important;
+}
+
+.field > span {
+  color: var(--pc14-muted) !important;
+}
+
+.field:focus-within > span {
+  color: var(--pc14-blue) !important;
+}
+
+/* ============================================================
+   РЕЗУЛЬТАТ
+   ============================================================ */
+
+.result {
+  border-color: #dbe3ee !important;
+  background: linear-gradient(145deg, #ffffff, #f8fafc) !important;
+  box-shadow: 0 15px 38px rgba(24,34,56,.07) !important;
+}
+
+.result-top > div > span,
+.result-top > span {
+  color: var(--pc14-blue) !important;
+}
+
+.price-box.main {
+  border-color: rgba(49,95,228,.17) !important;
+  background: linear-gradient(145deg, #f7f9ff, #eff4ff) !important;
+}
+
+.price-box b,
+.result-value,
+.total-value {
+  color: var(--pc14-text) !important;
+}
+
+.pc-ready-badge {
+  background: rgba(33,139,98,.075) !important;
+  border-color: rgba(33,139,98,.12) !important;
+  color: var(--pc14-green) !important;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.pc-machine-modal {
+  background: rgba(20,29,46,.36) !important;
+  backdrop-filter: blur(7px) !important;
+}
+
+.pc-machine-modal-card {
+  border-color: rgba(255,255,255,.65) !important;
+  border-radius: 20px !important;
+  background: rgba(255,255,255,.97) !important;
+  box-shadow: 0 34px 90px rgba(15,24,40,.22) !important;
+}
+
+.pc-machine-modal-card h2 { color: var(--pc14-text) !important; }
+
+.pc-machine-form-field input {
+  border-color: var(--pc14-border) !important;
+  border-radius: 10px !important;
+}
+
+.pc-machine-form-field input:focus {
+  border-color: var(--pc14-blue) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.075) !important;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .header-in { min-height: 63px !important; }
+  .pc-brand-mark { width: 38px !important; height: 38px !important; flex-basis: 38px !important; }
+  .pc-brand-wordmark b { font-size: 13px !important; }
+  .pc-brand-wordmark small { font-size: 8px !important; }
+  .pc-brand-wordmark em { font-size: 6.5px !important; }
+
+  .hero-grid { padding: 35px 0 34px !important; }
+
+  .pc-info-heading,
+  .pc-production-header,
+  .pc-operation-heading,
+  .pc-my-machines-head {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+  }
+
+  .pc-info-side-note { width: 100%; max-width: none; }
+  .pc-info-flow { grid-template-columns: 1fr; gap: 8px; }
+  .pc-info-arrow { transform: rotate(90deg); min-height: 18px; }
+  .pc-info-card { min-height: 0; }
+
+  .pc-machine-toolbar { align-items: stretch; flex-direction: column; }
+  .pc-machine-search-wrap { width: 100%; }
+
+  .pc-production-choice { grid-template-columns: 1fr; }
+  .pc-manual-mode-note { width: 100%; box-sizing: border-box; }
+
+  .pc-machine-preview-label { margin-left: auto; }
+  .pc-machine-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+  .pc-machine-card-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .pc-machine-card-actions { width: 100%; justify-content: flex-start; margin-top: 9px; }
+}
+
+@media (max-width: 430px) {
+  .pc-brand-wordmark { padding-bottom: 9px !important; }
+  .pc-brand-wordmark em { font-size: 6px !important; }
+  .header-btn { padding-left: 9px !important; padding-right: 9px !important; }
+  .pc-machine-preview-name { flex-wrap: wrap; }
+}
+
+/* ============================================================
+   END V14
+   ============================================================ */
+</style>
 </head>
 <body class="calculator">
 <header class="header pc-v11-header">
 <div class="wrap header-in">
-<a class="logo" href="./">
-<span class="logo-p">P</span>
-<span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
+<a class="logo pc-logo-v14" href="./" aria-label="PRINTCALC FLEXO — на главную">
+  <img class="pc-brand-mark" src="brand-mark.svg?v=140" alt="" aria-hidden="true">
+  <span class="pc-brand-wordmark">
+    <b>PRINTCALC</b>
+    <small>FLEXO</small>
+    <em>Created by Sergey Pavlov</em>
+  </span>
 </a>
 <a class="back" href="./">← На главную</a>
 </div>
@@ -73,76 +920,121 @@
 </div>
 </section>
 <section class="panel pc-production-panel">
-<div class="pc-production-header">
-<div>
-<span class="panel-label">ПРОИЗВОДСТВО</span>
-<h2>Станок и работа</h2>
+  <div class="pc-production-header">
+    <div>
+      <span class="panel-label">ПРОИЗВОДСТВО</span>
+      <h2>Станок и работа</h2>
+      <p class="pc-machine-source-note">
+        Выберите ваш станок для автоматической подстановки параметров
+        или заполните производственные значения вручную.
+      </p>
+    </div>
+    <a class="pc-machine-manage-link" href="./#my-machines">Мои станки →</a>
+  </div>
 
-</div>
+  <div class="pc-production-choice">
+    <label class="pc-machine-select-field">
+      <span>МОЙ СТАНОК <em>необязательно</em></span>
+      <select id="machineSelect">
+        <option value="">Без выбора станка — ввести вручную</option>
+      </select>
+    </label>
 
-</div>
-<label class="pc-machine-select-field">
-<span>МОЙ СТАНОК</span>
-<select id="machineSelect">
-<option value="">Выберите станок</option>
-</select>
-</label>
-<div class="pc-machine-empty" hidden="" id="machineEmpty">
-<div class="pc-machine-empty-icon">⚙</div>
-<div>
-<strong>Станков пока нет</strong>
-<span>Добавьте первый станок на главной странице.</span>
-</div>
-<a href="./#my-machines">Добавить станок</a>
-</div>
-<div class="pc-machine-preview" hidden="" id="machinePreview">
-<div class="pc-machine-preview-name">
-<span class="pc-machine-status-dot"></span>
-<strong id="machinePreviewName">Станок</strong>
-</div>
-<div class="pc-machine-metrics">
-<div><span>СКОРОСТЬ</span><b id="machinePreviewSpeed">—</b><small>м/мин</small></div>
-<div><span>МОЩНОСТЬ</span><b id="machinePreviewPower">—</b><small>кВт</small></div>
-<div><span>НАЛАДКА</span><b id="machinePreviewSetup">—</b><small>мин</small></div>
-<div><span>МАШИНА</span><b id="machinePreviewRate">—</b><small>₽/ч</small></div>
-<div><span>РАБОТА</span><b id="machinePreviewLabor">—</b><small>₽/ч</small></div>
-<div><span>ЭЛЕКТРОЭНЕРГИЯ</span><b id="machinePreviewPowerRate">—</b><small>₽/кВт⋅ч</small></div>
-</div>
-</div>
-<div class="fields pc-machine-fields pc-machine-fields-hidden">
-<label class="field"><span>Скорость, м/мин</span><input id="speed" readonly="" type="number" value=""/></label>
-<label class="field"><span>Электропотребление, кВт</span><input id="power" readonly="" type="number" value=""/></label>
-<label class="field"><span>Наладка, мин</span><input id="setup" readonly="" type="number" value=""/></label>
-<label class="field"><span>Машина, ₽/час</span><input id="machine" readonly="" type="number" value=""/></label>
-<label class="field"><span>Работа, ₽/час</span><input id="labor" readonly="" type="number" value=""/></label>
-<label class="field"><span>Тариф электроэнергии, ₽/кВт⋅ч</span><input id="powerRate" readonly="" type="number" value=""/></label>
-</div>
+    <div class="pc-manual-mode-note" id="pc-manual-mode-note">
+      <span class="pc-mode-dot"></span>
+      Можно заполнить параметры вручную
+    </div>
+  </div>
+
+  <div id="machineEmpty" class="pc-machine-empty" hidden>
+    <div class="pc-machine-empty-icon">⚙</div>
+    <div>
+      <strong>Сохранённых станков пока нет</strong>
+      <span>Это не мешает расчёту: производственные параметры можно ввести вручную.</span>
+    </div>
+    <a href="./#my-machines">Добавить станок</a>
+  </div>
+
+  <div id="machinePreview" class="pc-machine-preview" hidden>
+    <div class="pc-machine-preview-name">
+      <span class="pc-machine-status-dot"></span>
+      <strong id="machinePreviewName">Станок</strong>
+      <span class="pc-machine-preview-label">ДАННЫЕ ИЗ СПРАВОЧНИКА</span>
+    </div>
+    <div class="pc-machine-metrics">
+      <div><span>СКОРОСТЬ</span><b id="machinePreviewSpeed">—</b><small>м/мин</small></div>
+      <div><span>МОЩНОСТЬ</span><b id="machinePreviewPower">—</b><small>кВт</small></div>
+      <div><span>НАЛАДКА</span><b id="machinePreviewSetup">—</b><small>мин</small></div>
+      <div><span>МАШИНА</span><b id="machinePreviewRate">—</b><small>₽/ч</small></div>
+      <div><span>РАБОТА</span><b id="machinePreviewLabor">—</b><small>₽/ч</small></div>
+      <div><span>ЭЛЕКТРОЭНЕРГИЯ</span><b id="machinePreviewPowerRate">—</b><small>₽/кВт⋅ч</small></div>
+    </div>
+  </div>
+
+  <div class="fields pc-machine-fields pc-production-fields">
+    <label class="field">
+      <span>Скорость, м/мин</span>
+      <input id="speed" type="number" value="80" min="0" step="0.1">
+      <small class="pc-field-origin" data-origin="speed">можно изменить вручную</small>
+    </label>
+    <label class="field">
+      <span>Электропотребление, кВт</span>
+      <input id="power" type="number" value="18" min="0" step="0.1">
+      <small class="pc-field-origin" data-origin="power">можно изменить вручную</small>
+    </label>
+    <label class="field">
+      <span>Наладка, мин</span>
+      <input id="setup" type="number" value="35" min="0" step="0.1">
+      <small class="pc-field-origin" data-origin="setup">можно изменить вручную</small>
+    </label>
+    <label class="field">
+      <span>Машина, ₽/час</span>
+      <input id="machine" type="number" value="1800" min="0" step="1">
+      <small class="pc-field-origin" data-origin="machine">можно изменить вручную</small>
+    </label>
+    <label class="field">
+      <span>Работа, ₽/час</span>
+      <input id="labor" type="number" value="650" min="0" step="1">
+      <small class="pc-field-origin" data-origin="labor">можно изменить вручную</small>
+    </label>
+    <label class="field">
+      <span>Тариф электроэнергии, ₽/кВт⋅ч</span>
+      <input id="powerRate" type="number" value="8" min="0" step="0.01">
+      <small class="pc-field-origin" data-origin="powerRate">можно изменить вручную</small>
+    </label>
+  </div>
 </section>
-<section class="panel pc-operations-panel">
-<span class="panel-label">ОПЕРАЦИИ</span>
-<h2>Дополнительная обработка</h2>
-<div class="pc-service-grid">
-<div class="pc-service-item">
-<label class="check-row">
-<input id="lamEnabled" type="checkbox"/>
-<span>Ламинация</span>
-</label>
-<label class="field">
-<span>Стоимость, ₽/м²</span>
-<input id="lam" min="0" step="0.01" type="number" value="70"/>
-</label>
-</div>
-<div class="pc-service-item">
-<label class="check-row">
-<input id="dieEnabled" type="checkbox"/>
-<span>Резка / вырубка</span>
-</label>
-<label class="field">
-<span>Стоимость, ₽/1000</span>
-<input id="die" min="0" step="0.01" type="number" value="180"/>
-</label>
-</div>
-</div>
+<div class="pc-operation-heading">
+    <div>
+      <span class="panel-label">ОПЕРАЦИИ</span>
+      <h2>Дополнительная обработка</h2>
+    </div>
+    <span class="pc-operation-note">учитывается только включённая операция</span>
+  </div>
+
+  <div class="pc-service-grid">
+    <div class="pc-service-item">
+      <label class="check-row">
+        <input id="lamEnabled" type="checkbox">
+        <span>Ламинация</span>
+      </label>
+      <label class="field">
+        <span>Стоимость, ₽/м²</span>
+        <input id="lam" type="number" value="70" min="0" step="0.01">
+      </label>
+    </div>
+
+    <div class="pc-service-item">
+      <label class="check-row">
+        <input id="dieEnabled" type="checkbox">
+        <span>Резка / вырубка</span>
+      </label>
+      <label class="field">
+        <span>Стоимость, ₽/1000</span>
+        <input id="die" type="number" value="180" min="0" step="0.01">
+      </label>
+    </div>
+  </div>
 </section>
 
 
@@ -172,11 +1064,17 @@
 </div>
 </div>
 </main>
-<footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span></div></footer>
-<script src="detail.js?v=130"></script>
+<footer><div class="wrap footer-in"><div class="logo pc-logo-v14 pc-logo-footer">
+  <img class="pc-brand-mark" src="brand-mark.svg?v=140" alt="" aria-hidden="true">
+  <span class="pc-brand-wordmark">
+    <b>PRINTCALC</b>
+    <small>FLEXO</small>
+  </span>
+</div></div></footer>
+<script src="detail.js?v=140"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=86"></script>
 <script src="auth.js?v=86"></script>
-<script src="machines.js?v=130"></script>
+<script src="machines.js?v=140"></script>
 <script src="proposal.js?v=130"></script></body>
 </html>
