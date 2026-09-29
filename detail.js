@@ -129,3 +129,242 @@ function calculate() {
 
 $("calc").addEventListener("click", calculate);
 calculate();
+
+
+
+/* ============================================================
+   PRINTCALC FLEXO — MACHINE SELECTOR
+   ============================================================ */
+
+(function () {
+
+  "use strict";
+
+  function pcNum(id, fallback) {
+    const el = document.getElementById(id);
+
+    if (!el) {
+      return fallback;
+    }
+
+    const value = Number(el.value);
+
+    return Number.isFinite(value)
+      ? value
+      : fallback;
+  }
+
+
+  function pcSet(id, value) {
+
+    const el = document.getElementById(id);
+
+    if (!el) {
+      return;
+    }
+
+    el.value = value;
+  }
+
+
+  function pcInitMachineSelector() {
+
+    const select = document.getElementById("machineSelect");
+
+    if (!select) {
+      return;
+    }
+
+    const machines =
+      Array.isArray(window.PRINTCALC_MACHINES)
+        ? window.PRINTCALC_MACHINES
+        : [];
+
+    select.innerHTML =
+      '<option value="">Выберите станок</option>';
+
+    machines.forEach(function (machine) {
+
+      const option = document.createElement("option");
+
+      option.value = machine.id;
+      option.textContent = machine.name;
+
+      select.appendChild(option);
+
+    });
+
+
+    select.addEventListener(
+      "change",
+      function () {
+
+        const machine = machines.find(function (item) {
+          return item.id === select.value;
+        });
+
+        if (!machine) {
+          return;
+        }
+
+        pcSet("speed", machine.speed);
+        pcSet("power", machine.power);
+        pcSet("setup", machine.setup);
+        pcSet("machine", machine.machineRate);
+        pcSet("labor", machine.laborRate);
+
+        const hint =
+          document.getElementById("machineHint");
+
+        if (hint) {
+
+          hint.textContent =
+            machine.name
+            + " • "
+            + machine.speed
+            + " м/мин • "
+            + machine.power
+            + " кВт";
+
+        }
+
+        try {
+
+          localStorage.setItem(
+            "printcalc_selected_machine",
+            machine.id
+          );
+
+        } catch (error) {
+          // localStorage может быть запрещён.
+        }
+
+      }
+    );
+
+
+    try {
+
+      const saved =
+        localStorage.getItem(
+          "printcalc_selected_machine"
+        );
+
+      if (saved) {
+
+        const exists =
+          machines.some(function (machine) {
+            return machine.id === saved;
+          });
+
+        if (exists) {
+
+          select.value = saved;
+
+          select.dispatchEvent(
+            new Event("change")
+          );
+
+        }
+
+      }
+
+    } catch (error) {
+      // ignore
+    }
+
+  }
+
+
+  function pcElectricityCost(hours) {
+
+    const power = pcNum("power", 0);
+    const rate = pcNum("powerRate", 0);
+
+    return power * rate * hours;
+
+  }
+
+
+  function pcProductionExtras(area, quantity, hours) {
+
+    const result = {
+
+      electricity: pcElectricityCost(hours),
+
+      lamination: 0,
+
+      die: 0
+
+    };
+
+
+    const lamEnabled =
+      document.getElementById("lamEnabled");
+
+    const dieEnabled =
+      document.getElementById("dieEnabled");
+
+
+    if (
+      lamEnabled &&
+      lamEnabled.checked
+    ) {
+
+      result.lamination =
+        area * pcNum("lam", 0);
+
+    }
+
+
+    if (
+      dieEnabled &&
+      dieEnabled.checked
+    ) {
+
+      result.die =
+        (quantity / 1000)
+        * pcNum("die", 0);
+
+    }
+
+
+    result.total =
+      result.electricity
+      + result.lamination
+      + result.die;
+
+
+    return result;
+
+  }
+
+
+  window.PRINTCALC_ELECTRICITY_COST =
+    pcElectricityCost;
+
+  window.PRINTCALC_PRODUCTION_EXTRAS =
+    pcProductionExtras;
+
+
+  function pcStart() {
+
+    pcInitMachineSelector();
+
+  }
+
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      pcStart
+    );
+
+  } else {
+
+    pcStart();
+
+  }
+
+})();
