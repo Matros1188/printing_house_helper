@@ -4,7 +4,7 @@
   const config = window.PRINTCALC_CONFIG || {};
   const supabaseLib = window.supabase || null;
 
-  let supabaseClient = null;
+  let supabaseClient = window.PRINTCALC_AUTH_CORE?.getClient?.() || null;
   let storageNamespace = "guest";
   let machines = [];
   let editingId = null;
@@ -760,7 +760,17 @@
     }));
   }
 
+  function installV18MachineAuthBridge() {
+    if (window.PRINTCALC_V18_MACHINE_AUTH) return;
+    window.PRINTCALC_V18_MACHINE_AUTH = true;
+
+    if (window.PRINTCALC_AUTH_CORE?.getClient) {
+      supabaseClient = window.PRINTCALC_AUTH_CORE.getClient() || supabaseClient;
+    }
+  }
+
   function initHomeManager() {
+    installV18MachineAuthBridge();
     if (!document.getElementById("pc-machine-list")) return;
 
     createManagerModal();
