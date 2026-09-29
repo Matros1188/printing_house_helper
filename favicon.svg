@@ -1,20 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="PRINTORA">
-<defs>
-  <linearGradient id="pbg" x1="12" y1="8" x2="84" y2="88" gradientUnits="userSpaceOnUse">
-    <stop offset="0" stop-color="#416EF2"/>
-    <stop offset=".45" stop-color="#315FE4"/>
-    <stop offset="1" stop-color="#263F9F"/>
-  </linearGradient>
-  <linearGradient id="pfill" x1="28" y1="25" x2="66" y2="69" gradientUnits="userSpaceOnUse">
-    <stop offset="0" stop-color="#FFFFFF"/>
-    <stop offset="1" stop-color="#E8EEFF"/>
-  </linearGradient>
-</defs>
-<rect x="5" y="5" width="86" height="86" rx="27" fill="url(#pbg)"/>
-<rect x="6" y="6" width="84" height="84" rx="26" fill="none" stroke="#fff" stroke-opacity=".17"/>
-<path d="M27 71V25h22.4c11.7 0 18.8 5.9 18.8 15.6S61.1 56.1 49.4 56.1H36.8V71H27Zm9.8-23.4h12c6.1 0 9.2-2.1 9.2-6.3s-3.1-6.3-9.2-6.3h-12v12.6Z" fill="url(#pfill)"/>
-<path d="M25 77h41" stroke="#C8D7FF" stroke-width="3.4" stroke-linecap="round"/>
-<path d="M53 77h13" stroke="#8DE2D8" stroke-width="3.4" stroke-linecap="round"/>
-<circle cx="73" cy="60" r="4.4" fill="#9BE9E0"/>
-<circle cx="73" cy="60" r="9" fill="none" stroke="#9BE9E0" stroke-opacity=".22" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+<rect width="48" height="48" rx="13" fill="#0f172a"/>
+<path d="M14 34V14h10.7c5.9 0 9.3 2.8 9.3 7.7s-3.4 7.7-9.3 7.7h-5.2V34H14Zm5.5-9.6h4.8c2.7 0 4.2-.9 4.2-2.7s-1.5-2.7-4.2-2.7h-4.8v5.4Z" fill="#fff"/>
+<circle cx="35" cy="35" r="3" fill="#14b8a6"/>
 </svg>
