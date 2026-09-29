@@ -3373,3 +3373,697 @@ footer {
 /* ============================================================
    END V11
    ============================================================ */
+
+/* ============================================================
+   PRINTCALC FLEXO V12 — MY MACHINES
+   ============================================================ */
+
+.pc-hero-heading-v12 {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 24px !important;
+}
+
+.pc-hero-heading-v12::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 4px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, #2563eb, #7c8cff);
+}
+
+.pc-hero-line-primary,
+.pc-hero-line-secondary {
+  display: block;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: -.045em;
+  line-height: .98;
+}
+
+.pc-hero-line-primary {
+  color: #2563eb;
+  font-size: clamp(28px, 3.8vw, 48px);
+  margin-bottom: 5px;
+}
+
+.pc-hero-line-secondary {
+  color: #172033;
+  font-size: clamp(30px, 4.2vw, 54px);
+}
+
+.pc-hero-line-secondary span {
+  color: #2563eb;
+}
+
+.pc-my-machines-section {
+  background: linear-gradient(180deg, rgba(37,99,235,.025), rgba(255,255,255,0));
+}
+
+.pc-my-machines-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 26px;
+}
+
+.pc-my-machines-head h2 {
+  margin-top: 7px;
+  margin-bottom: 10px;
+  letter-spacing: -.035em;
+}
+
+.pc-machine-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 17px;
+  border: 1px solid rgba(37,99,235,.18);
+  border-radius: 12px;
+  background: #2563eb;
+  color: #fff;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .055em;
+  box-shadow: 0 9px 23px rgba(37,99,235,.16);
+  cursor: pointer;
+}
+
+.pc-machine-add-btn:hover {
+  background: #1d4ed8;
+  box-shadow: 0 12px 28px rgba(37,99,235,.22);
+  transform: translateY(-1px);
+}
+
+.pc-machine-add-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(255,255,255,.16);
+  font-size: 19px;
+  line-height: 1;
+}
+
+.pc-machine-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.pc-machine-card,
+.pc-machine-empty-home {
+  border: 1px solid #e5e9f0;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(23,32,51,.045);
+}
+
+.pc-machine-card {
+  padding: 17px;
+}
+
+.pc-machine-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pc-machine-card-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #eef4ff, #f1efff);
+  border: 1px solid #dce2fb;
+  color: #2563eb;
+  font-size: 18px;
+}
+
+.pc-machine-card-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.pc-machine-card-title > span {
+  color: #718096;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .12em;
+}
+
+.pc-machine-card-title h3 {
+  margin: 5px 0 0;
+  color: #172033;
+  font-size: 16px;
+  line-height: 1.15;
+  letter-spacing: -.025em;
+}
+
+.pc-machine-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.pc-machine-card-actions button {
+  border: 1px solid #e5e9f0;
+  border-radius: 9px;
+  background: #fff;
+  color: #718096;
+  padding: 7px 9px;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.pc-machine-card-actions button:hover {
+  border-color: #cfd8e6;
+  color: #172033;
+}
+
+.pc-machine-card-actions button:last-child:hover {
+  border-color: #f0cfcf;
+  color: #b42318;
+}
+
+.pc-machine-card-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pc-machine-card-metrics > div,
+.pc-machine-metrics > div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #edf0f4;
+  border-radius: 11px;
+  background: #fafbfd;
+}
+
+.pc-machine-card-metrics span,
+.pc-machine-metrics span {
+  display: block;
+  color: #8a94a6;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pc-machine-card-metrics b,
+.pc-machine-metrics b {
+  display: inline-block;
+  margin-top: 5px;
+  color: #172033;
+  font-size: 13px;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+}
+
+.pc-machine-card-metrics small,
+.pc-machine-metrics small {
+  margin-left: 3px;
+  color: #8a94a6;
+  font-size: 8px;
+}
+
+.pc-machine-empty-home {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border-style: dashed;
+  background: linear-gradient(145deg, #fff, #fbfcfe);
+}
+
+.pc-machine-empty-home-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 13px;
+  background: #f3f5f8;
+  color: #718096;
+  font-size: 20px;
+}
+
+.pc-machine-empty-home div:nth-child(2) {
+  flex: 1;
+}
+
+.pc-machine-empty-home strong {
+  display: block;
+  color: #172033;
+  font-size: 14px;
+}
+
+.pc-machine-empty-home span {
+  display: block;
+  margin-top: 4px;
+  color: #718096;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.pc-machine-empty-add {
+  min-height: 39px;
+  padding: 0 13px;
+  border: 1px solid #d9e1ef;
+  border-radius: 10px;
+  background: #fff;
+  color: #2563eb;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .05em;
+  cursor: pointer;
+}
+
+.pc-machine-empty-add:hover {
+  border-color: rgba(37,99,235,.35);
+  background: #f7faff;
+}
+
+/* ------------------------------------------------------------
+   MODAL ДОБАВЛЕНИЯ СТАНКА
+   ------------------------------------------------------------ */
+
+.pc-machine-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(13,22,40,.42);
+  backdrop-filter: blur(5px);
+}
+
+.pc-machine-modal[hidden] {
+  display: none;
+}
+
+.pc-machine-modal-card {
+  position: relative;
+  width: min(700px, 100%);
+  max-height: min(88vh, 820px);
+  overflow: auto;
+  padding: 27px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 21px;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(10,20,40,.20);
+}
+
+.pc-machine-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e5e9f0;
+  border-radius: 10px;
+  background: #fff;
+  color: #718096;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pc-machine-modal-close:hover {
+  background: #f7f8fb;
+  color: #172033;
+}
+
+.pc-machine-modal-eyebrow {
+  color: #2563eb;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.pc-machine-modal-card h2 {
+  margin: 8px 0 7px;
+  color: #172033;
+  font-size: 27px;
+  letter-spacing: -.04em;
+}
+
+.pc-machine-modal-lead {
+  max-width: 540px;
+  margin: 0 0 20px;
+  color: #718096;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.pc-machine-form-message {
+  min-height: 0;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.pc-machine-form-message.error {
+  padding: 9px 11px;
+  background: #fff5f5;
+  border: 1px solid #f1d2d2;
+  color: #b42318;
+}
+
+.pc-machine-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.pc-machine-form-wide {
+  grid-column: 1 / -1;
+}
+
+.pc-machine-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pc-machine-form-field span {
+  color: #718096;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.pc-machine-form-field input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #e1e6ee;
+  border-radius: 11px;
+  background: #fbfcfe;
+  color: #172033;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.pc-machine-form-field input:focus {
+  border-color: #2563eb;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.08);
+}
+
+.pc-machine-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.pc-machine-cancel,
+.pc-machine-save {
+  min-height: 43px;
+  padding: 0 15px;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pc-machine-cancel {
+  border: 1px solid #e5e9f0;
+  background: #fff;
+  color: #718096;
+}
+
+.pc-machine-save {
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(37,99,235,.16);
+}
+
+.pc-machine-save:hover {
+  background: #1d4ed8;
+}
+
+/* ------------------------------------------------------------
+   DETAIL — ВЫБОР СТАНКА
+   ------------------------------------------------------------ */
+
+.pc-production-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.pc-machine-source-note {
+  max-width: 620px;
+  margin: 7px 0 0;
+  color: #718096;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.pc-machine-manage-link {
+  flex: 0 0 auto;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.pc-machine-manage-link:hover {
+  color: #1d4ed8;
+}
+
+.pc-machine-select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.pc-machine-select-field > span {
+  color: #718096;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .1em;
+}
+
+.pc-machine-select-field select {
+  appearance: none;
+  width: 100%;
+  min-height: 49px;
+  box-sizing: border-box;
+  padding: 0 43px 0 14px;
+  border: 1px solid #dfe5ee;
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(37,99,235,.035), #fff);
+  color: #172033;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
+.pc-machine-select-field select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.08);
+}
+
+.pc-machine-preview {
+  margin-top: 12px;
+  padding: 13px;
+  border: 1px solid rgba(37,99,235,.14);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(37,99,235,.045), #fff);
+}
+
+.pc-machine-preview-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #172033;
+  font-size: 13px;
+}
+
+.pc-machine-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22,163,74,.08);
+}
+
+.pc-machine-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.pc-machine-fields {
+  margin-top: 16px;
+}
+
+.pc-machine-fields input[readonly] {
+  background: #f7f9fc;
+  color: #4d596c;
+  border-color: #e7ebf1;
+  cursor: default;
+}
+
+.pc-machine-empty {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 12px;
+  padding: 12px 13px;
+  border: 1px dashed #d9e0ea;
+  border-radius: 12px;
+  background: #fafbfd;
+}
+
+.pc-machine-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  min-width: 33px;
+  border-radius: 10px;
+  background: #f0f3f7;
+  color: #718096;
+}
+
+.pc-machine-empty > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.pc-machine-empty strong {
+  color: #172033;
+  font-size: 12px;
+}
+
+.pc-machine-empty span {
+  color: #718096;
+  font-size: 11px;
+}
+
+.pc-machine-empty a {
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .pc-my-machines-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pc-machine-add-btn {
+    width: 100%;
+  }
+
+  .pc-machine-list {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-machine-card-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pc-machine-card-top {
+    flex-wrap: wrap;
+  }
+
+  .pc-machine-card-title {
+    min-width: calc(100% - 56px);
+  }
+
+  .pc-machine-card-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 54px;
+  }
+
+  .pc-machine-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-machine-form-wide {
+    grid-column: auto;
+  }
+
+  .pc-production-header {
+    flex-direction: column;
+  }
+
+  .pc-machine-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pc-hero-heading-v12 {
+    padding-left: 14px;
+  }
+
+  .pc-hero-line-primary {
+    font-size: clamp(23px, 7vw, 34px);
+  }
+
+  .pc-hero-line-secondary {
+    font-size: clamp(26px, 8vw, 39px);
+  }
+}
+
+@media (max-width: 460px) {
+  .pc-machine-card-metrics,
+  .pc-machine-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pc-machine-card {
+    padding: 14px;
+  }
+
+  .pc-machine-modal-card {
+    padding: 21px 16px 17px;
+    border-radius: 17px;
+  }
+
+  .pc-machine-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .pc-machine-cancel,
+  .pc-machine-save {
+    width: 100%;
+  }
+}
