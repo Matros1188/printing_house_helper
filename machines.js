@@ -8,10 +8,14 @@
   let storageNamespace = "guest";
   let machines = [];
   let editingId = null;
+  let cloudReady = false;
+  let previousMachines = [];
+
+  const MACHINE_MODE = "machine";
 
   function safeNumber(value, fallback = 0) {
-    const number = Number(value);
-    return Number.isFinite(number) ? number : fallback;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : fallback;
   }
 
   function escapeHtml(value) {
@@ -28,24 +32,35 @@
     return Math.round(safeNumber(value)).toLocaleString("ru-RU") + " ₽";
   }
 
-  function key() {
-    return "printcalc_my_machines_v2::" + storageNamespace;
+  function storageKey() {
+    return "printcalc_my_machines_v4::" + storageNamespace;
+  }
+
+  function selectedMachineKey() {
+    return "printcalc_selected_machine::" + storageNamespace;
+  }
+
+  function setStorageStatus(text, state = "") {
+    const box = document.getElementById("pc-machine-storage-status");
+    if (!box) return;
+    box.textContent = text;
+    box.className = "pc-machine-storage " + state;
   }
 
   function loadLocalMachines() {
     try {
-      const raw = localStorage.getItem(key());
+      const raw = localStorage.getItem(storageKey());
       const parsed = raw ? JSON.parse(raw) : [];
       machines = Array.isArray(parsed) ? parsed : [];
     } catch (error) {
       machines = [];
-      console.warn("PRINTCALC machines:", error);
+      console.warn("PRINTCALC machines local:", error);
     }
   }
 
   function saveLocalMachines() {
     try {
-      localStorage.setItem(key(), JSON.stringify(machines));
+      localStorage.setItem(storageKey(), JSON.stringify(machines));
       return true;
     } catch (error) {
       console.warn("PRINTCALC machines save:", error);
@@ -53,55 +68,239 @@
     }
   }
 
-  async function resolveStorageNamespace() {
-    storageNamespace = "guest";
-
-    if (
-      supabaseLib &&
-      config.SUPABASE_URL &&
-      config.SUPABASE_ANON_KEY
-    ) {
-      try {
-        if (!supabaseClient) {
-          supabaseClient = supabaseLib.createClient(
-            config.SUPABASE_URL,
-            config.SUPABASE_ANON_KEY
-          );
-        }
-
-        const sessionResponse = await supabaseClient.auth.getSession();
-        const user = sessionResponse?.data?.session?.user || null;
-
-        if (user?.id) {
-          storageNamespace = user.id;
-        }
-      } catch (error) {
-        console.warn("PRINTCALC session:", error);
-      }
-    }
-
-    loadLocalMachines();
-  }
-
-  function machineTemplate(machine) {
+  function normalizeMachine(item = {}) {
     return {
-      id: machine?.id || ("machine-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8)),
-      name: String(machine?.name || "").trim(),
-      speed: safeNumber(machine?.speed),
-      power: safeNumber(machine?.power),
-      setup: safeNumber(machine?.setup),
-      machineRate: safeNumber(machine?.machineRate),
-      laborRate: safeNumber(machine?.laborRate),
-      powerRate: safeNumber(machine?.powerRate),
-      createdAt: machine?.createdAt || new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      id: String(item.id || ("machine-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8))),
+      name: String(item.name || "").trim(),
+      type: String(item.type || "Другое"),
+      speed: safeNumber(item.speed),
+      power: safeNumber(item.power),
+      setup: safeNumber(item.setup),
+      machineRate: safeNumber(item.machineRate),
+      laborRate: safeNumber(item.laborRate),
+      powerRate: safeNumber(item.powerRate),
+      createdAt: item.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      cloudId: item.cloudId || null
     };
   }
 
-  function createManagerModal() {
-    if (document.getElementById("pc-machine-modal")) {
+  async function createClientIfNeeded() {
+    if (
+      !supabaseLib ||
+      !config.SUPABASE_URL ||
+      !config.SUPABASE_ANON_KEY
+    ) {
+      return null;
+    }
+
+    if (!supabaseClient) {
+      supabaseClient = supabaseLib.createClient(
+        config.SUPABASE_URL,
+        config.SUPABASE_ANON_KEY
+      );
+    }
+
+    return supabaseClient;
+  }
+
+  async function getUserId() {
+    const client = await createClientIfNeeded();
+    if (!client) return null;
+    try {
+      const response = await client.auth.getSession();
+      return response?.data?.session?.user?.id || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async function loadCloudMachines() {
+    const client = await createClientIfNeeded();
+    if (!client || storageNamespace === "guest") {
+      cloudReady = false;
+      setStorageStatus(
+        "Гость: станки сохраняются на этом устройстве",
+        "local"
+      );
       return;
     }
+
+    try {
+      const response = await client
+        .from("calculations")
+        .select("id,calculation_data,created_at,updated_at")
+        .eq("mode", MACHINE_MODE)
+        .eq("user_id", storageNamespace)
+        .order("created_at", { ascending: true })
+        .limit(100);
+
+      if (response.error) throw response.error;
+
+      const cloud = (response.data || [])
+        .map(row => normalizeMachine({
+          ...(row.calculation_data || {}),
+          cloudId: row.id
+        }))
+        .filter(machine => machine.name);
+
+      cloudReady = true;
+
+      if (cloud.length) {
+        machines = cloud;
+        saveLocalMachines();
+      }
+
+      setStorageStatus(
+        "Сохраняется в аккаунте и доступно на ваших устройствах",
+        "cloud"
+      );
+    } catch (error) {
+      cloudReady = false;
+      setStorageStatus(
+        "Аккаунт: локальная копия сохранена на этом устройстве",
+        "local"
+      );
+      console.warn("PRINTCALC machines cloud load:", error);
+    }
+  }
+
+  async function cloudInsert(machine) {
+    const client = await createClientIfNeeded();
+    if (!client || storageNamespace === "guest") return machine;
+
+    const payload = {
+      user_id: storageNamespace,
+      mode: MACHINE_MODE,
+      calculation_data: {
+        id: machine.id,
+        name: machine.name,
+        type: machine.type,
+        speed: machine.speed,
+        power: machine.power,
+        setup: machine.setup,
+        machineRate: machine.machineRate,
+        laborRate: machine.laborRate,
+        powerRate: machine.powerRate,
+        createdAt: machine.createdAt
+      }
+    };
+
+    const response = await client
+      .from("calculations")
+      .insert(payload)
+      .select("id")
+      .maybeSingle();
+
+    if (response.error) throw response.error;
+
+    machine.cloudId = response.data?.id || null;
+    return machine;
+  }
+
+  async function cloudUpdate(machine) {
+    const client = await createClientIfNeeded();
+    if (!client || storageNamespace === "guest" || !machine.cloudId) {
+      return machine;
+    }
+
+    const response = await client
+      .from("calculations")
+      .update({
+        calculation_data: {
+          id: machine.id,
+          name: machine.name,
+          type: machine.type,
+          speed: machine.speed,
+          power: machine.power,
+          setup: machine.setup,
+          machineRate: machine.machineRate,
+          laborRate: machine.laborRate,
+          powerRate: machine.powerRate,
+          createdAt: machine.createdAt,
+          updatedAt: new Date().toISOString()
+        }
+      })
+      .eq("id", machine.cloudId)
+      .eq("mode", MACHINE_MODE);
+
+    if (response.error) throw response.error;
+    return machine;
+  }
+
+  async function syncAllToCloud() {
+    const client = await createClientIfNeeded();
+    if (!client || storageNamespace === "guest") return;
+
+    try {
+      for (const machine of machines) {
+        if (machine.cloudId) {
+          await cloudUpdate(machine);
+        } else {
+          await cloudInsert(machine);
+        }
+      }
+      cloudReady = true;
+      saveLocalMachines();
+      setStorageStatus(
+        "Сохраняется в аккаунте и доступно на ваших устройствах",
+        "cloud"
+      );
+    } catch (error) {
+      cloudReady = false;
+      setStorageStatus(
+        "Не удалось обновить облако — локальная копия сохранена",
+        "local"
+      );
+      console.warn("PRINTCALC machines sync:", error);
+    }
+  }
+
+  async function cloudDelete(machine) {
+    const client = await createClientIfNeeded();
+    if (!client || storageNamespace === "guest" || !machine?.cloudId) {
+      return;
+    }
+
+    const response = await client
+      .from("calculations")
+      .delete()
+      .eq("id", machine.cloudId)
+      .eq("mode", MACHINE_MODE);
+
+    if (response.error) throw response.error;
+  }
+
+  async function switchNamespace() {
+    previousMachines = machines.slice();
+
+    const userId = await getUserId();
+    storageNamespace = userId || "guest";
+
+    loadLocalMachines();
+
+    if (
+      storageNamespace !== "guest" &&
+      !machines.length &&
+      previousMachines.length
+    ) {
+      machines = previousMachines.map(normalizeMachine);
+      saveLocalMachines();
+    }
+
+    await loadCloudMachines();
+
+    if (storageNamespace !== "guest" && previousMachines.length && machines.length) {
+      await syncAllToCloud();
+    }
+  }
+
+  function machineTypeLabel(type) {
+    return escapeHtml(type || "Другое");
+  }
+
+  function createManagerModal() {
+    if (document.getElementById("pc-machine-modal")) return;
 
     const modal = document.createElement("div");
     modal.id = "pc-machine-modal";
@@ -114,16 +313,25 @@
 
         <div class="pc-machine-modal-eyebrow">МОИ СТАНКИ</div>
         <h2 id="pc-machine-modal-title">Добавить станок</h2>
-        <p class="pc-machine-modal-lead">
-          Заполните параметры один раз. В детальном расчёте они будут подставляться автоматически.
-        </p>
-
+        <p class="pc-machine-modal-lead">Заполните параметры один раз. В детальном расчёте они будут подставляться автоматически.</p>
         <div id="pc-machine-form-message" class="pc-machine-form-message"></div>
 
         <div class="pc-machine-form-grid">
           <label class="pc-machine-form-field pc-machine-form-wide">
             <span>Название станка</span>
             <input id="pc-machine-name" type="text" maxlength="80" placeholder="Например, Bobst Expert 106">
+          </label>
+
+          <label class="pc-machine-form-field">
+            <span>Тип станка</span>
+            <select id="pc-machine-type">
+              <option value="Флексопечать">Флексопечать</option>
+              <option value="Цифровая печать">Цифровая печать</option>
+              <option value="Ламинация">Ламинация</option>
+              <option value="Резка">Резка</option>
+              <option value="Вырубка">Вырубка</option>
+              <option value="Другое">Другое</option>
+            </select>
           </label>
 
           <label class="pc-machine-form-field">
@@ -167,9 +375,7 @@
     document.body.appendChild(modal);
 
     modal.addEventListener("click", event => {
-      if (event.target === modal) {
-        closeMachineModal();
-      }
+      if (event.target === modal) closeMachineModal();
     });
 
     document.getElementById("pc-machine-close")?.addEventListener("click", closeMachineModal);
@@ -184,22 +390,20 @@
     box.className = "pc-machine-form-message " + type;
   }
 
+  function setField(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.value = value ?? "";
+  }
+
   function clearMachineForm() {
-    const values = {
-      "pc-machine-name": "",
-      "pc-machine-speed": "",
-      "pc-machine-power": "",
-      "pc-machine-setup": "",
-      "pc-machine-rate": "",
-      "pc-machine-labor": "",
-      "pc-machine-power-rate": ""
-    };
-
-    Object.entries(values).forEach(([id, value]) => {
-      const element = document.getElementById(id);
-      if (element) element.value = value;
-    });
-
+    setField("pc-machine-name", "");
+    setField("pc-machine-type", "Флексопечать");
+    setField("pc-machine-speed", "");
+    setField("pc-machine-power", "");
+    setField("pc-machine-setup", "");
+    setField("pc-machine-rate", "");
+    setField("pc-machine-labor", "");
+    setField("pc-machine-power-rate", "");
     showFormMessage("");
   }
 
@@ -217,20 +421,15 @@
       if (title) title.textContent = "Изменить станок";
       if (saveButton) saveButton.textContent = "Сохранить изменения";
 
-      const fields = {
-        "pc-machine-name": machine.name,
-        "pc-machine-speed": machine.speed,
-        "pc-machine-power": machine.power,
-        "pc-machine-setup": machine.setup,
-        "pc-machine-rate": machine.machineRate,
-        "pc-machine-labor": machine.laborRate,
-        "pc-machine-power-rate": machine.powerRate
-      };
-
-      Object.entries(fields).forEach(([id, value]) => {
-        const element = document.getElementById(id);
-        if (element) element.value = value;
-      });
+      setField("pc-machine-name", machine.name);
+      setField("pc-machine-type", machine.type);
+      setField("pc-machine-speed", machine.speed);
+      setField("pc-machine-power", machine.power);
+      setField("pc-machine-setup", machine.setup);
+      setField("pc-machine-rate", machine.machineRate);
+      setField("pc-machine-labor", machine.laborRate);
+      setField("pc-machine-power-rate", machine.powerRate);
+      showFormMessage("");
     } else {
       if (title) title.textContent = "Добавить станок";
       if (saveButton) saveButton.textContent = "Сохранить станок";
@@ -240,7 +439,7 @@
     const modal = document.getElementById("pc-machine-modal");
     if (modal) modal.hidden = false;
 
-    setTimeout(() => document.getElementById("pc-machine-name")?.focus(), 40);
+    setTimeout(() => document.getElementById("pc-machine-name")?.focus(), 50);
   }
 
   function closeMachineModal() {
@@ -257,8 +456,9 @@
       return null;
     }
 
-    const machine = machineTemplate({
+    const machine = normalizeMachine({
       name,
+      type: document.getElementById("pc-machine-type")?.value || "Другое",
       speed: safeNumber(document.getElementById("pc-machine-speed")?.value),
       power: safeNumber(document.getElementById("pc-machine-power")?.value),
       setup: safeNumber(document.getElementById("pc-machine-setup")?.value),
@@ -272,31 +472,58 @@
       return null;
     }
 
+    if (machine.power < 0 || machine.setup < 0 || machine.machineRate < 0 || machine.laborRate < 0 || machine.powerRate < 0) {
+      showFormMessage("Параметры станка не могут быть отрицательными.", "error");
+      return null;
+    }
+
     return machine;
   }
 
-  function saveMachineFromForm() {
+  async function saveMachineFromForm() {
     const formMachine = readMachineForm();
     if (!formMachine) return;
 
+    let savedMachine = null;
+
     if (editingId) {
       const index = machines.findIndex(item => item.id === editingId);
-      if (index >= 0) {
-        machines[index] = {
-          ...machines[index],
-          ...formMachine,
-          id: machines[index].id,
-          createdAt: machines[index].createdAt,
-          updatedAt: new Date().toISOString()
-        };
-      }
+      if (index < 0) return;
+
+      savedMachine = {
+        ...machines[index],
+        ...formMachine,
+        id: machines[index].id,
+        cloudId: machines[index].cloudId,
+        createdAt: machines[index].createdAt,
+        updatedAt: new Date().toISOString()
+      };
+
+      machines[index] = savedMachine;
     } else {
-      machines.push(formMachine);
+      savedMachine = formMachine;
+      machines.push(savedMachine);
     }
 
     if (!saveLocalMachines()) {
-      showFormMessage("Не удалось сохранить станок в браузере.", "error");
+      showFormMessage("Не удалось сохранить станок на этом устройстве.", "error");
       return;
+    }
+
+    try {
+      if (storageNamespace !== "guest") {
+        savedMachine = editingId
+          ? await cloudUpdate(savedMachine)
+          : await cloudInsert(savedMachine);
+        const idx = machines.findIndex(item => item.id === savedMachine.id);
+        if (idx >= 0) machines[idx] = savedMachine;
+        saveLocalMachines();
+        cloudReady = true;
+        setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах", "cloud");
+      }
+    } catch (error) {
+      setStorageStatus("Изменение сохранено на этом устройстве; облачная копия не обновилась", "local");
+      console.warn("PRINTCALC machine cloud save:", error);
     }
 
     closeMachineModal();
@@ -304,7 +531,7 @@
     populateMachineSelect();
   }
 
-  function deleteMachine(machineId) {
+  async function deleteMachine(machineId) {
     const machine = machines.find(item => item.id === machineId);
     if (!machine) return;
 
@@ -314,34 +541,70 @@
 
     if (!accepted) return;
 
+    try {
+      await cloudDelete(machine);
+    } catch (error) {
+      console.warn("PRINTCALC machine cloud delete:", error);
+      setStorageStatus("Удалено локально; облачная запись пока не удалена", "local");
+    }
+
     machines = machines.filter(item => item.id !== machineId);
     saveLocalMachines();
     renderMachineList();
     populateMachineSelect();
   }
 
+  function getFilteredMachines() {
+    const input = document.getElementById("pc-machine-search");
+    const query = (input?.value || "").trim().toLocaleLowerCase("ru-RU");
+    if (!query) return machines.slice();
+    return machines.filter(machine =>
+      [machine.name, machine.type].join(" ").toLocaleLowerCase("ru-RU").includes(query)
+    );
+  }
+
+  function pluralMachines(count) {
+    if (count % 10 === 1 && count % 100 !== 11) return `${count} станок`;
+    if ([2,3,4].includes(count % 10) && ![12,13,14].includes(count % 100)) return `${count} станка`;
+    return `${count} станков`;
+  }
+
   function renderMachineList() {
     const box = document.getElementById("pc-machine-list");
+    const countBox = document.getElementById("pc-machine-count");
     if (!box) return;
+
+    const filtered = getFilteredMachines();
+    if (countBox) countBox.textContent = `${pluralMachines(filtered.length)}${filtered.length !== machines.length ? ` из ${machines.length}` : ""}`;
 
     if (!machines.length) {
       box.innerHTML = `
         <div class="pc-machine-empty-home">
           <div class="pc-machine-empty-home-icon">⚙</div>
-          <div>
+          <div class="pc-machine-empty-copy">
             <strong>Добавьте первый станок</strong>
-            <span>После добавления он появится здесь и станет доступен в детальном расчёте.</span>
+            <span>Ваши реальные машины появятся здесь и станут доступны в детальном расчёте.</span>
           </div>
           <button type="button" class="pc-machine-empty-add" data-machine-add>ДОБАВИТЬ СТАНОК</button>
         </div>
       `;
+    } else if (!filtered.length) {
+      box.innerHTML = `
+        <div class="pc-machine-empty-home compact">
+          <div class="pc-machine-empty-home-icon">⌕</div>
+          <div class="pc-machine-empty-copy">
+            <strong>Станок не найден</strong>
+            <span>Измените поисковый запрос.</span>
+          </div>
+        </div>
+      `;
     } else {
-      box.innerHTML = machines.map(machine => `
-        <article class="pc-machine-card">
+      box.innerHTML = filtered.map(machine => `
+        <article class="pc-machine-card" data-machine-card="${escapeHtml(machine.id)}">
           <div class="pc-machine-card-top">
             <div class="pc-machine-card-icon">⚙</div>
             <div class="pc-machine-card-title">
-              <span>СТАНОК</span>
+              <span>${machineTypeLabel(machine.type)}</span>
               <h3>${escapeHtml(machine.name)}</h3>
             </div>
             <div class="pc-machine-card-actions">
@@ -351,12 +614,12 @@
           </div>
 
           <div class="pc-machine-card-metrics">
-            <div><span>СКОРОСТЬ</span><b>${machine.speed}</b><small>м/мин</small></div>
-            <div><span>МОЩНОСТЬ</span><b>${machine.power}</b><small>кВт</small></div>
-            <div><span>НАЛАДКА</span><b>${machine.setup}</b><small>мин</small></div>
-            <div><span>МАШИНА</span><b>${money(machine.machineRate)}</b><small>в час</small></div>
-            <div><span>РАБОТА</span><b>${money(machine.laborRate)}</b><small>в час</small></div>
-            <div><span>ЭЛЕКТРОЭНЕРГИЯ</span><b>${machine.powerRate}</b><small>₽/кВт⋅ч</small></div>
+            <div><span>Скорость</span><b>${safeNumber(machine.speed).toLocaleString("ru-RU")}</b><small>м/мин</small></div>
+            <div><span>Мощность</span><b>${safeNumber(machine.power).toLocaleString("ru-RU")}</b><small>кВт</small></div>
+            <div><span>Наладка</span><b>${safeNumber(machine.setup).toLocaleString("ru-RU")}</b><small>мин</small></div>
+            <div><span>Машина</span><b>${money(machine.machineRate)}</b><small>в час</small></div>
+            <div><span>Работа</span><b>${money(machine.laborRate)}</b><small>в час</small></div>
+            <div><span>Электроэнергия</span><b>${safeNumber(machine.powerRate).toLocaleString("ru-RU")}</b><small>₽/кВт⋅ч</small></div>
           </div>
         </article>
       `).join("");
@@ -375,17 +638,6 @@
     });
   }
 
-  function initHomeManager() {
-    if (!document.getElementById("pc-machine-list")) return;
-    createManagerModal();
-
-    document.getElementById("pc-open-machine-modal")?.addEventListener("click", () => {
-      openMachineModal();
-    });
-
-    renderMachineList();
-  }
-
   function setReadonlyMachineFields(readonly) {
     ["speed", "power", "setup", "machine", "labor", "powerRate"].forEach(id => {
       const element = document.getElementById(id);
@@ -396,23 +648,24 @@
   }
 
   function formatPreviewValue(value) {
-    return safeNumber(value).toLocaleString("ru-RU", {
-      maximumFractionDigits: 2
-    });
+    return safeNumber(value).toLocaleString("ru-RU", { maximumFractionDigits: 2 });
   }
 
   function updateMachinePreview(machine) {
     const preview = document.getElementById("machinePreview");
     const empty = document.getElementById("machineEmpty");
+    const select = document.getElementById("machineSelect");
 
     if (!machine) {
       if (preview) preview.hidden = true;
       if (empty) empty.hidden = machines.length > 0;
+      if (select) select.classList.remove("has-selection");
       return;
     }
 
     if (empty) empty.hidden = true;
     if (preview) preview.hidden = false;
+    if (select) select.classList.add("has-selection");
 
     const mapping = {
       machinePreviewName: machine.name,
@@ -451,14 +704,15 @@
 
     if (shouldPersist) {
       try {
-        localStorage.setItem(
-          "printcalc_selected_machine::" + storageNamespace,
-          machine.id
-        );
+        localStorage.setItem(selectedMachineKey(), machine.id);
       } catch (error) {
         // ignore
       }
     }
+
+    window.dispatchEvent(new CustomEvent("printcalc:machine-selected", {
+      detail: machine
+    }));
   }
 
   function populateMachineSelect() {
@@ -467,58 +721,69 @@
 
     let savedId = "";
     try {
-      savedId = localStorage.getItem(
-        "printcalc_selected_machine::" + storageNamespace
-      ) || "";
+      savedId = localStorage.getItem(selectedMachineKey()) || "";
     } catch (error) {
       // ignore
     }
+
+    const pendingId = window.PRINTCALC_PENDING_MACHINE_ID || "";
+    const targetId = pendingId || savedId;
 
     select.innerHTML = `<option value="">Выберите станок</option>` +
       machines.map(machine =>
         `<option value="${escapeHtml(machine.id)}">${escapeHtml(machine.name)}</option>`
       ).join("");
 
-    select.value = machines.some(item => item.id === savedId) ? savedId : "";
+    select.value = machines.some(item => item.id === targetId) ? targetId : "";
 
     setReadonlyMachineFields(true);
 
     select.onchange = () => {
       const machine = machines.find(item => item.id === select.value) || null;
-
       if (!machine) {
         updateMachinePreview(null);
+        window.dispatchEvent(new CustomEvent("printcalc:machine-selected", { detail: null }));
         return;
       }
-
       applyMachine(machine, true);
     };
 
     if (select.value) {
       const machine = machines.find(item => item.id === select.value);
-      if (machine) {
-        applyMachine(machine, false);
-      }
+      if (machine) applyMachine(machine, false);
     } else {
       updateMachinePreview(null);
     }
+
+    window.dispatchEvent(new CustomEvent("printcalc:machines-ready", {
+      detail: machines.slice()
+    }));
   }
 
-  function initDetailSelector() {
-    if (!document.getElementById("machineSelect")) return;
+  function initHomeManager() {
+    if (!document.getElementById("pc-machine-list")) return;
 
-    populateMachineSelect();
+    createManagerModal();
+
+    document.getElementById("pc-open-machine-modal")?.addEventListener("click", () => {
+      openMachineModal();
+    });
+
+    document.getElementById("pc-machine-search")?.addEventListener("input", renderMachineList);
+    renderMachineList();
   }
 
   async function init() {
-    await resolveStorageNamespace();
+    await switchNamespace();
     initHomeManager();
-    initDetailSelector();
+    populateMachineSelect();
+    renderMachineList();
 
-    if (supabaseClient) {
-      supabaseClient.auth.onAuthStateChange(() => {
+    const client = await createClientIfNeeded();
+    if (client) {
+      client.auth.onAuthStateChange(() => {
         window.setTimeout(async () => {
-          await resolveStorageNamespace();
+          await switchNamespace();
           renderMachineList();
           populateMachineSelect();
         }, 0);
@@ -529,8 +794,9 @@
   window.PRINTCALC_MACHINES = {
     getAll: () => machines.slice(),
     getById: id => machines.find(item => item.id === id) || null,
-    refresh: () => {
+    refresh: async () => {
       loadLocalMachines();
+      await loadCloudMachines();
       renderMachineList();
       populateMachineSelect();
     }
