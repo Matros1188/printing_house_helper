@@ -361,7 +361,7 @@
     const customerName = String(inputs.customerName || "").trim();
 
     const calculationData = {
-      title: customerName || (mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт"),
+      title: mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт",
       customer_name: customerName,
       result_text: resultText,
       inputs,
