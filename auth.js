@@ -81,7 +81,10 @@
       <div class="pc-auth-card" role="dialog" aria-modal="true" aria-labelledby="pc-auth-title">
         <button type="button" class="pc-auth-close" aria-label="Закрыть">×</button>
 
-        <div class="pc-auth-brand">PRINTCALC FLEXO</div>
+        <div class="pc-auth-brand pc-auth-brand-v16">
+  <img src="brand-mark.svg?v=160" alt="" aria-hidden="true">
+  <span><b>PRINTCALC</b><small>FLEXO</small></span>
+</div>
         <h2 id="pc-auth-title">Ваш рабочий аккаунт</h2>
         <p class="pc-auth-lead">
           Сохраняйте расчёты и открывайте историю из личного кабинета.
