@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="style.css?v=87">
+<link rel="stylesheet" href="style.css?v=90">
 <title>Детальный расчёт — PRINTCALC FLEXO</title>
 </head>
 <body class="calculator">
@@ -167,18 +167,116 @@
 </section>
 
 
-<section class="panel">
-  <span class="panel-label">ПРОИЗВОДСТВО</span>
+<section class="panel pc-production-panel">
+
+  <div class="pc-production-row">
+
+    <span class="panel-label">ПРОИЗВОДСТВО</span>
+
+    <label class="pc-machine-select-wrap">
+
+      <span>ВЫБОР СТАНКА</span>
+
+      <select id="machineSelect">
+        <option value="">Выберите станок</option>
+      </select>
+
+    </label>
+
+  </div>
+
   <h2>Машина и работа</h2>
 
-  <div class="fields">
-    <label class="field"><span>Скорость, м/мин</span><input id="speed" type="number" value="80"></label>
-    <label class="field"><span>Наладка, мин</span><input id="setup" type="number" value="35"></label>
-    <label class="field"><span>Машина, ₽/час</span><input id="machine" type="number" value="1800"></label>
-    <label class="field"><span>Работа, ₽/час</span><input id="labor" type="number" value="650"></label>
-    <label class="field"><span>Ламинация, ₽/м²</span><input id="lam" type="number" value="70"></label>
-    <label class="field"><span>Вырубка, ₽/1000</span><input id="die" type="number" value="180"></label>
+  <div id="machineHint" class="pc-machine-hint">
+    Выберите станок — его производственные параметры подставятся автоматически.
   </div>
+
+  <div class="fields">
+
+    <label class="field">
+      <span>Скорость, м/мин</span>
+      <input id="speed" type="number" value="80" min="0" step="1">
+    </label>
+
+    <label class="field">
+      <span>Электропотребление, кВт</span>
+      <input id="power" type="number" value="18" min="0" step="0.1">
+    </label>
+
+    <label class="field">
+      <span>Наладка, мин</span>
+      <input id="setup" type="number" value="35" min="0" step="1">
+    </label>
+
+    <label class="field">
+      <span>Машина, ₽/час</span>
+      <input id="machine" type="number" value="1800" min="0" step="1">
+    </label>
+
+    <label class="field">
+      <span>Работа, ₽/час</span>
+      <input id="labor" type="number" value="650" min="0" step="1">
+    </label>
+
+    <label class="field">
+      <span>Тариф электроэнергии, ₽/кВт⋅ч</span>
+      <input id="powerRate" type="number" value="8" min="0" step="0.1">
+    </label>
+
+  </div>
+
+</section>
+
+<section class="panel pc-operations-panel">
+
+  <span class="panel-label">ОПЕРАЦИИ</span>
+
+  <h2>Ламинация и резка</h2>
+
+  <div class="pc-service-grid">
+
+    <div class="pc-service-item">
+
+      <label class="check-row">
+        <input id="lamEnabled" type="checkbox">
+        <span>Ламинация</span>
+      </label>
+
+      <label class="field">
+        <span>Стоимость, ₽/м²</span>
+        <input
+          id="lam"
+          type="number"
+          value="70"
+          min="0"
+          step="0.01"
+        >
+      </label>
+
+    </div>
+
+    <div class="pc-service-item">
+
+      <label class="check-row">
+        <input id="dieEnabled" type="checkbox">
+        <span>Резка / вырубка</span>
+      </label>
+
+      <label class="field">
+        <span>Стоимость, ₽/1000</span>
+        <input
+          id="die"
+          type="number"
+          value="180"
+          min="0"
+          step="0.01"
+        >
+      </label>
+
+    </div>
+
+  </div>
+
 </section>
 
 
@@ -215,9 +313,10 @@
 
 <footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span></div></footer>
 
-<script src="detail.js?v=86"></script>
+<script src="detail.js?v=90"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=86"></script>
 <script src="auth.js?v=86"></script>
+<script src="machines.js?v=90"></script>
 </body>
 </html>
