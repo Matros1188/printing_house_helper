@@ -272,7 +272,7 @@
 
   function collectSnapshot(mode) {
     const detailIds = [
-      "qty","streams","width","height","web","repeat","gsm","waste",
+      "customerName","qty","streams","width","height","web","repeat","gsm","waste",
       "matPrice","colors","inkPrice","inkUse","machineSelect",
       "speed","power","setup","machine","labor","powerRate",
       "lam","die","lamEnabled","dieEnabled","overhead","admin",
@@ -280,7 +280,7 @@
     ];
 
     const quickIds = [
-      "qty","streams","width","height","web","repeat","gsm","waste",
+      "customerName","qty","streams","width","height","web","repeat","gsm","waste",
       "matPrice","colors","inkPrice","inkUse","lam","die"
     ];
 
@@ -358,8 +358,11 @@
     const savedAt = new Date().toISOString();
     const clientId = makeHistoryId();
 
+    const customerName = String(inputs.customerName || "").trim();
+
     const calculationData = {
-      title: mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт",
+      title: customerName || (mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт"),
+      customer_name: customerName,
       result_text: resultText,
       inputs,
       reason,
