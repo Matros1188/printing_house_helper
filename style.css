@@ -1811,3 +1811,114 @@ label {
   }
 
 }
+
+
+
+/* ============================================================
+   PRINTCALC FLEXO — V10 PRODUCTION UI
+   ============================================================ */
+
+.pc-production-panel {
+  position: relative;
+}
+
+.pc-production-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pc-machine-select-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 240px;
+}
+
+.pc-machine-select-wrap > span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #718096;
+}
+
+.pc-machine-select-wrap select {
+  min-height: 42px;
+  padding: 0 38px 0 13px;
+  border: 1px solid #e5e9f0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #172033;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+.pc-machine-select-wrap select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+}
+
+.pc-machine-hint {
+  margin: 12px 0 18px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: #f3f5f8;
+  color: #718096;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pc-service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pc-service-item {
+  padding: 15px;
+  border: 1px solid #e5e9f0;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.pc-service-item .field {
+  margin-top: 12px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.check-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+}
+
+@media (max-width: 760px) {
+
+  .pc-production-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pc-machine-select-wrap {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .pc-machine-select-wrap select {
+    width: 100%;
+  }
+
+  .pc-service-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
