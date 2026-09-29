@@ -3,15 +3,16 @@
 const $ = id => document.getElementById(id);
 
 const num = id => {
-  const v = Number($(id).value);
-  return Number.isFinite(v) ? v : 0;
+  const element = $(id);
+  if (!element) return 0;
+  const value = Number(element.value);
+  return Number.isFinite(value) ? value : 0;
 };
 
-const rub = v =>
-  Math.round(v).toLocaleString("ru-RU") + " ₽";
+const rub = value =>
+  Math.round(value).toLocaleString("ru-RU") + " ₽";
 
 function calculate() {
-
   const qty = Math.max(1, num("qty"));
   const streams = Math.max(1, num("streams"));
   const width = Math.max(1, num("width"));
@@ -26,17 +27,38 @@ function calculate() {
   const inkUse = Math.max(0, num("inkUse"));
 
   const speed = Math.max(1, num("speed"));
+  const power = Math.max(0, num("power"));
+  const powerRate = Math.max(0, num("powerRate"));
   const setup = Math.max(0, num("setup"));
   const machine = Math.max(0, num("machine"));
   const labor = Math.max(0, num("labor"));
 
   const lamRate = Math.max(0, num("lam"));
   const dieRate = Math.max(0, num("die"));
+  const lamEnabled = Boolean($("lamEnabled")?.checked);
+  const dieEnabled = Boolean($("dieEnabled")?.checked);
 
   const overheadRate = Math.max(0, num("overhead"));
   const adminRate = Math.max(0, num("admin"));
   const markupRate = Math.max(0, num("markup"));
   const minimum = Math.max(0, num("minimum"));
+
+  const selectedMachine = $("machineSelect")?.value || "";
+  if (!selectedMachine) {
+    $("result").innerHTML = `
+      <div class="result-top">
+        <div>
+          <span>НУЖЕН СТАНОК</span>
+          <h2>Выберите станок из «Мои станки»</h2>
+        </div>
+      </div>
+      <div class="note">
+        Расчёт производства не использует встроенные значения.
+        Сначала выберите ваш сохранённый станок.
+      </div>
+    `;
+    return;
+  }
 
   const repeats = Math.ceil(qty / streams);
   const meters = repeats * repeat / 1000 * (1 + waste / 100);
@@ -50,18 +72,21 @@ function calculate() {
 
   const printMinutes = meters / speed;
   const totalMinutes = setup + printMinutes;
+  const productionHours = totalMinutes / 60;
 
-  const machineCost = totalMinutes / 60 * machine;
-  const laborCost = totalMinutes / 60 * labor;
+  const machineCost = productionHours * machine;
+  const laborCost = productionHours * labor;
+  const electricityCost = productionHours * power * powerRate;
 
-  const lamCost = area * lamRate;
-  const dieCost = qty / 1000 * dieRate;
+  const lamCost = lamEnabled ? area * lamRate : 0;
+  const dieCost = dieEnabled ? qty / 1000 * dieRate : 0;
 
   const direct =
     materialCost +
     inkCost +
     machineCost +
     laborCost +
+    electricityCost +
     lamCost +
     dieCost;
 
@@ -76,9 +101,7 @@ function calculate() {
   const calculatedPrice =
     fullCost * (1 + markupRate / 100);
 
-  const price =
-    Math.max(minimum, calculatedPrice);
-
+  const price = Math.max(minimum, calculatedPrice);
   const profit = price - fullCost;
 
   $("result").innerHTML = `
@@ -87,6 +110,7 @@ function calculate() {
         <span>ЭКОНОМИКА ГОТОВА</span>
         <h2>Полная структура заказа</h2>
       </div>
+      <span class="pc-ready-badge">РАСЧЁТ ГОТОВ</span>
     </div>
 
     <div class="price-grid">
@@ -105,7 +129,7 @@ function calculate() {
       <div class="stat"><span>Тираж</span><b>${qty.toLocaleString("ru-RU")} шт.</b></div>
       <div class="stat"><span>Метраж</span><b>${meters.toFixed(1)} м</b></div>
       <div class="stat"><span>Материал</span><b>${materialKg.toFixed(2)} кг</b></div>
-      <div class="stat"><span>Время</span><b>${(totalMinutes / 60).toFixed(1)} ч</b></div>
+      <div class="stat"><span>Время</span><b>${productionHours.toFixed(1)} ч</b></div>
     </div>
 
     <div class="breakdown">
@@ -113,258 +137,66 @@ function calculate() {
       <div><span>Краска</span><b>${rub(inkCost)}</b></div>
       <div><span>Машина</span><b>${rub(machineCost)}</b></div>
       <div><span>Работа</span><b>${rub(laborCost)}</b></div>
+      <div><span>Электроэнергия</span><b>${rub(electricityCost)}</b></div>
       <div><span>Ламинация</span><b>${rub(lamCost)}</b></div>
       <div><span>Вырубка</span><b>${rub(dieCost)}</b></div>
       <div><span>Накладные</span><b>${rub(overheadCost)}</b></div>
       <div><span>Административные</span><b>${rub(adminCost)}</b></div>
       <div><span>ПРИБЫЛЬ</span><b>${rub(profit)}</b></div>
     </div>
-
-    <div class="note">
-      Детальный расчёт показывает управленческую экономику заказа.
-      Фактическая себестоимость зависит от производственных норм.
-    </div>
   `;
 }
 
-$("calc").addEventListener("click", calculate);
-calculate();
+$("calc")?.addEventListener("click", calculate);
 
-
-
-/* ============================================================
-   PRINTCALC FLEXO — MACHINE SELECTOR
-   ============================================================ */
-
-(function () {
-
-  "use strict";
-
-  function pcNum(id, fallback) {
-    const el = document.getElementById(id);
-
-    if (!el) {
-      return fallback;
+[
+  "qty",
+  "streams",
+  "width",
+  "height",
+  "web",
+  "repeat",
+  "gsm",
+  "waste",
+  "matPrice",
+  "colors",
+  "inkPrice",
+  "inkUse",
+  "speed",
+  "power",
+  "powerRate",
+  "setup",
+  "machine",
+  "labor",
+  "lam",
+  "die",
+  "overhead",
+  "admin",
+  "markup",
+  "minimum",
+  "lamEnabled",
+  "dieEnabled"
+].forEach(id => {
+  $(id)?.addEventListener("change", () => {
+    if ($(id)?.type === "checkbox") {
+      // Состояние операции хранится визуально отдельным переключателем.
     }
+  });
+});
 
-    const value = Number(el.value);
-
-    return Number.isFinite(value)
-      ? value
-      : fallback;
+$("lamEnabled")?.addEventListener("change", event => {
+  const field = $("lam");
+  if (field) {
+    field.disabled = !event.target.checked;
   }
+});
 
-
-  function pcSet(id, value) {
-
-    const el = document.getElementById(id);
-
-    if (!el) {
-      return;
-    }
-
-    el.value = value;
+$("dieEnabled")?.addEventListener("change", event => {
+  const field = $("die");
+  if (field) {
+    field.disabled = !event.target.checked;
   }
+});
 
-
-  function pcInitMachineSelector() {
-
-    const select = document.getElementById("machineSelect");
-
-    if (!select) {
-      return;
-    }
-
-    const machines =
-      Array.isArray(window.PRINTCALC_MACHINES)
-        ? window.PRINTCALC_MACHINES
-        : [];
-
-    select.innerHTML =
-      '<option value="">Выберите станок</option>';
-
-    machines.forEach(function (machine) {
-
-      const option = document.createElement("option");
-
-      option.value = machine.id;
-      option.textContent = machine.name;
-
-      select.appendChild(option);
-
-    });
-
-
-    select.addEventListener(
-      "change",
-      function () {
-
-        const machine = machines.find(function (item) {
-          return item.id === select.value;
-        });
-
-        if (!machine) {
-          return;
-        }
-
-        pcSet("speed", machine.speed);
-        pcSet("power", machine.power);
-        pcSet("setup", machine.setup);
-        pcSet("machine", machine.machineRate);
-        pcSet("labor", machine.laborRate);
-
-        const hint =
-          document.getElementById("machineHint");
-
-        if (hint) {
-
-          hint.textContent =
-            machine.name
-            + " • "
-            + machine.speed
-            + " м/мин • "
-            + machine.power
-            + " кВт";
-
-        }
-
-        try {
-
-          localStorage.setItem(
-            "printcalc_selected_machine",
-            machine.id
-          );
-
-        } catch (error) {
-          // localStorage может быть запрещён.
-        }
-
-      }
-    );
-
-
-    try {
-
-      const saved =
-        localStorage.getItem(
-          "printcalc_selected_machine"
-        );
-
-      if (saved) {
-
-        const exists =
-          machines.some(function (machine) {
-            return machine.id === saved;
-          });
-
-        if (exists) {
-
-          select.value = saved;
-
-          select.dispatchEvent(
-            new Event("change")
-          );
-
-        }
-
-      }
-
-    } catch (error) {
-      // ignore
-    }
-
-  }
-
-
-  function pcElectricityCost(hours) {
-
-    const power = pcNum("power", 0);
-    const rate = pcNum("powerRate", 0);
-
-    return power * rate * hours;
-
-  }
-
-
-  function pcProductionExtras(area, quantity, hours) {
-
-    const result = {
-
-      electricity: pcElectricityCost(hours),
-
-      lamination: 0,
-
-      die: 0
-
-    };
-
-
-    const lamEnabled =
-      document.getElementById("lamEnabled");
-
-    const dieEnabled =
-      document.getElementById("dieEnabled");
-
-
-    if (
-      lamEnabled &&
-      lamEnabled.checked
-    ) {
-
-      result.lamination =
-        area * pcNum("lam", 0);
-
-    }
-
-
-    if (
-      dieEnabled &&
-      dieEnabled.checked
-    ) {
-
-      result.die =
-        (quantity / 1000)
-        * pcNum("die", 0);
-
-    }
-
-
-    result.total =
-      result.electricity
-      + result.lamination
-      + result.die;
-
-
-    return result;
-
-  }
-
-
-  window.PRINTCALC_ELECTRICITY_COST =
-    pcElectricityCost;
-
-  window.PRINTCALC_PRODUCTION_EXTRAS =
-    pcProductionExtras;
-
-
-  function pcStart() {
-
-    pcInitMachineSelector();
-
-  }
-
-
-  if (document.readyState === "loading") {
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      pcStart
-    );
-
-  } else {
-
-    pcStart();
-
-  }
-
-})();
+if ($("lam")) $("lam").disabled = true;
+if ($("die")) $("die").disabled = true;
