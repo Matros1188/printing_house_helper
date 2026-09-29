@@ -1,12 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="PRINTCALC FLEXO">
   <defs>
-    <linearGradient id="g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#3D68EE"/>
-      <stop offset="1" stop-color="#5C63D8"/>
+    <linearGradient id="pcv16a" x1="12" y1="10" x2="68" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#203F9E"/>
+      <stop offset="0.56" stop-color="#315FE4"/>
+      <stop offset="1" stop-color="#4550C5"/>
+    </linearGradient>
+    <linearGradient id="pcv16b" x1="23" y1="18" x2="57" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E6ECFF"/>
     </linearGradient>
   </defs>
-  <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#g)"/>
-  <path d="M19 47V17h15c7 0 11 4 11 10 0 6-5 10-12 10h-8v10h-6Zm6-15h7c4 0 6.5-1.6 6.5-4.8 0-3-2.4-4.5-6.5-4.5H25V32Z" fill="#fff"/>
-  <path d="M14 50.5h21.5" stroke="#DCE6FF" stroke-width="2.5" stroke-linecap="round" opacity=".72"/>
-  <circle cx="48.5" cy="47.5" r="3" fill="#C9F4F0"/>
+  <rect x="4" y="4" width="72" height="72" rx="23" fill="url(#pcv16a)"/>
+  <rect x="5" y="5" width="70" height="70" rx="22" fill="none" stroke="#FFFFFF" stroke-opacity=".21"/>
+  <path d="M18 58h28" stroke="#B9C9FC" stroke-width="2.7" stroke-linecap="round" opacity=".72"/>
+  <path d="M52 58h9" stroke="#91E2D8" stroke-width="2.7" stroke-linecap="round"/>
+  <path d="M23 57V21h15.7c10.5 0 16.9 5.1 16.9 13.6s-6.4 13.6-16.9 13.6H30V57h-7Zm7-14.1h8c6.1 0 10.5-2.1 10.5-7.3s-4.4-7.1-10.5-7.1H30v14.4Z" fill="url(#pcv16b)"/>
+  <circle cx="59.3" cy="47.3" r="4.1" fill="#91E2D8"/>
+  <path d="M59.3 40.5v-4.2M59.3 58.3v-4.1M52.5 47.3h-4.1M66.1 47.3h4" stroke="#91E2D8" stroke-width="1.5" stroke-linecap="round" opacity=".86"/>
 </svg>
