@@ -134,6 +134,49 @@
     );
   }
 
+  function parseNumber(value) {
+    if (value === null || value === undefined) return null;
+    const cleaned = String(value)
+      .replace(/\u00a0/g, " ")
+      .replace(/\s+/g, "")
+      .replace(/₽/g, "")
+      .replace(/%/g, "")
+      .replace(/м²/g, "")
+      .replace(/шт\.?/gi, "")
+      .replace(/кг/gi, "")
+      .replace(/мин/gi, "")
+      .replace(/м\/мин/gi, "")
+      .replace(/кВт/gi, "")
+      .replace(/,/g, ".")
+      .replace(/[^0-9.\-]/g, "");
+    const n = Number(cleaned);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function formatQty(value) {
+    const n = parseNumber(value);
+    return n === null ? "—" : Math.round(n).toLocaleString("ru-RU") + " шт.";
+  }
+
+  function formatMetric(value, unit = "") {
+    const n = parseNumber(value);
+    if (n === null) return value ? String(value) : "—";
+    return n.toLocaleString("ru-RU", { maximumFractionDigits: 2 }) + (unit ? " " + unit : "");
+  }
+
+  function findMetric(text, regex) {
+    const match = String(text || "").match(regex);
+    return match ? match[1].trim() : "";
+  }
+
+  function cleanTitle(value, detail) {
+    const title = String(value || "").trim();
+    if (!title || title.toLowerCase() === "undefined" || title === "Детальный расчёт" || title === "Быстрый расчёт") {
+      return detail ? "Детальный расчёт" : "Быстрый расчёт";
+    }
+    return title;
+  }
+
   function renderHistory(items) {
     const box = $("pc-account-history");
     if (!box) return;
@@ -149,35 +192,136 @@
       return;
     }
 
+    box.classList.add("pc-history-v20-list");
+
     box.innerHTML = items.map((item) => {
       const data = item.calculation_data || {};
       const inputs = data.inputs || {};
       const detail = item.mode === "detail";
-      const qty = Number(inputs.qty);
-      const tags = [];
+      const raw = String(data.result_text || "");
 
-      if (Number.isFinite(qty) && qty > 0) {
-        tags.push(qty.toLocaleString("ru-RU") + " шт.");
-      }
-      if (inputs.machineName) tags.push(inputs.machineName);
-      if (inputs.width && inputs.height) {
-        tags.push(`${inputs.width} × ${inputs.height} мм`);
-      }
+      const title = cleanTitle(data.title, detail);
+      const date = formatDate(item.created_at || data.saved_at_client);
+
+      const clientPrice =
+        findMetric(raw, /Цена клиенту\s*[:—-]?\s*([\d\s\u00a0.,]+\s*₽)/i) ||
+        findMetric(raw, /Цена продажи\s*[:—-]?\s*([\d\s\u00a0.,]+\s*₽)/i);
+
+      const cost =
+        findMetric(raw, /Себестоимость\s*[:—-]?\s*([\d\s\u00a0.,]+\s*₽)/i);
+
+      const margin =
+        findMetric(raw, /Маржинальность\s*[:—-]?\s*([\d\s\u00a0.,]+%)/i) ||
+        (inputs.margin ? String(inputs.margin) + "%" : "");
+
+      const price1000 =
+        findMetric(raw, /([\d\s\u00a0.,]+\s*₽\s*\/\s*1000\s*шт\.?)/i);
+
+      const priceM2 =
+        findMetric(raw, /([\d\s\u00a0.,]+\s*₽\s*\/\s*м²)/i);
+
+      const meters =
+        findMetric(raw, /Метраж\s*[:—-]?\s*([\d\s\u00a0.,]+\s*м)/i) ||
+        (inputs.meters ? formatMetric(inputs.meters, "м") : "");
+
+      const area =
+        findMetric(raw, /Площадь\s*[:—-]?\s*([\d\s\u00a0.,]+\s*м²)/i) ||
+        (inputs.area ? formatMetric(inputs.area, "м²") : "");
+
+      const material =
+        findMetric(raw, /Материал\s*[:—-]?\s*([\d\s\u00a0.,]+\s*кг)/i) ||
+        (inputs.materialKg ? formatMetric(inputs.materialKg, "кг") : "");
+
+      const setup =
+        findMetric(raw, /Наладка\s*[:—-]?\s*([\d\s\u00a0.,]+\s*мин)/i) ||
+        (inputs.setup ? formatMetric(inputs.setup, "мин") : "");
+
+      const printTime =
+        findMetric(raw, /Печать\s*[:—-]?\s*([\d\s\u00a0.,]+\s*мин)/i) ||
+        (inputs.printTime ? formatMetric(inputs.printTime, "мин") : "");
+
+      const qty = inputs.qty ? formatQty(inputs.qty) :
+        (findMetric(raw, /Тираж\s*[:—-]?\s*([\d\s\u00a0.,]+\s*шт\.?)/i) || "—");
+
+      const machine = inputs.machineName || "";
+      const materialName = inputs.materialName || "";
+      const size = inputs.width && inputs.height
+        ? `${escapeHtml(inputs.width)} × ${escapeHtml(inputs.height)} мм`
+        : "";
+
+      const readableLines = raw
+        .split(/\n+/)
+        .map(line => line.trim())
+        .filter(line => line)
+        .filter(line => !/^undefined$/i.test(line))
+        .filter(line => !/^РАСЧЁТ\s+ГОТОВ$/i.test(line))
+        .filter(line => !/^ГОТОВО$/i.test(line))
+        .filter(line => !/^Цена\s+клиенту/i.test(line))
+        .filter(line => !/^Себестоимость/i.test(line))
+        .filter(line => !/^Маржинальность/i.test(line))
+        .slice(0, 16);
+
+      const detailsHtml = readableLines.length
+        ? `<details class="pc-history-details">
+             <summary>Полная расшифровка расчёта</summary>
+             <div class="pc-history-raw-grid">
+               ${readableLines.map(line => `<span>${escapeHtml(line)}</span>`).join("")}
+             </div>
+           </details>`
+        : "";
 
       return `
-        <article class="pc-account-history-item">
-          <div class="pc-history-type ${detail ? "is-detail" : "is-quick"}">
-            ${detail ? "Σ" : "⚡"}
-          </div>
-          <div class="pc-history-content">
-            <div class="pc-history-line">
-              <span class="pc-history-mode">${detail ? "Детальный расчёт" : "Быстрый расчёт"}</span>
-              <time>${escapeHtml(formatDate(item.created_at || data.saved_at_client))}</time>
+        <article class="pc-history-card-v20">
+          <div class="pc-history-card-head">
+            <div class="pc-history-card-title-group">
+              <span class="pc-history-mode-pill ${detail ? "is-detail" : "is-quick"}">
+                <b>${detail ? "Σ" : "⚡"}</b>
+                ${detail ? "Детальный расчёт" : "Быстрый расчёт"}
+              </span>
+              <h3>${escapeHtml(title)}</h3>
+              <div class="pc-history-date">${escapeHtml(date)}</div>
             </div>
-            <strong>${escapeHtml(data.title || (detail ? "Детальный расчёт" : "Быстрый расчёт"))}</strong>
-            ${tags.length ? `<div class="pc-history-tags">${tags.map(v => `<span>${escapeHtml(v)}</span>`).join("")}</div>` : ""}
-            ${data.result_text ? `<div class="pc-history-result-text">${escapeHtml(data.result_text).slice(0, 500)}${data.result_text.length > 500 ? "…" : ""}</div>` : ""}
+            <span class="pc-history-status">ГОТОВО</span>
           </div>
+
+          <div class="pc-history-primary">
+            <div class="pc-history-primary-card price-card">
+              <span class="pc-history-label">ЦЕНА КЛИЕНТУ</span>
+              <strong>${escapeHtml(clientPrice || "—")}</strong>
+              ${price1000 ? `<small>${escapeHtml(price1000)}</small>` : ""}
+            </div>
+
+            <div class="pc-history-primary-card cost-card">
+              <span class="pc-history-label">СЕБЕСТОИМОСТЬ</span>
+              <strong>${escapeHtml(cost || "—")}</strong>
+              ${priceM2 ? `<small>${escapeHtml(priceM2)}</small>` : ""}
+            </div>
+
+            <div class="pc-history-primary-card margin-card">
+              <span class="pc-history-label">МАРЖИНАЛЬНОСТЬ</span>
+              <strong>${escapeHtml(margin || "—")}</strong>
+            </div>
+          </div>
+
+          <div class="pc-history-order-strip">
+            <div>
+              <span>ТИРАЖ</span>
+              <b>${escapeHtml(qty)}</b>
+            </div>
+            ${size ? `<div><span>РАЗМЕР</span><b>${size}</b></div>` : ""}
+            ${machine ? `<div><span>СТАНОК</span><b>${escapeHtml(machine)}</b></div>` : ""}
+            ${materialName ? `<div><span>МАТЕРИАЛ</span><b>${escapeHtml(materialName)}</b></div>` : ""}
+          </div>
+
+          <div class="pc-history-metrics">
+            ${meters ? `<div><span>МЕТРАЖ</span><b>${escapeHtml(meters)}</b></div>` : ""}
+            ${area ? `<div><span>ПЛОЩАДЬ</span><b>${escapeHtml(area)}</b></div>` : ""}
+            ${material ? `<div><span>МАТЕРИАЛ</span><b>${escapeHtml(material)}</b></div>` : ""}
+            ${setup ? `<div><span>НАЛАДКА</span><b>${escapeHtml(setup)}</b></div>` : ""}
+            ${printTime ? `<div><span>ПЕЧАТЬ</span><b>${escapeHtml(printTime)}</b></div>` : ""}
+          </div>
+
+          ${detailsHtml}
         </article>`;
     }).join("");
   }
