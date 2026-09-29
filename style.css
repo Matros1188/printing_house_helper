@@ -7361,3 +7361,106 @@ body::before {
   .pc-history-details { margin:0 16px 16px; }
   .pc-history-raw-grid { grid-template-columns:1fr; }
 }
+
+/* ============================================================
+   PRINTCALC FLEXO V21 — HISTORY FILTER BAR
+   ============================================================ */
+
+.pc-history-filter-toolbar-v21 {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  margin:0 0 18px;
+  padding:13px 14px;
+  border:1px solid #dfe6f0;
+  border-radius:16px;
+  background:linear-gradient(145deg,#ffffff,#f8fafd);
+  box-shadow:0 7px 22px rgba(29,42,69,.045), inset 0 1px 0 rgba(255,255,255,.96);
+}
+
+.pc-history-filter-left-v21 { min-width:0; flex:1 1 auto; }
+.pc-history-filter-caption-v21 { display:block; margin:0 0 7px 2px; color:#8a94a6; font-size:9px; line-height:1; font-weight:850; letter-spacing:.11em; }
+.pc-history-filter-controls-v21 { display:flex; align-items:center; gap:8px; min-width:0; }
+
+.pc-history-filter-type-v21,
+.pc-history-filter-fields-v21 input {
+  min-height:40px;
+  border:1px solid #dce3ee;
+  border-radius:10px;
+  background:#fff;
+  color:#172033;
+  font:inherit;
+  font-size:13px;
+  font-weight:650;
+  outline:none;
+  transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.pc-history-filter-type-v21 { min-width:130px; padding:0 34px 0 12px; }
+.pc-history-filter-fields-v21 { min-width:0; }
+.pc-history-filter-fields-v21 input { width:175px; box-sizing:border-box; padding:0 11px; }
+.pc-history-filter-type-v21:focus,
+.pc-history-filter-fields-v21 input:focus { border-color:#315fe4; box-shadow:0 0 0 4px rgba(49,95,228,.075); }
+
+.pc-history-period-v21 { display:flex; align-items:center; gap:7px; }
+.pc-history-period-v21 label { display:flex; align-items:center; gap:6px; }
+.pc-history-period-v21 label span { color:#8a94a6; font-size:9px; font-weight:850; letter-spacing:.08em; }
+.pc-history-period-v21 b { color:#a1abba; font-size:14px; font-weight:700; }
+
+.pc-history-customer-v21 { min-width:280px; }
+.pc-history-customer-v21 input { width:280px !important; max-width:100%; }
+
+.pc-history-filter-actions-v21 { display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+.pc-history-filter-count-v21 { color:#788497; font-size:11px; font-weight:650; white-space:nowrap; }
+
+.pc-history-refresh-v21 {
+  min-height:40px;
+  padding:0 13px;
+  border:1px solid #dce3ee;
+  border-radius:10px;
+  background:#fff;
+  color:#314057;
+  font:inherit;
+  font-size:12px;
+  font-weight:750;
+  cursor:pointer;
+  transition:background .18s ease, border-color .18s ease, transform .16s ease, box-shadow .18s ease;
+}
+.pc-history-refresh-v21:hover { background:#f7f9fc; border-color:#cbd5e4; box-shadow:0 5px 13px rgba(29,42,69,.06); transform:translateY(-1px); }
+.pc-history-refresh-v21:active { transform:translateY(0); }
+
+.pc-history-customer-badge-v21 {
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  max-width:100%;
+  margin-top:8px;
+  padding:5px 8px;
+  border:1px solid #d9e2f7;
+  border-radius:999px;
+  background:#f3f6ff;
+  color:#385aa8;
+  font-size:10px;
+  line-height:1;
+  font-weight:750;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.pc-customer-field-v21 { grid-column:1 / -1; }
+.pc-customer-field-v21 input { background:linear-gradient(180deg,#fff,#fbfcff); }
+
+.pc-history-empty-v21 { min-height:180px; border:1px dashed #d9e1ec !important; background:#fbfcfe !important; }
+
+@media (max-width:760px) {
+  .pc-history-filter-toolbar-v21 { flex-direction:column; align-items:stretch; gap:12px; }
+  .pc-history-filter-controls-v21 { flex-direction:column; align-items:stretch; }
+  .pc-history-filter-type-v21, .pc-history-filter-fields-v21, .pc-history-filter-fields-v21 input, .pc-history-customer-v21 { width:100%; max-width:none; }
+  .pc-history-period-v21 { width:100%; justify-content:space-between; }
+  .pc-history-period-v21 label { flex:1 1 0; }
+  .pc-history-period-v21 input { width:100% !important; }
+  .pc-history-filter-actions-v21 { justify-content:space-between; }
+  .pc-customer-field-v21 { grid-column:auto; }
+}
