@@ -104,14 +104,49 @@
   function getCustomer(item) {
     const data = getData(item);
     const inputs = getInputs(item);
-    return String(
-      data.customer_name ||
-      inputs.customerName ||
-      inputs.customer ||
-      inputs.clientName ||
-      inputs.client ||
-      ""
-    ).trim();
+
+    const candidates = [
+      data.customer_name,
+      data.customer,
+      data.client_name,
+      data.client,
+      inputs.customerName,
+      inputs.customer,
+      inputs.clientName,
+      inputs.client,
+      item.customer_name,
+      item.customer,
+      item.client_name,
+      item.client
+    ];
+
+    for (const candidate of candidates) {
+      const value = String(candidate ?? "").trim();
+
+      if (
+        value &&
+        value.toLowerCase() !== "undefined" &&
+        value.toLowerCase() !== "null"
+      ) {
+        return value;
+      }
+    }
+
+    const raw = String(
+      data.result_text || ""
+    );
+
+    const match = raw.match(
+      /(?:Заказчик|Клиент)\s*[:—-]\s*([^\n|]+)/i
+    );
+
+    if (match && match[1]) {
+      return String(
+        match[1]
+      ).trim();
+    }
+
+    return "";
   }
 
   function cleanTitle(item) {
@@ -311,20 +346,39 @@
 
       return `
         <article class="pc-history-card-v22">
-          <header class="pc-history-card-head-v22">
-            <div class="pc-history-card-ident-v22">
+          <header class="pc-history-card-head-v23">
+
+          <div class="pc-history-card-ident-v23">
+
+            <div class="pc-history-type-row-v23">
+
               <span class="pc-history-kind-v22 ${detail ? "detail" : "quick"}">
                 <span class="pc-history-kind-dot-v22"></span>
                 ${detail ? "ДЕТАЛЬНЫЙ РАСЧЁТ" : "БЫСТРЫЙ РАСЧЁТ"}
               </span>
-              <h3>${escapeHtml(title)}</h3>
-              <div class="pc-history-card-meta-v22">
-                ${customer ? `<span class="pc-history-customer-v22">${escapeHtml(customer)}</span>` : ""}
-                <span>${escapeHtml(when)}</span>
-              </div>
+
+              <span class="pc-history-customer-v23 ${customer ? "" : "is-empty"}">
+                ${customer
+                  ? escapeHtml(customer)
+                  : "ЗАКАЗЧИК НЕ УКАЗАН"
+                }
+              </span>
+
             </div>
-            <span class="pc-history-ready-v22"><i></i>ГОТОВО</span>
-          </header>
+
+            <h3>${escapeHtml(title)}</h3>
+
+            <div class="pc-history-date-v23">
+              ${escapeHtml(when)}
+            </div>
+
+          </div>
+
+          <span class="pc-history-ready-v22">
+            <i></i>ГОТОВО
+          </span>
+
+        </header>
 
           <section class="pc-history-finance-v22">
             <div class="pc-history-finance-main-v22">
