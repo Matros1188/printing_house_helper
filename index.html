@@ -1,8 +1,4 @@
 <!doctype html>
-<!DOCTYPE html>
-
-<!DOCTYPE html>
-
 <html lang="ru">
 <head>
 <meta charset="utf-8"/>
@@ -12,674 +8,8 @@
 <link href="favicon.svg" rel="icon"/>
 <link href="style.css?v=120" rel="stylesheet"/>
 <title>PRINTCALC FLEXO</title>
-<style data-printcalc-v9="1">
-/* ================================================================
-   PRINTCALC FLEXO V9
-   FINAL HEADER / ACCOUNT / CALCULATOR ICON FIX
-   ================================================================ */
 
 
-/* ================================================================
-   HEADER
-   ================================================================ */
-
-.header-in {
-  position: relative !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  min-width: 0 !important;
-}
-
-
-/* ЛОГОТИП */
-
-.header-in > .logo {
-  position: relative !important;
-
-  flex: 0 1 auto !important;
-
-  min-width: 0 !important;
-
-  padding-bottom: 10px !important;
-
-  overflow: visible !important;
-}
-
-
-/* КНОПКА ОТКРЫТЬ РАСЧЁТ */
-
-.header-in > .header-btn {
-  flex: 0 0 auto !important;
-}
-
-
-/* ================================================================
-   АККАУНТ
-   ВСЕГДА СПРАВА
-   ================================================================ */
-
-.header-in > .pc-account-button {
-
-  order: 3 !important;
-
-  margin-left: auto !important;
-
-  flex: 0 0 auto !important;
-
-  position: relative !important;
-
-  left: auto !important;
-  right: auto !important;
-
-  top: auto !important;
-  bottom: auto !important;
-
-  transform: none !important;
-}
-
-
-/* ================================================================
-   CREATED BY SERGEY PAVLOV
-   ================================================================ */
-
-.header-in .logo-text {
-
-  position: relative !important;
-
-  display: flex !important;
-
-  flex-direction: column !important;
-
-  align-items: flex-start !important;
-
-  justify-content: flex-start !important;
-
-  min-width: 155px !important;
-
-  width: max-content !important;
-
-  max-width: none !important;
-
-  padding-bottom: 12px !important;
-
-  overflow: visible !important;
-}
-
-
-.header-in .logo-text .pc-brand-credit {
-
-  position: absolute !important;
-
-  left: 0 !important;
-  bottom: 0 !important;
-
-  display: block !important;
-
-  width: max-content !important;
-
-  max-width: none !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  color: #718096 !important;
-
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif !important;
-
-  font-size: 7.5px !important;
-
-  font-weight: 800 !important;
-
-  line-height: 1 !important;
-
-  letter-spacing: .01em !important;
-
-  white-space: nowrap !important;
-
-  overflow: visible !important;
-
-  text-overflow: clip !important;
-
-  pointer-events: none !important;
-}
-
-
-/* ================================================================
-   ВЕРХНИЙ ДЕТАЛЬНЫЙ РАСЧЁТ
-   КВАДРАТ РОВНО КАК У МОЛНИИ
-   ================================================================ */
-
-.hero-actions
-.action.secondary
-.action-icon.action-icon-detail {
-
-  width: 43px !important;
-
-  height: 43px !important;
-
-  min-width: 43px !important;
-
-  min-height: 43px !important;
-
-  flex: 0 0 43px !important;
-
-  display: grid !important;
-
-  place-items: center !important;
-
-  box-sizing: border-box !important;
-
-  padding: 0 !important;
-
-  margin: 0 !important;
-
-  border-radius: 12px !important;
-
-  background:
-    linear-gradient(
-      145deg,
-      #eef4ff 0%,
-      #e9e7ff 100%
-    ) !important;
-
-  border:
-    1px solid
-    #d9ddff !important;
-
-  color:
-    #4f46e5 !important;
-
-  overflow: hidden !important;
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255,255,255,.96),
-    0 7px 16px
-      rgba(79,70,229,.10) !important;
-}
-
-
-/* САМ КАЛЬКУЛЯТОР */
-
-.hero-actions
-.action.secondary
-.action-icon-detail
-.pc-calculator-icon {
-
-  width: 29px !important;
-
-  height: 29px !important;
-
-  max-width: 29px !important;
-
-  max-height: 29px !important;
-
-  display: block !important;
-
-  color:
-    #4f46e5 !important;
-
-  filter: none !important;
-
-  overflow: visible !important;
-}
-
-
-/* ================================================================
-   ДВА СЦЕНАРИЯ
-   ДЕТАЛЬНЫЙ РАСЧЁТ
-   ================================================================ */
-
-
-/*
-   Это правило специально имеет большую
-   специфичность, чем старый:
-   .card-icon.dark
-   Поэтому чёрный фон больше не вернётся.
-*/
-
-.cards
-.card
-.card-icon.card-icon-detail {
-
-  width: 45px !important;
-
-  height: 45px !important;
-
-  min-width: 45px !important;
-
-  min-height: 45px !important;
-
-  display: grid !important;
-
-  place-items: center !important;
-
-  box-sizing: border-box !important;
-
-  padding: 0 !important;
-
-  margin: 0 !important;
-
-  border-radius: 14px !important;
-
-  background:
-    linear-gradient(
-      145deg,
-      #eef4ff 0%,
-      #e9e7ff 100%
-    ) !important;
-
-  color:
-    #4f46e5 !important;
-
-  border:
-    1px solid
-    #d9ddff !important;
-
-  overflow: hidden !important;
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255,255,255,.96),
-    0 8px 18px
-      rgba(79,70,229,.10) !important;
-}
-
-
-/* КАЛЬКУЛЯТОР В КАРТОЧКЕ */
-
-.cards
-.card
-.card-icon.card-icon-detail
-.pc-calculator-icon {
-
-  width: 29px !important;
-
-  height: 29px !important;
-
-  max-width: 29px !important;
-
-  max-height: 29px !important;
-
-  display: block !important;
-
-  color:
-    #4f46e5 !important;
-
-  filter: none !important;
-
-  overflow: visible !important;
-}
-
-
-/* ================================================================
-   МОБИЛЬНЫЙ
-   ================================================================ */
-
-@media (max-width: 700px) {
-
-  .header-in > .logo {
-
-    min-width: 0 !important;
-
-    padding-bottom: 9px !important;
-  }
-
-
-  .header-in .logo-text {
-
-    min-width: 145px !important;
-
-    width: max-content !important;
-
-    padding-bottom: 10px !important;
-  }
-
-
-  .header-in
-  .logo-text
-  .pc-brand-credit {
-
-    font-size: 7px !important;
-  }
-
-
-  .header-in > .pc-account-button {
-
-    margin-left: auto !important;
-  }
-
-
-  .hero-actions
-  .action.secondary
-  .action-icon.action-icon-detail {
-
-    width: 43px !important;
-
-    height: 43px !important;
-
-    min-width: 43px !important;
-
-    min-height: 43px !important;
-
-    flex-basis: 43px !important;
-  }
-
-
-  .cards
-  .card
-  .card-icon.card-icon-detail {
-
-    width: 45px !important;
-
-    height: 45px !important;
-
-    min-width: 45px !important;
-
-    min-height: 45px !important;
-  }
-
-}
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-<style id="printcalc-professional-hero">
-
-.hero {
-  overflow: hidden;
-}
-
-.hero-grid {
-  min-height: auto !important;
-  padding: 52px 0 46px !important;
-  display: block !important;
-}
-
-.hero-copy {
-  width: 100% !important;
-  max-width: 900px !important;
-  margin: 0 auto !important;
-}
-
-.pc-hero-heading {
-  position: relative;
-  padding-left: 19px;
-  margin: 0 0 23px;
-}
-
-.pc-hero-heading::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 1px;
-  bottom: 1px;
-  width: 3px;
-  border-radius: 3px;
-  background: #2563eb;
-}
-
-.pc-hero-kicker {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin: 0 0 7px;
-  color: #2563eb;
-  font-size: 10px;
-  line-height: 1;
-  font-weight: 950;
-  letter-spacing: .15em;
-}
-
-.pc-hero-kicker-line {
-  width: 18px;
-  height: 1px;
-  flex: 0 0 18px;
-  background: #2563eb;
-}
-
-.pc-hero-title {
-  max-width: 820px;
-  margin: 0;
-  color: #172033;
-  font-size: clamp(39px, 5.4vw, 66px);
-  line-height: .96;
-  font-weight: 900;
-  letter-spacing: -.055em;
-}
-
-.pc-hero-title span {
-  color: #2563eb;
-}
-
-.pc-main-lead {
-  max-width: 760px !important;
-  margin: 0 0 26px !important;
-  color: #718096 !important;
-  font-size: 16px !important;
-  line-height: 1.62 !important;
-}
-
-.hero-copy .proof {
-  max-width: 820px !important;
-  margin-top: 0 !important;
-  padding-top: 17px;
-  border-top: 1px solid #e5e9f0;
-}
-
-.hero-copy .proof > div {
-  padding-right: 16px;
-  border-right: 1px solid #e5e9f0;
-}
-
-.hero-copy .proof > div:last-child {
-  border-right: 0;
-}
-
-.hero-copy .proof b {
-  color: #172033;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.hero-copy .proof span {
-  color: #718096;
-  font-size: 8px;
-}
-
-.strip-grid > div {
-  padding-top: 18px;
-  padding-bottom: 18px;
-}
-
-.section {
-  padding-top: 76px;
-  padding-bottom: 76px;
-}
-
-.cards {
-  margin-top: 28px;
-}
-
-.dark {
-  padding-top: 72px;
-  padding-bottom: 72px;
-}
-
-@media (max-width: 700px) {
-
-  .hero-grid {
-    padding: 31px 0 36px !important;
-  }
-
-  .pc-hero-heading {
-    padding-left: 15px;
-    margin-bottom: 18px;
-  }
-
-  .pc-hero-kicker {
-    gap: 7px;
-    margin-bottom: 6px;
-    font-size: 9px;
-    letter-spacing: .13em;
-  }
-
-  .pc-hero-kicker-line {
-    width: 13px;
-    flex-basis: 13px;
-  }
-
-  .pc-hero-title {
-    max-width: 100%;
-    font-size: clamp(31px, 9.5vw, 43px);
-    line-height: .98;
-    letter-spacing: -.045em;
-  }
-
-  .pc-main-lead {
-    max-width: 100% !important;
-    margin-bottom: 21px !important;
-    font-size: 14px !important;
-    line-height: 1.54 !important;
-  }
-
-  .hero-copy .proof {
-    padding-top: 14px;
-  }
-
-  .hero-copy .proof > div {
-    padding-right: 0;
-  }
-
-  .strip-grid > div {
-    padding-top: 17px;
-    padding-bottom: 17px;
-  }
-
-  .section {
-    padding-top: 58px;
-    padding-bottom: 58px;
-  }
-
-  .cards {
-    margin-top: 24px;
-  }
-
-  .dark {
-    padding-top: 58px;
-    padding-bottom: 58px;
-  }
-}
-
-</style>
-
-
-<style id="printcalc-hero-typography-final">
-
-/* ==========================================================
-   ЕДИНАЯ ТИПОГРАФИКА
-   БЫСТРЫЙ РАСЧЁТ
-   ЗА НЕСКОЛЬКО ШАГОВ
-   ========================================================== */
-
-.pc-hero-kicker {
-    display: block !important;
-
-    margin: 0 0 4px 0 !important;
-
-    color: #2563eb !important;
-
-    font-size: clamp(
-        24px,
-        3.25vw,
-        31px
-    ) !important;
-
-    line-height: 1 !important;
-
-    font-weight: 850 !important;
-
-    letter-spacing: -.035em !important;
-
-    text-transform: uppercase !important;
-}
-
-.pc-hero-kicker-line {
-    display: none !important;
-}
-
-.pc-hero-title {
-    display: block !important;
-
-    margin: 0 !important;
-
-    color: #172033 !important;
-
-    font-size: clamp(
-        24px,
-        3.25vw,
-        31px
-    ) !important;
-
-    line-height: 1 !important;
-
-    font-weight: 850 !important;
-
-    letter-spacing: -.035em !important;
-
-    text-transform: uppercase !important;
-}
-
-.pc-hero-title span {
-    color: #2563eb !important;
-}
-
-/* Немного плотнее собираем верхний экран */
-
-.pc-hero-heading {
-    margin-bottom: 20px !important;
-}
-
-.pc-main-lead {
-    margin-top: 0 !important;
-}
-
-@media (max-width: 700px) {
-
-    .pc-hero-kicker {
-        font-size: 20px !important;
-        line-height: 1 !important;
-        letter-spacing: -.03em !important;
-    }
-
-    .pc-hero-title {
-        font-size: 20px !important;
-        line-height: 1 !important;
-        letter-spacing: -.03em !important;
-    }
-
-    .pc-hero-heading {
-        margin-bottom: 16px !important;
-    }
-}
-
-</style>
 
 </head>
 <body class="landing">
@@ -689,161 +19,75 @@
 <span class="logo-p">P</span>
 <span class="logo-text"><b>PRINTCALC</b><small>FLEXO</small><em class="pc-brand-credit">Created by Sergey Pavlov</em></span>
 </a>
-<a class="header-btn" href="quick.html">Открыть расчёт</a>
+<a class="header-btn" href="quick.html">Быстрый расчёт</a>
 </div>
 </header>
 <main>
-<section class="hero">
-<div class="wrap hero-grid">
-
-<div class="hero-copy">
-
-  <div class="pc-hero-heading pc-hero-heading-v12">
-  <div class="pc-hero-line-primary">БЫСТРЫЙ РАСЧЁТ</div>
-  <div class="pc-hero-line-secondary">ЗА НЕСКОЛЬКО <span>ШАГОВ</span></div>
+<section class="pc-workspace-nav" id="pc-workspace-nav">
+<div class="wrap">
+<div class="pc-workspace-label">РАБОЧАЯ ОБЛАСТЬ</div>
+<div class="pc-workspace-grid">
+<a class="pc-workspace-card primary" href="quick.html">
+<span class="pc-workspace-card-no">01</span>
+<span class="pc-workspace-icon">⚡</span>
+<span class="pc-workspace-content">
+<strong>Быстрый расчёт</strong>
+<small>Предварительная цена за несколько шагов</small>
+</span>
+<span class="pc-workspace-arrow">→</span>
+</a>
+<a class="pc-workspace-card" href="detail.html">
+<span class="pc-workspace-card-no">02</span>
+<span class="pc-workspace-icon">Σ</span>
+<span class="pc-workspace-content">
+<strong>Детальный расчёт</strong>
+<small>Полная экономика производства и цена</small>
+</span>
+<span class="pc-workspace-arrow">→</span>
+</a>
+<a class="pc-workspace-card" href="#my-machines">
+<span class="pc-workspace-card-no">03</span>
+<span class="pc-workspace-icon">⚙</span>
+<span class="pc-workspace-content">
+<strong>Мои станки</strong>
+<small>Ваши реальные машины и их параметры</small>
+</span>
+<span class="pc-workspace-arrow">↓</span>
+</a>
 </div>
-
-<p class="lead pc-main-lead">
-    PRINTCALC FLEXO помогает менеджеру быстро оценить заказ,
-    а при необходимости перейти к подробной экономике производства.
-  </p>
-
-<div class="proof">
-<div>
-<b>2 режима</b>
-<span>под разные задачи</span>
-</div>
-<div>
-<b>Без установки</b>
-<span>работает в браузере</span>
-</div>
-<div>
-<b>Mobile first</b>
-<span>удобно с телефона</span>
-</div>
-</div>
-
-</div>
-
-
-</div>
-</section>
-<section class="strip">
-<div class="wrap strip-grid">
-<div><b>Быстро</b><span>Предварительная цена</span></div>
-<div><b>Понятно</b><span>Без лишних полей</span></div>
-<div><b>Практично</b><span>Метраж и материал</span></div>
-<div><b>Удобно</b><span>ПК и смартфон</span></div>
 </div>
 </section>
+
+
+
 <section class="section pc-my-machines-section" id="my-machines">
-  <div class="wrap">
-    <div class="pc-my-machines-head">
-      <div>
-        <div class="eyebrow">МОЯ ТИПОГРАФИЯ</div>
-        <h2>Мои станки</h2>
-        <p class="section-text">
-          Добавьте реальные станки вашей типографии один раз —
-          в детальном расчёте их параметры будут подставляться автоматически.
+<div class="wrap">
+<div class="pc-my-machines-head">
+<div>
+<div class="pc-section-kicker">ВАША ТИПОГРАФИЯ</div>
+<h2>Мои станки</h2>
+<p class="section-text">
+          Сохраните реальные станки типографии один раз — их параметры будут автоматически использоваться в детальном расчёте.
         </p>
-      </div>
-
-      <button
-        type="button"
-        class="pc-machine-add-btn"
-        id="pc-open-machine-modal"
-      >
-        <span class="pc-machine-add-icon">+</span>
+</div>
+<button class="pc-machine-add-btn" id="pc-open-machine-modal" type="button">
+<span class="pc-machine-add-icon">+</span>
         ДОБАВИТЬ СТАНОК
       </button>
-    </div>
-
-    <div id="pc-machine-list" class="pc-machine-list"></div>
-  </div>
-</section>
-<section class="section">
-<div class="wrap">
-<div class="eyebrow">ДВА СЦЕНАРИЯ</div>
-<h2>Один сервис для двух рабочих ситуаций.</h2>
-<p class="section-text">
-      Начинайте с минимально необходимого расчёта
-      и углубляйтесь в экономику только тогда,
-      когда это действительно требуется.
-    </p>
-<div class="cards">
-<article class="card active">
-<span class="card-no">01</span>
-<div class="card-icon blue">⚡</div>
-<h3>Быстрый расчёт</h3>
-<p>
-          Для звонка, переписки, предварительного
-          предложения и быстрой оценки заказа.
-        </p>
-<div class="chips">
-<span>Тираж</span>
-<span>Размер</span>
-<span>Ручьи</span>
-<span>Материал</span>
-<span>Краска</span>
-<span>Цена</span>
 </div>
-<a href="quick.html">Открыть быстрый расчёт <b>→</b></a>
-</article>
-<article class="card">
-<span class="card-no">02</span>
-<div class="card-icon card-icon-detail"><svg aria-hidden="true" class="pc-calculator-icon" viewbox="0 0 48 48">
-<rect fill="none" height="38" rx="7" stroke="currentColor" stroke-width="3" width="28" x="10" y="5"></rect>
-<rect fill="currentColor" height="8" opacity=".18" rx="2" width="18" x="15" y="10"></rect>
-<path d="M18 14h12" stroke="currentColor" stroke-linecap="round" stroke-width="2.4"></path>
-<circle cx="18" cy="24" fill="currentColor" r="1.8"></circle>
-<circle cx="24" cy="24" fill="currentColor" r="1.8"></circle>
-<circle cx="30" cy="24" fill="currentColor" r="1.8"></circle>
-<circle cx="18" cy="31" fill="currentColor" r="1.8"></circle>
-<circle cx="24" cy="31" fill="currentColor" r="1.8"></circle>
-<rect fill="currentColor" height="7" rx="1.8" width="3.6" x="28.2" y="29.2"></rect>
-</svg></div>
-<h3>Детальный расчёт</h3>
-<p>
-          Для разбора себестоимости с учётом
-          машины, труда, накладных и операций.
-        </p>
-<div class="chips">
-<span>Материал</span>
-<span>Краска</span>
-<span>Машина</span>
-<span>Работа</span>
-<span>Операции</span>
-<span>Наценка</span>
+<div class="pc-machine-tools">
+<div class="pc-machine-search-wrap">
+<span class="pc-machine-search-icon">⌕</span>
+<input autocomplete="off" id="pc-machine-search" placeholder="Найти станок по названию…" type="search"/>
 </div>
-<a href="detail.html">Открыть детальный расчёт <b>→</b></a>
-</article>
+<div class="pc-machine-count" id="pc-machine-count">0 станков</div>
+<div class="pc-machine-storage" id="pc-machine-storage-status">Данные сохраняются в браузере</div>
 </div>
+<div class="pc-machine-list" id="pc-machine-list"></div>
 </div>
 </section>
 
 
-
-<section class="dark">
-<div class="wrap dark-grid">
-<div>
-<div class="eyebrow light">РАБОЧИЙ ПОДХОД</div>
-<h2>
-        Интерфейс вокруг менеджера,
-        а не вокруг таблиц.
-      </h2>
-<p>
-        Сервис помогает получить цифру без необходимости
-        вспоминать формулы или открывать отдельную таблицу.
-      </p>
-</div>
-<div class="benefits">
-<div><b>✓</b><span>Понятные названия параметров</span></div>
-<div><b>✓</b><span>Отдельный быстрый сценарий</span></div>
-<div><b>✓</b><span>Подробная экономика заказа</span></div>
-<div><b>✓</b><span>Адаптация под смартфон</span></div>
-</div>
-</div>
-</section>
 </main>
 <footer>
 <div class="wrap footer-in">
@@ -859,14 +103,6 @@
 <script src="config.js?v=87"></script>
 <script src="auth.js?v=87"></script>
 <script src="machines.js?v=120"></script>
-
-
-
-
-
-
-
-
 <script id="printcalc-remove-exact-slogan">
 (function () {
     "use strict";
@@ -903,6 +139,5 @@
     setTimeout(removeExactSlogan, 2000);
 })();
 </script>
-
 </body>
 </html>
