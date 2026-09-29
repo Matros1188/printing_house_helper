@@ -858,9 +858,9 @@ body::before {
 <body class="landing">
 <header class="header">
 <div class="wrap header-in">
-<a class="logo pc-logo-v14" href="./" aria-label="PRINTCALC FLEXO — на главную">
-  <img class="pc-brand-mark" src="brand-mark.svg?v=140" alt="" aria-hidden="true">
-  <span class="pc-brand-wordmark">
+<a class="logo pc-logo-v16" href="./" aria-label="PRINTCALC FLEXO — на главную">
+  <img class="pc-brand-mark-v16" src="brand-mark.svg?v=160" alt="" aria-hidden="true">
+  <span class="pc-brand-wordmark-v16">
     <b>PRINTCALC</b>
     <small>FLEXO</small>
     <em>Created by Sergey Pavlov</em>
@@ -907,57 +907,68 @@ body::before {
 
 
 
-<section class="section pc-info-section" id="pc-how-it-works">
+<section class="section pc-info-section pc-info-section-v16" id="pc-how-it-works">
   <div class="wrap">
-    <div class="pc-info-heading">
+    <div class="pc-info-heading-v16">
       <div>
         <div class="eyebrow">КАК УСТРОЕН РАСЧЁТ</div>
-        <h2>От параметров заказа к понятной цене.</h2>
-        <p class="section-text">
-          PRINTCALC FLEXO собирает расчёт вокруг реальной работы менеджера:
-          сначала фиксируются данные заказа, затем материал и производство,
-          после чего система показывает экономику и цену.
-        </p>
+        <h2>От заказа до понятной цены.</h2>
+        <p class="section-text">Вся логика расчёта собрана в одной последовательности — без лишних переходов и без ощущения сложной таблицы.</p>
       </div>
-      <div class="pc-info-side-note">
-        <span>ЛОГИКА СЕРВИСА</span>
-        <b>меньше ручных формул — больше контроля над заказом</b>
+      <div class="pc-info-side-note-v16">
+        <span>ЛОГИКА PRINTCALC</span>
+        <b>Собираем данные → считаем производство → показываем экономику.</b>
       </div>
     </div>
-
-    <div class="pc-info-flow">
-      <article class="pc-info-card">
-        <div class="pc-info-number">01</div>
-        <div class="pc-info-icon">▣</div>
+    <div class="pc-info-flow-v16">
+      <article class="pc-info-card-v16 pc-info-order-v16">
+        <span class="pc-info-number-v16">01</span>
+        <div class="pc-info-icon-v16"><svg class="pc-workflow-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <rect x="14" y="8" width="36" height="48" rx="9" fill="#fff" stroke="currentColor" stroke-width="2.7"/>
+  <path d="M23 19h18M23 26h12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M23 40.5l5.2 5.2L41 33" fill="none" stroke="#315FE4" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 13h24" stroke="#91E2D8" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="47" cy="44" r="4" fill="#91E2D8"/>
+</svg></div>
         <h3>Заказ</h3>
-        <p>Тираж, размер, ручьи, полотно и раппорт формируют основу расчёта.</p>
+        <p>Тираж, размер, ручьи и параметры заказа — только то, что нужно для старта расчёта.</p>
       </article>
-
-      <div class="pc-info-arrow">→</div>
-
-      <article class="pc-info-card">
-        <div class="pc-info-number">02</div>
-        <div class="pc-info-icon">◫</div>
+      <div class="pc-info-arrow-v16">→</div>
+      <article class="pc-info-card-v16 pc-info-material-v16">
+        <span class="pc-info-number-v16">02</span>
+        <div class="pc-info-icon-v16"><svg class="pc-workflow-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <path d="M10 20.5 32 9l22 11.5L32 32 10 20.5Z" fill="#F5F8FF" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M10 20.5v23L32 55V32L10 20.5Z" fill="#ECF1FF" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M54 20.5v23L32 55V32l22-11.5Z" fill="#FAFBFF" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="m20 25.8 12 6.2 12-6.2" fill="none" stroke="#315FE4" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M39 13l11 5.8" stroke="#91E2D8" stroke-width="3" stroke-linecap="round"/>
+</svg></div>
         <h3>Материал</h3>
-        <p>Стоимость материала, граммаж, отход и параметры краски учитываются в себестоимости.</p>
+        <p>Материал, граммаж, расход и цена превращаются в понятную часть себестоимости.</p>
       </article>
-
-      <div class="pc-info-arrow">→</div>
-
-      <article class="pc-info-card pc-info-card-accent">
-        <div class="pc-info-number">03</div>
-        <div class="pc-info-icon">⚙</div>
+      <div class="pc-info-arrow-v16">→</div>
+      <article class="pc-info-card-v16 pc-info-production-v16">
+        <span class="pc-info-number-v16">03</span>
+        <div class="pc-info-icon-v16"><svg class="pc-workflow-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" stroke-width="2.8"/>
+  <circle cx="32" cy="32" r="6" fill="#315FE4" opacity=".18" stroke="currentColor" stroke-width="2.5"/>
+  <path d="M32 14v-6M32 56v-6M14 32H8M56 32h-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="m20 20 4.5 4.5M44 44l-4.5-4.5M44 20l-4.5 4.5M20 44l4.5-4.5" stroke="#91E2D8" stroke-width="2.7" stroke-linecap="round"/>
+</svg></div>
         <h3>Производство</h3>
-        <p>Можно выбрать ваш станок или ввести производственные параметры вручную.</p>
+        <p>Ваш станок или ручной ввод параметров дают реальную производственную основу.</p>
       </article>
-
-      <div class="pc-info-arrow">→</div>
-
-      <article class="pc-info-card pc-info-card-result">
-        <div class="pc-info-number">04</div>
-        <div class="pc-info-icon">₽</div>
+      <div class="pc-info-arrow-v16">→</div>
+      <article class="pc-info-card-v16 pc-info-economy-v16">
+        <span class="pc-info-number-v16">04</span>
+        <div class="pc-info-icon-v16"><svg class="pc-workflow-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <rect x="10" y="12" width="44" height="40" rx="10" fill="none" stroke="currentColor" stroke-width="2.7"/>
+  <path d="M21 24h22M21 31h12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M21 41h9" stroke="#2EA69E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M43 36v11M48.5 41.5H37.5" stroke="#2EA69E" stroke-width="2.7" stroke-linecap="round"/>
+</svg></div>
         <h3>Экономика</h3>
-        <p>Получаете себестоимость, цену продажи, прибыль и структуру затрат заказа.</p>
+        <p>Себестоимость, цена продажи, прибыль и структура затрат — в одном результате.</p>
       </article>
     </div>
   </div>
@@ -997,9 +1008,9 @@ body::before {
 </main>
 <footer>
 <div class="wrap footer-in">
-<div class="logo pc-logo-v14 pc-logo-footer">
-  <img class="pc-brand-mark" src="brand-mark.svg?v=140" alt="" aria-hidden="true">
-  <span class="pc-brand-wordmark">
+<div class="logo pc-logo-v16 pc-logo-footer-v16">
+  <img class="pc-brand-mark-v16" src="brand-mark.svg?v=160" alt="" aria-hidden="true">
+  <span class="pc-brand-wordmark-v16">
     <b>PRINTCALC</b>
     <small>FLEXO</small>
   </span>
