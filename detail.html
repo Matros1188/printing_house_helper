@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="favicon.svg">
-<link rel="stylesheet" href="style.css?v=110">
+<link rel="stylesheet" href="style.css?v=120">
 <title>Детальный расчёт — PRINTCALC FLEXO</title>
 </head>
 <body class="calculator">
@@ -168,63 +168,89 @@
 
 
 <section class="panel pc-production-panel">
+  <div class="pc-production-header">
+    <div>
+      <span class="panel-label">ПРОИЗВОДСТВО</span>
+      <h2>Станок и работа</h2>
+      <p class="pc-machine-source-note">
+        Выберите станок из раздела «Мои станки». Его производственные параметры
+        подставятся в расчёт автоматически.
+      </p>
+    </div>
 
-  <div class="pc-production-row">
-
-    <span class="panel-label">ПРОИЗВОДСТВО</span>
-
-    <label class="pc-machine-select-wrap">
-
-      <span>ВЫБОР СТАНКА</span>
-
-      <select id="machineSelect">
-        <option value="">Выберите станок</option>
-      </select>
-
-    </label>
-
+    <a class="pc-machine-manage-link" href="./#my-machines">
+      Управлять станками →
+    </a>
   </div>
 
-  <h2>Машина и работа</h2>
+  <label class="pc-machine-select-field">
+    <span>МОЙ СТАНОК</span>
+    <select id="machineSelect">
+      <option value="">Выберите станок</option>
+    </select>
+  </label>
 
-  <div id="machineHint" class="pc-machine-hint">
-    Выберите станок — его производственные параметры подставятся автоматически.
+  <div id="machineEmpty" class="pc-machine-empty" hidden>
+    <div class="pc-machine-empty-icon">⚙</div>
+    <div>
+      <strong>Станков пока нет</strong>
+      <span>Добавьте первый станок на главной странице.</span>
+    </div>
+    <a href="./#my-machines">Добавить станок</a>
   </div>
 
-  <div class="fields">
-
-    <label class="field">
-      <span>Скорость, м/мин</span>
-      <input id="speed" type="number" value="80" min="0" step="1">
-    </label>
-
-    <label class="field">
-      <span>Электропотребление, кВт</span>
-      <input id="power" type="number" value="18" min="0" step="0.1">
-    </label>
-
-    <label class="field">
-      <span>Наладка, мин</span>
-      <input id="setup" type="number" value="35" min="0" step="1">
-    </label>
-
-    <label class="field">
-      <span>Машина, ₽/час</span>
-      <input id="machine" type="number" value="1800" min="0" step="1">
-    </label>
-
-    <label class="field">
-      <span>Работа, ₽/час</span>
-      <input id="labor" type="number" value="650" min="0" step="1">
-    </label>
-
-    <label class="field">
-      <span>Тариф электроэнергии, ₽/кВт⋅ч</span>
-      <input id="powerRate" type="number" value="8" min="0" step="0.1">
-    </label>
-
+  <div id="machinePreview" class="pc-machine-preview" hidden>
+    <div class="pc-machine-preview-name">
+      <span class="pc-machine-status-dot"></span>
+      <strong id="machinePreviewName">Станок</strong>
+    </div>
+    <div class="pc-machine-metrics">
+      <div><span>СКОРОСТЬ</span><b id="machinePreviewSpeed">—</b><small>м/мин</small></div>
+      <div><span>МОЩНОСТЬ</span><b id="machinePreviewPower">—</b><small>кВт</small></div>
+      <div><span>НАЛАДКА</span><b id="machinePreviewSetup">—</b><small>мин</small></div>
+      <div><span>МАШИНА</span><b id="machinePreviewRate">—</b><small>₽/ч</small></div>
+      <div><span>РАБОТА</span><b id="machinePreviewLabor">—</b><small>₽/ч</small></div>
+      <div><span>ЭЛЕКТРОЭНЕРГИЯ</span><b id="machinePreviewPowerRate">—</b><small>₽/кВт⋅ч</small></div>
+    </div>
   </div>
 
+  <div class="fields pc-machine-fields">
+    <label class="field"><span>Скорость, м/мин</span><input id="speed" type="number" value="" readonly></label>
+    <label class="field"><span>Электропотребление, кВт</span><input id="power" type="number" value="" readonly></label>
+    <label class="field"><span>Наладка, мин</span><input id="setup" type="number" value="" readonly></label>
+    <label class="field"><span>Машина, ₽/час</span><input id="machine" type="number" value="" readonly></label>
+    <label class="field"><span>Работа, ₽/час</span><input id="labor" type="number" value="" readonly></label>
+    <label class="field"><span>Тариф электроэнергии, ₽/кВт⋅ч</span><input id="powerRate" type="number" value="" readonly></label>
+  </div>
+</section>
+
+<section class="panel pc-operations-panel">
+  <span class="panel-label">ОПЕРАЦИИ</span>
+  <h2>Дополнительная обработка</h2>
+
+  <div class="pc-service-grid">
+    <div class="pc-service-item">
+      <label class="check-row">
+        <input id="lamEnabled" type="checkbox">
+        <span>Ламинация</span>
+      </label>
+      <label class="field">
+        <span>Стоимость, ₽/м²</span>
+        <input id="lam" type="number" value="70" min="0" step="0.01">
+      </label>
+    </div>
+
+    <div class="pc-service-item">
+      <label class="check-row">
+        <input id="dieEnabled" type="checkbox">
+        <span>Резка / вырубка</span>
+      </label>
+      <label class="field">
+        <span>Стоимость, ₽/1000</span>
+        <input id="die" type="number" value="180" min="0" step="0.01">
+      </label>
+    </div>
+  </div>
 </section>
 
 <section class="panel pc-operations-panel">
@@ -317,10 +343,10 @@
 
 <footer><div class="wrap footer-in"><span>PRINTCALC FLEXO</span></div></footer>
 
-<script src="detail.js?v=110"></script>
+<script src="detail.js?v=120"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=86"></script>
 <script src="auth.js?v=86"></script>
-<script src="machines.js?v=110"></script>
+<script src="machines.js?v=120"></script>
 </body>
 </html>
