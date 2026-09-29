@@ -7315,3 +7315,49 @@ body::before {
   .pc-info-flow-v16 { grid-template-columns: 1fr; margin-top: 22px; }
   .pc-info-card-v16 { min-height: auto; padding: 19px; }
 }
+
+/* ============================================================
+   PRINTCALC FLEXO V20 — ACCOUNT HISTORY
+   ============================================================ */
+
+.pc-history-v20-list { display:flex; flex-direction:column; gap:18px; }
+.pc-history-card-v20 { overflow:hidden; background:#fff; border:1px solid #dde4ef; border-radius:20px; box-shadow:0 10px 30px rgba(28,40,64,.055), inset 0 1px 0 rgba(255,255,255,.92); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.pc-history-card-v20:hover { transform:translateY(-2px); border-color:#ccd6e8; box-shadow:0 16px 38px rgba(28,40,64,.09), inset 0 1px 0 rgba(255,255,255,.95); }
+.pc-history-card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px 22px 16px; border-bottom:1px solid #edf1f6; background:linear-gradient(135deg,#fff 0%,#f8faff 100%); }
+.pc-history-card-title-group { min-width:0; }
+.pc-history-mode-pill { display:inline-flex; align-items:center; gap:7px; padding:6px 9px; margin-bottom:9px; border-radius:999px; border:1px solid #dbe4f8; background:#f3f6ff; color:#315fe4; font-size:10px; line-height:1; font-weight:800; letter-spacing:.055em; text-transform:uppercase; }
+.pc-history-mode-pill b { font-size:12px; }
+.pc-history-mode-pill.is-detail { color:#3156b9; background:#eef3ff; }
+.pc-history-mode-pill.is-quick { color:#1d6e68; border-color:#d8ece9; background:#eef9f7; }
+.pc-history-card-v20 h3 { margin:0; color:#172033; font-size:17px; line-height:1.2; font-weight:800; letter-spacing:-.02em; }
+.pc-history-date { margin-top:5px; color:#8a94a6; font-size:11px; }
+.pc-history-status { flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; padding:8px 10px; border:1px solid rgba(22,163,74,.13); border-radius:999px; background:#f0faf3; color:#168044; font-size:10px; line-height:1; font-weight:850; letter-spacing:.09em; }
+.pc-history-status::before { content:""; width:6px; height:6px; border-radius:50%; background:#24a65b; box-shadow:0 0 0 3px rgba(36,166,91,.09); }
+.pc-history-primary { display:grid; grid-template-columns:1.35fr 1fr .8fr; gap:10px; padding:16px 22px 12px; }
+.pc-history-primary-card { min-width:0; padding:14px 15px; border-radius:15px; border:1px solid #e2e7f0; background:#fbfcfe; }
+.pc-history-primary-card.price-card { background:linear-gradient(145deg,#f5f8ff,#edf3ff); border-color:#d8e3ff; }
+.pc-history-primary-card.cost-card { background:linear-gradient(145deg,#fbfcfe,#f5f7fa); }
+.pc-history-primary-card.margin-card { background:linear-gradient(145deg,#f1fbf8,#e9f7f4); border-color:#d8eeea; }
+.pc-history-label { display:block; margin-bottom:8px; color:#7b8799; font-size:9px; font-weight:850; letter-spacing:.10em; }
+.pc-history-primary-card strong { display:block; color:#172033; font-size:clamp(19px,3vw,28px); line-height:1; font-weight:850; letter-spacing:-.045em; font-variant-numeric:tabular-nums; }
+.pc-history-primary-card.price-card strong { color:#2757cd; }
+.pc-history-primary-card.margin-card strong { color:#208879; }
+.pc-history-primary-card small { display:block; margin-top:7px; color:#718096; font-size:11px; font-weight:650; }
+.pc-history-order-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:8px; margin:0 22px; padding:11px 0; border-top:1px solid #edf1f6; border-bottom:1px solid #edf1f6; }
+.pc-history-order-strip>div,.pc-history-metrics>div { min-width:0; padding:8px 10px; border-radius:10px; background:#fafbfd; }
+.pc-history-order-strip span,.pc-history-metrics span { display:block; margin-bottom:4px; color:#8993a4; font-size:8px; font-weight:850; letter-spacing:.10em; }
+.pc-history-order-strip b,.pc-history-metrics b { display:block; overflow:hidden; color:#263246; font-size:12px; font-weight:750; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.pc-history-metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; padding:12px 22px 16px; }
+.pc-history-details { margin:0 22px 20px; border:1px solid #e5eaf2; border-radius:12px; background:#fafbfd; }
+.pc-history-details summary { padding:10px 12px; color:#566278; font-size:11px; font-weight:750; cursor:pointer; user-select:none; }
+.pc-history-raw-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; padding:0 12px 12px; }
+.pc-history-raw-grid span { padding:7px 9px; border-radius:8px; background:#fff; border:1px solid #edf0f5; color:#68758a; font-size:10px; line-height:1.3; }
+@media (max-width:760px) {
+  .pc-history-card-head { padding:16px; }
+  .pc-history-primary { grid-template-columns:1fr; padding:13px 16px 9px; }
+  .pc-history-primary-card strong { font-size:24px; }
+  .pc-history-order-strip { margin:0 16px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .pc-history-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); padding:10px 16px 14px; }
+  .pc-history-details { margin:0 16px 16px; }
+  .pc-history-raw-grid { grid-template-columns:1fr; }
+}
