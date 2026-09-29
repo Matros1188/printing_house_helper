@@ -8489,3 +8489,240 @@ button:hover, .btn-primary:hover, button.primary:hover, button[type="submit"]:ho
   .pr-logo-sub { font-size: 7px; }
   .pr-logo-created { font-size: 6px; }
 }
+
+/* ============================================================
+   PRINTORA V27 — PREMIUM LIGHT PALETTE
+   ============================================================ */
+:root {
+  --printora-bg: #F0F3F7;
+  --printora-bg-2: #EAEFF5;
+  --printora-surface: #FFFFFF;
+  --printora-surface-2: #F8FAFC;
+  --printora-ink: #142033;
+  --printora-ink-2: #3E4B5E;
+  --printora-muted: #7C8797;
+  --printora-line: #D9E0E9;
+  --printora-line-2: #E8ECF2;
+  --printora-blue: #315FE4;
+  --printora-blue-2: #416EF2;
+  --printora-blue-deep: #243F9F;
+  --printora-blue-soft: #EEF3FF;
+  --printora-teal: #2EA69E;
+  --printora-teal-soft: #ECF8F6;
+}
+
+body {
+  background:
+    radial-gradient(1000px 500px at 4% -12%, rgba(49,95,228,.065), transparent 66%),
+    radial-gradient(800px 460px at 100% 0%, rgba(46,166,158,.040), transparent 70%),
+    linear-gradient(180deg, #F5F8FB 0%, #F1F4F8 52%, #EDF1F6 100%) !important;
+  color: var(--printora-ink) !important;
+}
+
+body::before {
+  opacity: .10 !important;
+  background-image:
+    linear-gradient(rgba(49,95,228,.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49,95,228,.032) 1px, transparent 1px) !important;
+  background-size: 40px 40px !important;
+}
+
+header {
+  background: rgba(255,255,255,.86) !important;
+  border-bottom: 1px solid rgba(217,224,233,.82) !important;
+  box-shadow: 0 4px 22px rgba(20,32,51,.035) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.panel,
+.card,
+.section-card,
+.calculator-card,
+.pc-info-card,
+.pc-history-card-v22,
+.pc-history-card-v23 {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FBFCFE 100%) !important;
+  border-color: var(--printora-line-2) !important;
+  box-shadow:
+    0 10px 28px rgba(20,32,51,.045),
+    0 1px 2px rgba(20,32,51,.035) !important;
+}
+
+.panel:hover,
+.card:hover,
+.section-card:hover,
+.pc-info-card:hover,
+.pc-history-card-v22:hover,
+.pc-history-card-v23:hover {
+  box-shadow:
+    0 18px 42px rgba(20,32,51,.075),
+    0 2px 4px rgba(20,32,51,.035) !important;
+}
+
+input,
+select,
+textarea {
+  background: #FFFFFF !important;
+  color: var(--printora-ink) !important;
+  border-color: #D6DEE9 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #C7D1DE !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--printora-blue) !important;
+  box-shadow: 0 0 0 4px rgba(49,95,228,.075) !important;
+}
+
+button,
+.btn-primary,
+button.primary,
+button[type="submit"] {
+  background: linear-gradient(180deg, var(--printora-blue-2), var(--printora-blue)) !important;
+  border-color: var(--printora-blue) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 19px rgba(49,95,228,.16) !important;
+}
+
+button:hover,
+.btn-primary:hover,
+button.primary:hover,
+button[type="submit"]:hover {
+  background: linear-gradient(180deg, #4A75F4, var(--printora-blue-deep)) !important;
+  box-shadow: 0 12px 25px rgba(49,95,228,.21) !important;
+}
+
+.btn-secondary,
+button.secondary {
+  background: linear-gradient(180deg, #FFFFFF, #F8FAFC) !important;
+  color: var(--printora-ink) !important;
+  border-color: var(--printora-line) !important;
+  box-shadow: 0 4px 12px rgba(20,32,51,.035) !important;
+}
+
+.panel-label,
+.eyebrow {
+  color: var(--printora-blue) !important;
+}
+
+.pc-ready-badge,
+.pc-history-ready-v22 {
+  background: var(--printora-teal-soft) !important;
+  border-color: #D1ECE8 !important;
+  color: #278F87 !important;
+}
+
+.pc-machine-select-wrap select {
+  background: linear-gradient(145deg, #FFFFFF, #F7F9FD) !important;
+  border-color: #CFD8E5 !important;
+}
+
+.pc-machine-hint {
+  background: linear-gradient(90deg, rgba(49,95,228,.055), rgba(49,95,228,.018)) !important;
+  border-color: rgba(49,95,228,.105) !important;
+}
+
+.pc-history-customer-v23 {
+  background: linear-gradient(135deg, #F0F5FF, #E7EEFF) !important;
+  border-color: #D1DDF7 !important;
+  color: var(--printora-blue) !important;
+}
+
+.pc-service-item {
+  background: linear-gradient(145deg, #FFFFFF, #F9FBFD) !important;
+  border-color: #DDE4ED !important;
+}
+
+.pc-info-icon-v16,
+.pc-info-icon-v23 {
+  background: linear-gradient(145deg, #F4F7FF, #E8EEFF) !important;
+  border-color: #D9E3F9 !important;
+  color: var(--printora-blue) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.96),
+    0 8px 18px rgba(41,63,124,.065) !important;
+}
+
+/* Новый логотип */
+.printora-logo-v27 {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none !important;
+  color: var(--printora-ink) !important;
+}
+
+.printora-logo-v27 img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex: 0 0 48px;
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.printora-logo-v27:hover img {
+  transform: translateY(-1px) scale(1.015);
+  filter: drop-shadow(0 7px 13px rgba(49,95,228,.15));
+}
+
+.printora-wordmark-v27 {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 0;
+  padding-bottom: 12px;
+}
+
+.printora-wordmark-v27 strong {
+  font-size: 17px;
+  line-height: .92;
+  font-weight: 900;
+  letter-spacing: -.055em;
+  color: var(--printora-ink);
+}
+
+.printora-wordmark-v27 small {
+  margin-top: 4px;
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 850;
+  letter-spacing: .20em;
+  color: var(--printora-blue);
+}
+
+.printora-wordmark-v27 em {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 6.5px;
+  line-height: 1;
+  font-weight: 800;
+  font-style: normal;
+  color: #8D98A8;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .printora-logo-v27 img {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+  .printora-wordmark-v27 strong {
+    font-size: 15px;
+  }
+  .printora-wordmark-v27 small {
+    font-size: 7px;
+  }
+  .printora-wordmark-v27 em {
+    font-size: 6px;
+  }
+}
