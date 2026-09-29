@@ -6606,3 +6606,504 @@ body::before {
     white-space: nowrap;
   }
 }
+
+/* ============================================================
+   PRINTCALC FLEXO V15.1 — PERSONAL CABINET
+   ============================================================ */
+
+.pc-account-button {
+  order: 3 !important;
+  margin-left: auto !important;
+  flex: 0 0 auto !important;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 11px;
+  border: 1px solid #dfe5ee;
+  background: #ffffff;
+  color: #445268;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .025em;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(24,34,56,.045);
+  transition: border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.pc-account-button:hover {
+  border-color: #cbd6e5;
+  background: #f9fbfd;
+  transform: translateY(-1px);
+}
+
+.pc-account-button.pc-account-authenticated {
+  color: #244bbd !important;
+  border-color: #cfdbfb !important;
+  background: linear-gradient(180deg, #f7faff 0%, #edf3ff 100%) !important;
+  box-shadow: 0 6px 17px rgba(49,95,228,.09) !important;
+}
+
+.pc-auth-modal[hidden] {
+  display: none !important;
+}
+
+.pc-modal-account-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 45px;
+  margin-top: 12px;
+  border-radius: 11px;
+  border: 1px solid #d7e1fa;
+  background: #f5f8ff;
+  color: #315fe4;
+  text-decoration: none;
+  font-weight: 800;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.pc-modal-account-link:hover {
+  background: #edf3ff;
+  border-color: #c6d5f8;
+}
+
+/* ============================================================
+   ACCOUNT PAGE
+   ============================================================ */
+
+.pc-account-main {
+  padding-top: 26px !important;
+  padding-bottom: 58px !important;
+}
+
+.pc-account-wrap {
+  max-width: 1040px !important;
+}
+
+.pc-account-hero {
+  padding: 20px 0 28px;
+}
+
+.pc-account-hero h1 {
+  margin: 7px 0 0;
+  color: #172238;
+  font-size: clamp(33px, 4.4vw, 50px);
+  line-height: .99;
+  font-weight: 900;
+  letter-spacing: -.05em;
+}
+
+.pc-account-hero p {
+  margin: 11px 0 0;
+  color: #7a8799;
+  font-size: 14px;
+}
+
+.pc-account-stats-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.pc-account-count-card,
+.pc-account-profile-card,
+.pc-account-history-section {
+  border: 1px solid #dfe5ee;
+  border-radius: 20px;
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 10px 32px rgba(24,34,56,.055), 0 2px 6px rgba(24,34,56,.035);
+}
+
+.pc-account-count-card {
+  min-height: 174px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(49,95,228,.055), transparent 42%),
+    #fff;
+}
+
+.pc-account-card-label {
+  color: #778498;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+
+.pc-account-count-card strong {
+  margin-top: 8px;
+  color: #172238;
+  font-size: clamp(48px, 7vw, 70px);
+  line-height: .9;
+  letter-spacing: -.065em;
+  font-variant-numeric: tabular-nums;
+}
+
+.pc-account-count-card small {
+  margin-top: 11px;
+  color: #8894a5;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.pc-account-profile-card {
+  min-height: 174px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+}
+
+.pc-account-profile-card h2 {
+  margin: 8px 0 6px;
+  color: #172238;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -.035em;
+}
+
+.pc-account-profile-card p {
+  margin: 0;
+  color: #7b8799;
+  font-size: 13px;
+  line-height: 1.48;
+  max-width: 480px;
+}
+
+.pc-account-logout-btn {
+  margin-top: 17px;
+  min-height: 42px;
+  padding: 0 15px;
+  border-radius: 10px;
+  border: 1px solid #dfe5ee;
+  background: #fff;
+  color: #4c596c;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pc-account-logout-btn:hover {
+  border-color: #ccd5e1;
+  background: #f8fafc;
+}
+
+.pc-account-history-section {
+  padding: 25px;
+}
+
+.pc-account-history-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 19px;
+}
+
+.pc-account-history-head h2 {
+  margin: 7px 0 5px;
+  color: #172238;
+  font-size: 29px;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+
+.pc-account-history-head p {
+  margin: 0;
+  color: #7b8799;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.pc-account-refresh-btn {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid #315fe4;
+  border-radius: 10px;
+  background: #315fe4;
+  color: #fff;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(49,95,228,.16);
+}
+
+.pc-account-refresh-btn:hover {
+  background: #254fc7;
+  border-color: #254fc7;
+}
+
+.pc-account-history {
+  display: grid;
+  gap: 10px;
+}
+
+.pc-account-history-item {
+  display: grid;
+  grid-template-columns: 45px minmax(0,1fr);
+  gap: 13px;
+  padding: 15px;
+  border: 1px solid #e1e7ef;
+  border-radius: 14px;
+  background: #fff;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.pc-account-history-item:hover {
+  border-color: #cfd9e6;
+  box-shadow: 0 8px 22px rgba(24,34,56,.055);
+  transform: translateY(-1px);
+}
+
+.pc-history-type {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.pc-history-type.is-quick {
+  background: #eef5ff;
+  border: 1px solid #d8e4ff;
+  color: #315fe4;
+}
+
+.pc-history-type.is-detail {
+  background: #f1efff;
+  border: 1px solid #dedbff;
+  color: #6159d8;
+}
+
+.pc-history-content {
+  min-width: 0;
+}
+
+.pc-history-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+
+.pc-history-mode {
+  color: #315fe4;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.pc-history-line time {
+  color: #97a2b1;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.pc-history-content > strong {
+  display: block;
+  color: #172238;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.pc-history-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.pc-history-tags span {
+  display: inline-flex;
+  padding: 5px 8px;
+  border: 1px solid #e7ebf1;
+  border-radius: 999px;
+  background: #f6f8fa;
+  color: #69768a;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.pc-history-result-text {
+  margin-top: 9px;
+  color: #718096;
+  font-size: 12px;
+  line-height: 1.48;
+  white-space: pre-line;
+}
+
+.pc-account-loading,
+.pc-account-error,
+.pc-account-empty {
+  padding: 35px 20px;
+  text-align: center;
+  border-radius: 14px;
+  border: 1px dashed #d8e0ea;
+  background: #fafbfd;
+}
+
+.pc-account-loading,
+.pc-account-error {
+  color: #748196;
+  font-size: 13px;
+}
+
+.pc-account-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pc-account-empty-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  border: 1px solid #d8e3fb;
+  background: #eef4ff;
+  color: #315fe4;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.pc-account-empty strong {
+  margin-top: 13px;
+  color: #172238;
+  font-size: 17px;
+}
+
+.pc-account-empty span {
+  margin-top: 6px;
+  color: #7e899a;
+  font-size: 12px;
+}
+
+.pc-account-empty a {
+  margin-top: 14px;
+  color: #315fe4;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .pc-account-button {
+    min-height: 38px;
+    padding: 0 9px;
+    font-size: 9px;
+  }
+
+  .pc-account-main {
+    padding-top: 12px !important;
+    padding-bottom: 42px !important;
+  }
+
+  .pc-account-hero {
+    padding: 14px 0 20px;
+  }
+
+  .pc-account-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-account-count-card,
+  .pc-account-profile-card {
+    min-height: 145px;
+    padding: 20px;
+  }
+
+  .pc-account-history-section {
+    padding: 17px;
+    border-radius: 16px;
+  }
+
+  .pc-account-history-head {
+    flex-direction: column;
+  }
+
+  .pc-account-refresh-btn {
+    width: 100%;
+  }
+
+  .pc-history-line {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .pc-history-line time {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 430px) {
+  .pc-account-button {
+    max-width: 128px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+
+/* ============================================================
+   V15.1 — ACCOUNT FLOW
+   ============================================================ */
+
+.pc-auth-modal[hidden] {
+  display: none !important;
+}
+
+.pc-account-button {
+  order: 3 !important;
+  margin-left: auto !important;
+  flex: 0 0 auto !important;
+  min-height: 40px;
+  padding: 0 15px;
+  border: 1px solid #d8e1ee;
+  border-radius: 11px;
+  background: #fff;
+  color: #526076;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  cursor: pointer;
+  box-shadow: 0 5px 16px rgba(21,33,55,.05);
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+}
+
+.pc-account-button:hover {
+  transform: translateY(-1px);
+  border-color: #c6d2e3;
+  box-shadow: 0 8px 20px rgba(21,33,55,.07);
+}
+
+.pc-account-button.pc-account-authenticated {
+  color: #244dbf;
+  border-color: #cad8fa;
+  background: linear-gradient(180deg,#f9fbff 0%,#edf3ff 100%);
+  box-shadow: 0 7px 20px rgba(49,95,228,.10);
+}
+
+@media (max-width: 650px) {
+  .pc-account-button {
+    min-height: 37px;
+    padding: 0 10px;
+    font-size: 9px;
+  }
+}
