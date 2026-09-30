@@ -158,95 +158,116 @@
     window.setTimeout(() => window.dispatchEvent(new CustomEvent("printcalc:auth-changed", { detail: null })), 0);
   }
 
+
+  async function fetchAllRows(modes = ["quick", "detail"]) {
+    if (!client || !currentUser) return [];
+    const all = [];
+    const page = 500;
+    let from = 0;
+    while (true) {
+      const response = await client.from("calculations")
+        .select("id,user_id,mode,calculation_data,created_at")
+        .eq("user_id", currentUser.id)
+        .in("mode", modes)
+        .order("created_at", { ascending: false })
+        .range(from, from + page - 1);
+      if (response.error) throw response.error;
+      const rows = response.data || [];
+      all.push(...rows);
+      if (rows.length < page) break;
+      from += page;
+    }
+    return all;
+  }
   async function loadHistory() {
     if (!client || !currentUser) return;
     const box = document.getElementById("pc-history");
     if (!box) return;
     box.innerHTML = "<div class='pc-empty'>Загрузка...</div>";
-    const response = await client.from("calculations")
-      .select("id,user_id,mode,calculation_data,created_at")
-      .eq("user_id", currentUser.id)
-      .in("mode", ["quick", "detail"])
-      .order("created_at", { ascending: false })
-      .limit(100);
-    if (response.error) {
-      box.innerHTML = `<div class='pc-empty'>${escapeHtml(response.error.message)}</div>`;
-      return;
+    try {
+      const rows = await fetchAllRows(["quick", "detail"]);
+      if (!rows.length) {
+        box.innerHTML = "<div class='pc-empty'>Сохранённых расчётов пока нет.</div>";
+        return;
+      }
+      box.innerHTML = rows.slice(0, 100).map((item) => {
+        const data = item.calculation_data || {};
+        const title = data.title || "Расчёт заказа";
+        const order = data.order_number ? `№ ${data.order_number}` : "Без номера";
+        const date = item.created_at ? new Date(item.created_at).toLocaleString("ru-RU") : "";
+        return `<div class="pc-history-item"><div><b>${escapeHtml(order)} · ${item.mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт"}</b><small>${escapeHtml(title)}</small><small>${escapeHtml(date)}</small></div></div>`;
+      }).join("");
+    } catch (error) {
+      box.innerHTML = `<div class='pc-empty'>Не удалось загрузить историю: ${escapeHtml(error?.message || "ошибка")}</div>`;
     }
-    if (!response.data?.length) {
-      box.innerHTML = "<div class='pc-empty'>Сохранённых расчётов пока нет.</div>";
-      return;
-    }
-    box.innerHTML = response.data.map((item) => {
-      const data = item.calculation_data || {};
-      const title = data.title || "Расчёт заказа";
-      const order = data.order_number ? `№ ${data.order_number}` : "Без номера";
-      const date = item.created_at ? new Date(item.created_at).toLocaleString("ru-RU") : "";
-      return `<div class="pc-history-item"><div><b>${escapeHtml(order)} · ${item.mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт"}</b><small>${escapeHtml(title)}</small><small>${escapeHtml(date)}</small></div></div>`;
-    }).join("");
   }
 
   async function duplicateOrderNumberExists(orderNumber) {
     const clean = String(orderNumber || "").trim().toLocaleLowerCase("ru-RU");
     if (!clean || !currentUser || !client) return false;
-    const response = await client.from("calculations")
-      .select("id,calculation_data")
-      .eq("user_id", currentUser.id)
-      .in("mode", ["quick", "detail"])
-      .order("created_at", { ascending: false })
-      .limit(250);
-    if (response.error) throw response.error;
-    return (response.data || []).some(row => String(row.calculation_data?.order_number || "").trim().toLocaleLowerCase("ru-RU") === clean);
+    const rows = await fetchAllRows(["quick", "detail"]);
+    return rows.some((row) =>
+      String(row.calculation_data?.order_number || "").trim().toLocaleLowerCase("ru-RU") === clean
+    );
   }
 
   async function findSimilar(source) {
     if (!client || !currentUser) return [];
     const inputs = source?.inputs || {};
     const summary = source?.summary || {};
-    const repeat = Number(source?.repeat_mm ?? inputs.repeatMm ?? window.PRINTORA_REPEAT_MM?.(inputs.repeat || "") ?? 0);
+    const repeat = Number(
+      source?.repeat_mm ?? inputs.repeatMm ??
+      window.PRINTORA_REPEAT_MM?.(inputs.repeat || "") ?? 0
+    );
     const a = {
       width: Number(inputs.width ?? summary.width ?? 0),
       height: Number(inputs.height ?? summary.height ?? 0),
-      repeat: repeat,
+      repeat,
       streams: Number(inputs.streams ?? summary.streams ?? 0),
       web: Number(inputs.web ?? summary.web ?? 0),
       colors: Number(inputs.colors ?? summary.colors ?? 0),
       materialId: source?.materialId || inputs.materialId || inputs.material?.id || "",
       lam: Boolean(inputs.lam ?? inputs.lamEnabled),
-      die: Boolean(inputs.die ?? inputs.dieEnabled)
+      die: Boolean(inputs.die ?? inputs.dieEnabled),
+      clientId: source?.client_id || ""
     };
     if (a.width <= 0 || a.height <= 0 || a.repeat <= 0) return [];
-    const response = await client.from("calculations")
-      .select("id,mode,calculation_data,created_at")
-      .eq("user_id", currentUser.id)
-      .in("mode", ["quick", "detail"])
-      .order("created_at", { ascending: false })
-      .limit(250);
-    if (response.error) throw response.error;
 
+    const rows = await fetchAllRows(["quick", "detail"]);
     const relative = (x, y, tolerance) => {
       if (!x || !y) return x === y ? 1 : 0;
       const diff = Math.abs(x - y);
-      return diff <= tolerance ? 1 : Math.max(0, 1 - diff / (Math.abs(y) + tolerance));
+      return diff <= tolerance
+        ? 1
+        : Math.max(0, 1 - diff / (Math.abs(y) + tolerance));
     };
 
-    return (response.data || []).map((row) => {
+    return rows.map((row) => {
       const d = row.calculation_data || {};
+      if (a.clientId && d.client_id === a.clientId) return null;
       const i = d.inputs || {};
       const s = d.summary || {};
-      const rep = Number(d.repeat_mm ?? i.repeatMm ?? window.PRINTORA_REPEAT_MM?.(i.repeat || "") ?? 0);
+      const rep = Number(
+        d.repeat_mm ?? i.repeatMm ??
+        window.PRINTORA_REPEAT_MM?.(i.repeat || "") ?? 0
+      );
       const b = {
-        width: Number(i.width ?? s.width ?? 0), height: Number(i.height ?? s.height ?? 0), repeat: rep,
-        streams: Number(i.streams ?? s.streams ?? 0), web: Number(i.web ?? s.web ?? 0), colors: Number(i.colors ?? s.colors ?? 0),
+        width: Number(i.width ?? s.width ?? 0),
+        height: Number(i.height ?? s.height ?? 0),
+        repeat: rep,
+        streams: Number(i.streams ?? s.streams ?? 0),
+        web: Number(i.web ?? s.web ?? 0),
+        colors: Number(i.colors ?? s.colors ?? 0),
         materialId: d.materialId || i.materialId || i.material?.id || "",
-        lam: Boolean(i.lam ?? i.lamEnabled), die: Boolean(i.die ?? i.dieEnabled)
+        lam: Boolean(i.lam ?? i.lamEnabled),
+        die: Boolean(i.die ?? i.dieEnabled)
       };
       const score = Math.round(
-        relative(a.width,b.width,.5)*24 +
-        relative(a.height,b.height,.5)*24 +
-        relative(a.repeat,b.repeat,.75)*22 +
+        relative(a.width, b.width, 1.0) * 24 +
+        relative(a.height, b.height, 1.0) * 24 +
+        relative(a.repeat, b.repeat, 1.0) * 22 +
         (a.streams === b.streams ? 10 : 0) +
-        relative(a.web,b.web,1)*7 +
+        relative(a.web, b.web, 2.0) * 7 +
         (a.colors === b.colors ? 4 : 0) +
         (a.materialId && b.materialId && a.materialId === b.materialId ? 5 : 0) +
         (a.lam === b.lam ? 2 : 0) +
@@ -260,9 +281,11 @@
         height: b.height,
         repeat: b.repeat
       };
-    }).filter(x => x.score >= 72)
-      .sort((a,b) => b.score - a.score || new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0,5);
+    })
+      .filter(Boolean)
+      .filter((x) => x.score >= 72)
+      .sort((a, b) => b.score - a.score || new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5);
   }
 
   async function saveCalculation(source) {
@@ -270,14 +293,44 @@
     const user = await refreshUser();
     if (!user) {
       setMessage("Войдите в аккаунт, чтобы сохранить расчёт.", "error");
-      return { saved:false, reason:"not-authenticated" };
+      return { saved: false, reason: "not-authenticated" };
     }
-    const mode = source?.mode || (location.pathname.toLowerCase().includes("detail") ? "detail" : "quick");
+    const mode = source?.mode ||
+      (location.pathname.toLowerCase().includes("detail") ? "detail" : "quick");
+    if (mode !== "quick" && mode !== "detail") {
+      throw new Error("Недопустимый режим сохранения.");
+    }
     const orderNumber = String(source?.order_number || "").trim();
     if (!orderNumber) throw new Error("Номер заказа обязателен для сохранения.");
 
+    const clientId = String(
+      source?.client_id ||
+      (window.crypto?.randomUUID
+        ? window.crypto.randomUUID()
+        : `calc-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`)
+    );
+
+    const stableKeyBase = JSON.stringify({
+      mode,
+      order_number: orderNumber.toLocaleLowerCase("ru-RU"),
+      inputs: source.inputs || {},
+      summary: source.summary || {},
+      result_text: source.result_text || (document.getElementById("result")?.innerText || "").trim()
+    });
+    let stableKey = stableKeyBase;
+    try {
+      let hash = 2166136261;
+      for (let i = 0; i < stableKeyBase.length; i++) {
+        hash ^= stableKeyBase.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      stableKey = `${mode}:${orderNumber.trim().toLocaleLowerCase("ru-RU")}:${(hash >>> 0).toString(16)}`;
+    } catch (_) {}
+
     const payload = {
       mode,
+      client_id: clientId,
+      client_key: stableKey,
       title: source.title || (mode === "detail" ? "Детальный расчёт" : "Быстрый расчёт"),
       order_number: orderNumber,
       customer_name: source.customerName || source.customer_name || source.inputs?.customerName || "",
@@ -291,14 +344,31 @@
       saved_at_client: new Date().toISOString()
     };
 
-    const existingNumber = await duplicateOrderNumberExists(orderNumber);
+    const rows = await fetchAllRows(["quick", "detail"]);
+    const sameClient = rows.find((row) =>
+      String(row.calculation_data?.client_key || "") === stableKey ||
+      String(row.calculation_data?.client_id || "") === clientId
+    );
+    if (sameClient) {
+      window.dispatchEvent(new CustomEvent("printcalc:history-saved", { detail: sameClient }));
+      return { saved: true, duplicate: true, row: sameClient };
+    }
+
+    const existingNumber = rows.some((row) =>
+      String(row.calculation_data?.order_number || "").trim().toLocaleLowerCase("ru-RU") ===
+      orderNumber.toLocaleLowerCase("ru-RU")
+    );
     if (existingNumber) {
-      const proceed = window.confirm(`Заказ №${orderNumber} уже есть в истории.\n\nСохранить ещё одну версию с этим номером?`);
-      if (!proceed) return { saved:false, reason:"duplicate-order-cancelled" };
+      const proceed = window.confirm(
+        `Заказ №${orderNumber} уже есть в истории.
+
+Сохранить ещё одну версию с этим номером?`
+      );
+      if (!proceed) return { saved: false, reason: "duplicate-order-cancelled" };
     }
 
     const inserted = await client.from("calculations")
-      .insert({ user_id:user.id, mode, calculation_data:payload })
+      .insert({ user_id: user.id, mode, calculation_data: payload })
       .select("id,user_id,mode,calculation_data,created_at")
       .single();
     if (inserted.error) throw inserted.error;
@@ -316,8 +386,8 @@
       throw new Error("Сохранённый заказ не подтвердился повторным чтением.");
     }
 
-    window.dispatchEvent(new CustomEvent("printcalc:history-saved", { detail:verify.data }));
-    return { saved:true, row:verify.data };
+    window.dispatchEvent(new CustomEvent("printcalc:history-saved", { detail: verify.data }));
+    return { saved: true, row: verify.data };
   }
 
   async function handleSaveRequest(event) {
@@ -327,27 +397,33 @@
     try {
       const source = event.detail || window.PRINTCALC_LAST_CALC;
       if (!source) throw new Error("Сначала выполните расчёт.");
-
       const orderNumber = window.prompt("Введите номер заказа");
       if (orderNumber === null) return;
       const clean = String(orderNumber).trim();
       if (!clean) throw new Error("Номер заказа обязателен для сохранения.");
 
-      const similar = await findSimilar(source);
+      const similar = await findSimilar({ ...source, order_number: clean });
       if (similar.length) {
-        const text = similar.slice(0,3).map(x =>
-          `№ ${x.order} — ${x.score}% · ${x.width}×${x.height} мм · раппорт ${x.repeat.toLocaleString("ru-RU", { maximumFractionDigits:2 })} мм`
+        const text = similar.slice(0, 3).map((x) =>
+          `№ ${x.order} — ${x.score}% · ${x.width}×${x.height} мм · раппорт ${x.repeat.toLocaleString("ru-RU", { maximumFractionDigits: 2 })} мм`
         ).join("\n");
         const proceed = window.confirm(
-          `Найдены похожие прошлые заказы:\n${text}\n\nПроверьте, не подходит ли ранее использованный штамп. Сохранить №${clean}?`
+          `Найдены похожие прошлые заказы:
+${text}
+
+Проверьте, не подходит ли ранее использованный штамп. Сохранить №${clean}?`
         );
         if (!proceed) return;
       }
 
-      const payload = { ...source, order_number:clean };
       if (button) { button.disabled = true; button.textContent = "Сохраняем…"; }
-      const result = await saveCalculation(payload);
-      if (button) { button.disabled = false; button.textContent = result.saved ? "Расчёт сохранён" : "Сохранить расчёт"; }
+      const result = await saveCalculation({ ...source, order_number: clean });
+      if (button) {
+        button.disabled = false;
+        button.textContent = result.saved
+          ? (result.duplicate ? "Расчёт уже сохранён" : "Расчёт сохранён")
+          : "Сохранить расчёт";
+      }
     } catch (error) {
       console.error("PRINTORA SAVE", error);
       setMessage(error?.message || "Не удалось сохранить расчёт.", "error");
@@ -383,22 +459,18 @@
     createModal();
     await refreshUser();
     renderAuth();
-
-    const params = new URLSearchParams(window.location.search);
-    if (!currentUser && params.get("auth") === "1") {
-      window.history.replaceState({}, document.title, window.location.pathname);
-      window.setTimeout(openAccount, 80);
+    if (!window.__PRINTORA_SAVE_LISTENER_INSTALLED) {
+      window.__PRINTORA_SAVE_LISTENER_INSTALLED = true;
+      window.addEventListener("printcalc:save-request", handleSaveRequest);
     }
-
-    if (client) {
+    if (!window.__PRINTORA_AUTH_LISTENER_INSTALLED && client?.auth?.onAuthStateChange) {
+      window.__PRINTORA_AUTH_LISTENER_INSTALLED = true;
       client.auth.onAuthStateChange((_event, session) => {
         currentUser = session?.user || null;
         renderAuth();
-        window.setTimeout(() => window.dispatchEvent(new CustomEvent("printcalc:auth-changed", { detail:currentUser })), 0);
+        window.dispatchEvent(new CustomEvent("printcalc:auth-changed", { detail: currentUser }));
       });
     }
-
-    window.addEventListener("printcalc:save-request", handleSaveRequest);
   }
 
   if (document.readyState === "loading") {
