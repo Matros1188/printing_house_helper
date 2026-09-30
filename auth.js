@@ -249,27 +249,16 @@
     }).filter(Boolean).filter((x)=>x.score>=72).sort((a,b)=>b.score-a.score || new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
   }
 
-  async function saveCalculation(payload) {
-  if (!client || !currentUser) throw new Error("Войдите в аккаунт, чтобы сохранить расчёт.");
-  const cleanOrder = String(payload?.order_number || "").trim();
-  if (!cleanOrder) throw new Error("Номер заказа обязателен для сохранения.");
-  const key = cleanOrder.toLocaleLowerCase("ru-RU");
-  const duplicate = await duplicateOrderNumberExists(cleanOrder);
-  if (duplicate) throw new Error(`Заказ №${cleanOrder} уже существует в истории этого аккаунта.`);
-  const row = { user_id: currentUser.id, mode: payload?.mode === "detail" ? "detail" : "quick", order_number_key: key, calculation_data: payload };
-  const result = await client.from("calculations").insert(row).select("id,user_id,mode,order_number_key,calculation_data,created_at").single();
-  if (result.error) {
-    if (/PGRST205|42P01|schema cache/i.test(`${result.error.code||""} ${result.error.message||""}`)) {
-      throw new Error("Не создана таблица облачных данных PRINTORA «calculations» или Supabase ещё не обновил схему. Выполните PRINTORA_V40_SUPABASE_MIGRATION.sql один раз в Supabase → SQL Editor, дождитесь «Success», затем обновите страницу. Материалы, станки и история используют одну таблицу calculations.");
-    }
-    if (/23505|duplicate key|unique constraint/i.test(`${result.error.code||""} ${result.error.message||""}`)) {
-      throw new Error(`Заказ №${cleanOrder} уже существует в истории этого аккаунта.`);
-    }
-    throw result.error;
-  }
-  if (!result.data?.id || result.data.user_id !== currentUser.id) throw new Error("Облако не подтвердило сохранение расчёта.");
-  window.dispatchEvent(new CustomEvent("printcalc:history-saved", {detail:result.data}));
-  return {saved:true,id:result.data.id,row:result.data};
+  async function saveCalculation(payload){
+  if(!client||!currentUser)throw new Error("Войдите в аккаунт, чтобы сохранить расчёт.");
+  const order=String(payload?.order_number||"").trim();if(!order)throw new Error("Номер заказа обязателен для сохранения.");
+  const orderKey=order.toLocaleLowerCase("ru-RU");
+  const duplicate=typeof duplicateOrderNumberExists==="function"?await duplicateOrderNumberExists(order):false;if(duplicate)throw new Error(`Заказ №${order} уже существует в истории этого аккаунта.`);
+  const data={...(payload||{}),order_number:order,order_number_key:orderKey};
+  const result=await client.from("calculations").insert({user_id:currentUser.id,mode:data.mode==="detail"?"detail":"quick",order_number_key:orderKey,calculation_data:data}).select("id,user_id,mode,order_number_key,calculation_data,created_at").single();
+  if(result.error){if(window.PRINTORA_IS_SCHEMA_ERROR?.(result.error))throw new Error(window.PRINTORA_FRIENDLY_ERROR?.(result.error));if(result.error.code==="23505")throw new Error(`Заказ №${order} уже существует в истории этого аккаунта.`);throw result.error;}
+  if(!result.data?.id||result.data.user_id!==currentUser.id)throw new Error("Облако не подтвердило сохранение расчёта.");
+  window.dispatchEvent(new CustomEvent("printcalc:history-saved",{detail:result.data}));return{saved:true,id:result.data.id,row:result.data};
 }
 
   async function handleSaveRequest(event) {
