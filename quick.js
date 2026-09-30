@@ -25,8 +25,8 @@ function fieldValue(id) {
 
 function snapshotInputs() {
   const ids = [
-    "customerName", "customerName", "customerName", "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
-    "matPrice", "colors", "inkPrice", "inkUse", "lam", "die", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect"
+    "customerName", "customerName", "customerName", "customerName", "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
+    "matPrice", "colors", "inkPrice", "inkUse", "lam", "die", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect"
   ];
   const base = Object.fromEntries(ids.map(id => [id, fieldValue(id)]));
   base.repeatInput = fieldValue("repeat");
@@ -187,8 +187,8 @@ function calculate(){
 
 function setupAutoCalculation() {
   const ids = [
-    "customerName", "customerName", "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
-    "matPrice", "colors", "inkPrice", "inkUse", "lam", "die", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect"
+    "customerName", "customerName", "customerName", "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
+    "matPrice", "colors", "inkPrice", "inkUse", "lam", "die", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect", "sideMargin", "labelGap", "markupQuick", "materialSelect"
   ];
 
   let timer = null;
