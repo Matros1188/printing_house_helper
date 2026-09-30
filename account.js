@@ -552,13 +552,18 @@
 
     const localRows = localHistory(user.id);
     let cloudRows = [];
+    let cloudReadOk = false;
     try {
       cloudRows = await loadCloudHistory(user);
+      cloudReadOk = true;
     } catch (error) {
       console.warn("PRINTCALC: history cloud read", error);
     }
 
-    allHistoryRows = mergeRows(cloudRows, localRows);
+    // При нормальной работе показываем только облако.
+    // Иначе один компьютер может показывать локальные записи,
+    // которых нет на телефоне. localStorage остаётся только fallback.
+    allHistoryRows = cloudReadOk ? cloudRows : localRows;
 
     const count = $("pc-calculation-count");
     if (count) count.textContent = String(allHistoryRows.length);
