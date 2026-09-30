@@ -6,7 +6,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 
-<link href="style.css?v=372" rel="stylesheet"/>
+<link href="style.css?v=381" rel="stylesheet"/>
 <title>Быстрый расчёт — PRINTORA</title>
 <style id="-v14-design">
 
@@ -939,6 +939,8 @@ body::before {
 
 <label class="field"><span>Тираж, шт.</span><input id="qty" type="number" value="50000"/></label>
 <label class="field"><span>Ручьи</span><input id="streams" type="number" value="2"/></label>
+<label class="field"><span>Поле по краям, мм</span><input id="sideMargin" type="number" value="0" min="0" step="0.1" inputmode="decimal"></label>
+<label class="field"><span>Межэтикеточное, мм</span><input id="labelGap" type="number" value="0" min="0" step="0.1" inputmode="decimal"></label>
 <label class="field"><span>Ширина, мм</span><input id="width" type="number" value="80"/></label>
 <label class="field"><span>Высота, мм</span><input id="height" type="number" value="50"/></label>
 <label class="field"><span>Ширина полотна, мм</span><input id="web" type="number" value="170"/></label>
@@ -992,23 +994,17 @@ body::before {
 </main>
 <footer><div class="wrap footer-in"></div></footer>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js?v=361"></script>
-<script src="printora-inputs-v36.js?v=361"></script>
-<script src="printora-similarity-v36.js?v=361"></script>
-<script src="printora-layout-v36.js?v=361"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js?v=372"></script>
-<script src="pc-auth-core.js?v=372"></script>
-<script src="auth.js?v=372"></script>
-<script src="printora-inputs-v36.js?v=372"></script>
-<script src="materials.js?v=372"></script>
-<script src="printora-similarity-v36.js?v=372"></script>
-<script src="printora-layout-v36.js?v=372"></script>
-<script src="proposal.js?v=372"></script>
-<script src="quick.js?v=372"></script>
-<script src="printora-header-v34.js?v=372"></script>
+<script src="config.js?v=381"></script>
+<script src="pc-auth-core.js?v=381"></script>
+<script src="printora-v38-ui.js?v=381"></script>
+<script src="auth.js?v=381"></script>
+<script src="printora-inputs-v36.js?v=381"></script>
+<script src="materials.js?v=381"></script>
+<script src="printora-similarity-v36.js?v=381"></script>
+<script src="printora-layout-v36.js?v=381"></script>
+<script src="proposal.js?v=381"></script>
+<script src="quick.js?v=381"></script>
+<script src="printora-header-v34.js?v=381"></script>
 </body>
 </html>
