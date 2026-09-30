@@ -138,4 +138,28 @@ from public.calculations
 where mode in ('detail','machine') and trim(coalesce(calculation_data->>'__printora_library',''))='machine' and trim(coalesce(calculation_data->>'name',''))<>''
 on conflict(user_id,name_key) do nothing;
 
+
+-- ================================================================
+-- 5. Финальная публикация схемы / PostgREST
+-- ================================================================
+-- Явно открываем схему public для API-ролей.
+grant usage on schema public to authenticated;
+grant select,insert,update,delete on table public.calculations to authenticated;
+grant select,insert,update,delete on table public.printora_materials to authenticated;
+grant select,insert,update,delete on table public.printora_machines to authenticated;
+
+-- Проверяем, что все три таблицы действительно существуют.
+do $$
+begin
+  if to_regclass('public.calculations') is null then raise exception 'PRINTORA: public.calculations не создана'; end if;
+  if to_regclass('public.printora_materials') is null then raise exception 'PRINTORA: public.printora_materials не создана'; end if;
+  if to_regclass('public.printora_machines') is null then raise exception 'PRINTORA: public.printora_machines не создана'; end if;
+end;
+$$;
+
 notify pgrst,'reload schema';
+
+select
+  to_regclass('public.calculations') as calculations,
+  to_regclass('public.printora_materials') as printora_materials,
+  to_regclass('public.printora_machines') as printora_machines;
