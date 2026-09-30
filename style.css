@@ -9454,3 +9454,25 @@ h1,h2,h3,h4,h5,h6{text-wrap:balance;overflow-wrap:anywhere}
 /* ================================================================
    END PRINTORA V38.1
    ================================================================ */
+
+/* ================================================================
+   PRINTORA V39 — LIBRARY ACTION UNIFICATION
+   ================================================================ */
+.pc-library-add-btn-v39,.pc-machine-add-btn,.pc-material-add-btn-v36,.pc-machine-empty-add{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+  min-height:47px!important;min-width:190px!important;padding:0 16px!important;
+  border:1px solid rgba(49,95,228,.24)!important;border-radius:12px!important;
+  background:linear-gradient(135deg,#315fe4,#4b69df)!important;color:#fff!important;
+  font:850 10px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;
+  letter-spacing:.02em!important;box-shadow:0 10px 24px rgba(49,95,228,.16)!important;
+  cursor:pointer!important;text-decoration:none!important;
+  transition:transform .14s ease,box-shadow .14s ease,background .14s ease!important;
+}
+.pc-library-add-btn-v39:hover,.pc-machine-add-btn:hover,.pc-material-add-btn-v36:hover,.pc-machine-empty-add:hover{
+  background:linear-gradient(135deg,#254fc7,#5562ce)!important;box-shadow:0 13px 27px rgba(49,95,228,.20)!important;transform:translateY(-1px)!important;
+}
+.pc-library-add-btn-v39:active,.pc-machine-add-btn:active,.pc-material-add-btn-v36:active,.pc-machine-empty-add:active{transform:translateY(0)!important}
+.pc-library-add-btn-v39:disabled,.pc-machine-add-btn:disabled,.pc-material-add-btn-v36:disabled,.pc-machine-empty-add:disabled{opacity:.62!important;cursor:not-allowed!important;transform:none!important}
+.pc-material-modal-v36[hidden]{display:none!important}.pc-material-modal-v36{z-index:5200!important}
+@media(max-width:760px){.pc-library-add-btn-v39,.pc-machine-add-btn,.pc-material-add-btn-v36,.pc-machine-empty-add{width:100%!important;min-width:0!important}}
+
