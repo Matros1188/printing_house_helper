@@ -1117,6 +1117,7 @@ body::before {
 <div class="fields">
 <label class="field"><span>Накладные, %</span><input id="overhead" type="number" value="8"/></label>
 <label class="field"><span>Административные, %</span><input id="admin" type="number" value="3"/></label>
+<label class="field"><span>Дополнительные расходы, ₽</span><input id="extraCost" type="number" value="0" min="0" step="10" inputmode="decimal"></label>
 <label class="field"><span>Наценка, %</span><input id="markup" type="number" value="35"/></label>
 <label class="field"><span>Минимальный заказ, ₽</span><input id="minimum" type="number" value="6500"/></label>
 </div>
@@ -1138,10 +1139,12 @@ body::before {
 </div>
 </main>
 <footer><div class="wrap footer-in"></div></footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=401"></script>
 <script src="pc-auth-core.js?v=401"></script>
 <script src="printora-v38-ui.js?v=401"></script>
+<script src="printora-v40-safety.js?v=401"></script>
 <script src="auth.js?v=401"></script>
 <script src="printora-inputs-v36.js?v=401"></script>
 <script src="materials.js?v=401"></script>
@@ -1151,7 +1154,5 @@ body::before {
 <script src="machines.js?v=401"></script>
 <script src="detail.js?v=401"></script>
 <script src="printora-header-v34.js?v=401"></script>
-
-<script src="printora-v40-safety.js?v=401"></script>
 </body>
 </html>
