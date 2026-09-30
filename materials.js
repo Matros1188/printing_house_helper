@@ -39,26 +39,85 @@
   }
   function saveLocal() { try { localStorage.setItem(localKey(), JSON.stringify(materials)); } catch (_) {} }
   async function loadCloud() {
-    const c = await getClient(); if (!c || !userId) return;
-    const r = await c.from("calculations").select("id,calculation_data,created_at").eq("user_id", userId).eq("mode", MODE).order("created_at", { ascending:true }).limit(500);
-    if (r.error) throw r.error;
-    materials = (r.data || []).map(row => normalize({ ...(row.calculation_data || {}), cloudId:row.id })).filter(x => x.name);
+    const c = await getClient();
+    if (!c || !userId) { cloudReady = false; return; }
+    const all = [];
+    const page = 500;
+    let from = 0;
+    while (true) {
+      const r = await c.from("calculations")
+        .select("id,user_id,calculation_data,created_at")
+        .eq("user_id", userId)
+        .eq("mode", MODE)
+        .order("created_at", { ascending: true })
+        .range(from, from + page - 1);
+      if (r.error) throw r.error;
+      const rows = r.data || [];
+      all.push(...rows);
+      if (rows.length < page) break;
+      from += page;
+    }
+    materials = all
+      .map(row => normalize({ ...(row.calculation_data || {}), cloudId: row.id }))
+      .filter(x => x.name);
+    cloudReady = true;
     saveLocal();
   }
   async function cloudInsert(m) {
-    const c = await getClient(); if (!c || !userId) return m;
-    const r = await c.from("calculations").insert({user_id:userId, mode:MODE, calculation_data:{id:m.id,name:m.name,type:m.type,lengthM:m.lengthM,widthMm:m.widthMm,priceM2:m.priceM2,createdAt:m.createdAt}}).select("id").single();
+    const c = await getClient();
+    if (!c || !userId) throw new Error("Войдите в аккаунт, чтобы сохранить материал в облаке.");
+    const r = await c.from("calculations")
+      .insert({
+        user_id: userId,
+        mode: MODE,
+        calculation_data: {
+          id: m.id, name: m.name, type: m.type,
+          lengthM: m.lengthM, widthMm: m.widthMm, priceM2: m.priceM2,
+          createdAt: m.createdAt
+        }
+      })
+      .select("id,user_id,mode,calculation_data,created_at")
+      .single();
     if (r.error) throw r.error;
-    m.cloudId = r.data?.id || null; return m;
+    if (!r.data?.id || r.data.user_id !== userId || r.data.mode !== MODE) {
+      throw new Error("Материал создан, но не прошёл проверку владельца.");
+    }
+    m.cloudId = r.data.id;
+    return m;
   }
   async function cloudUpdate(m) {
-    const c = await getClient(); if (!c || !userId || !m.cloudId) return m;
-    const r = await c.from("calculations").update({calculation_data:{id:m.id,name:m.name,type:m.type,lengthM:m.lengthM,widthMm:m.widthMm,priceM2:m.priceM2,createdAt:m.createdAt,updatedAt:new Date().toISOString()}}).eq("id",m.cloudId).eq("user_id",userId).eq("mode",MODE);
-    if (r.error) throw r.error; return m;
+    const c = await getClient();
+    if (!c || !userId || !m.cloudId) throw new Error("Облачная запись материала не найдена.");
+    const r = await c.from("calculations")
+      .update({
+        calculation_data: {
+          id: m.id, name: m.name, type: m.type,
+          lengthM: m.lengthM, widthMm: m.widthMm, priceM2: m.priceM2,
+          createdAt: m.createdAt, updatedAt: new Date().toISOString()
+        }
+      })
+      .eq("id", m.cloudId)
+      .eq("user_id", userId)
+      .eq("mode", MODE)
+      .select("id,user_id,mode")
+      .maybeSingle();
+    if (r.error) throw r.error;
+    if (!r.data?.id || r.data.user_id !== userId || r.data.mode !== MODE) {
+      throw new Error("Изменение материала не подтверждено облаком.");
+    }
+    return m;
   }
   async function cloudDelete(m) {
-    const c = await getClient(); if (!c || !userId || !m.cloudId) return;
-    const r = await c.from("calculations").delete().eq("id",m.cloudId).eq("user_id",userId).eq("mode",MODE); if (r.error) throw r.error;
+    const c = await getClient();
+    if (!c || !userId || !m?.cloudId) throw new Error("Облачная запись материала не найдена.");
+    const r = await c.from("calculations")
+      .delete()
+      .eq("id", m.cloudId)
+      .eq("user_id", userId)
+      .eq("mode", MODE)
+      .select("id");
+    if (r.error) throw r.error;
+    if (!r.data?.length) throw new Error("Удаление материала не подтверждено облаком.");
   }
 
   function createModal() {
@@ -85,28 +144,53 @@
   }
   function closeModal() { const m=$("pc-material-modal-v36"); if(m)m.hidden=true; editingId=null; }
   async function saveForm() {
-    const name=$("pc-material-name-v36")?.value.trim()||"", type=$("pc-material-type-v36")?.value.trim()||"Материал";
-    const lengthM=num($("pc-material-length-v36")?.value), widthMm=num($("pc-material-width-v36")?.value), priceM2=num($("pc-material-price-v36")?.value);
-    if(!name) return message("Укажите название материала.","error");
-    if(widthMm<=0) return message("Укажите ширину материала.","error");
-    if(priceM2<=0) return message("Цена продажи за 1 м² должна быть больше нуля.","error");
-    let m=normalize({name,type,lengthM,widthMm,priceM2});
+    const name = $("pc-material-name-v36")?.value.trim() || "";
+    const type = $("pc-material-type-v36")?.value.trim() || "Материал";
+    const lengthM = num($("pc-material-length-v36")?.value);
+    const widthMm = num($("pc-material-width-v36")?.value);
+    const priceM2 = num($("pc-material-price-v36")?.value);
+    if (!name) return message("Укажите название материала.", "error");
+    if (widthMm <= 0) return message("Укажите ширину материала.", "error");
+    if (priceM2 <= 0) return message("Цена продажи за 1 м² должна быть больше нуля.", "error");
+    if (userId && !cloudReady) return message("Облако материалов недоступно. Выполните миграцию Supabase и обновите страницу.", "error");
+    const existingName = materials.some(x =>
+      x.name.toLocaleLowerCase("ru-RU") === name.toLocaleLowerCase("ru-RU") && x.id !== editingId
+    );
+    if (existingName) return message("Материал с таким названием уже есть.", "error");
+
+    let m = normalize({ name, type, lengthM, widthMm, priceM2 });
     try {
-      if(editingId){
-        const i=materials.findIndex(x=>x.id===editingId); if(i<0)return;
-        m.id=materials[i].id; m.cloudId=materials[i].cloudId; m.createdAt=materials[i].createdAt; m=await cloudUpdate(m); materials[i]=m;
+      if (editingId) {
+        const index = materials.findIndex(x => x.id === editingId);
+        if (index < 0) return;
+        m.id = materials[index].id;
+        m.cloudId = materials[index].cloudId;
+        m.createdAt = materials[index].createdAt;
+        if (userId) await cloudUpdate(m);
+        materials[index] = m;
       } else {
-        if(materials.some(x=>x.name.toLocaleLowerCase("ru-RU")===name.toLocaleLowerCase("ru-RU"))) return message("Материал с таким названием уже есть.","error");
-        m=await cloudInsert(m); materials.push(m);
+        if (userId) await cloudInsert(m);
+        materials.push(m);
       }
-      saveLocal(); renderList(); populateSelect(); closeModal();
-    } catch(e) { message(e?.message||"Не удалось сохранить материал.","error"); }
+      saveLocal();
+      renderList();
+      populateSelect();
+      closeModal();
+    } catch (e) {
+      message(e?.message || "Не удалось сохранить материал.", "error");
+    }
   }
   async function removeMaterial(id) {
-    const m=materials.find(x=>x.id===id); if(!m)return;
-    if(!window.confirm(`Удалить материал «${m.name}»?`))return;
-    try { await cloudDelete(m); } catch(e) { console.warn("PRINTORA material delete", e); }
-    materials=materials.filter(x=>x.id!==id); saveLocal(); renderList(); populateSelect();
+    const m = materials.find(x => x.id === id);
+    if (!m) return;
+    if (!window.confirm(`Удалить материал «${m.name}»?`)) return;
+    try {
+      if (userId) await cloudDelete(m);
+      materials = materials.filter(x => x.id !== id);
+      saveLocal(); renderList(); populateSelect();
+    } catch (e) {
+      message(e?.message || "Не удалось удалить материал.", "error");
+    }
   }
   function renderList() {
     const box=$("pc-material-list-v36"); if(!box)return;
