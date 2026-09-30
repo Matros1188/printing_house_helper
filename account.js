@@ -158,22 +158,12 @@
 
   async function loadCloudHistory(user) {
     if (!client || !user) return [];
-    const all = [];
-    const page = 500;
-    let from = 0;
+    const all = []; const page = 500; let from = 0;
     while (true) {
-      const result = await client
-        .from("calculations")
-        .select("id,user_id,mode,calculation_data,created_at")
-        .eq("user_id", user.id)
-        .in("mode", ["quick", "detail"])
-        .order("created_at", { ascending: false })
-        .range(from, from + page - 1);
+      const result = await client.from("calculations").select("id,user_id,mode,calculation_data,created_at")
+        .eq("user_id", user.id).in("mode", ["quick","detail"]).order("created_at", { ascending:false }).range(from, from+page-1);
       if (result.error) throw result.error;
-      const rows = result.data || [];
-      all.push(...rows);
-      if (rows.length < page) break;
-      from += page;
+      const rows = result.data || []; all.push(...rows); if (rows.length < page) break; from += page;
     }
     return all;
   }
@@ -511,26 +501,17 @@
 
   async function loadAccount() {
     if (!client) return;
-    const session = await client.auth.getSession();
-    const user = session.data?.session?.user || null;
-    if (!user) {
-      window.location.replace("./?auth=1");
-      return;
-    }
-    const email = $("pc-account-email");
-    if (email) email.textContent = user.email || "Рабочий аккаунт";
-    try {
-      allHistoryRows = await loadCloudHistory(user);
-    } catch (error) {
+    const session = await client.auth.getSession(); const user = session.data?.session?.user || null;
+    if (!user) { window.location.replace("./?auth=1"); return; }
+    const email = $("pc-account-email"); if (email) email.textContent = user.email || "Рабочий аккаунт";
+    try { allHistoryRows = await loadCloudHistory(user); }
+    catch (error) {
       console.warn("PRINTORA: history cloud read", error);
-      const box = $("pc-history");
-      if (box) box.innerHTML = `<div class="pc-empty">Не удалось загрузить облачную историю: ${escapeHtml(error?.message || "ошибка")}</div>`;
+      const box = $("pc-history"); if (box) box.innerHTML = `<div class="pc-empty">Не удалось загрузить облачную историю: ${escapeHtml(error?.message || "ошибка")}</div>`;
       allHistoryRows = [];
     }
-    const count = $("pc-calculation-count");
-    if (count) count.textContent = String(allHistoryRows.length);
-    renderFilterFields();
-    applyFilters();
+    const count = $("pc-calculation-count"); if (count) count.textContent = String(allHistoryRows.length);
+    renderFilterFields(); applyFilters();
   }
 
   async function logout() {
