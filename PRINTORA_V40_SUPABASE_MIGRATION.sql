@@ -157,7 +157,13 @@ begin
 end;
 $$;
 
+grant usage on schema public to anon, authenticated;
+grant select,insert,update,delete on table public.calculations to authenticated;
+grant select,insert,update,delete on table public.printora_materials to authenticated;
+grant select,insert,update,delete on table public.printora_machines to authenticated;
+
 notify pgrst,'reload schema';
+notify pgrst,'reload config';
 
 select
   to_regclass('public.calculations') as calculations,
