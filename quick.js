@@ -172,19 +172,25 @@ function renderResult(data) {
 }
 
 function calculate() {
-  const qty = Math.max(1, num("qty"));
-  const streams = Math.max(1, num("streams"));
-  const width = Math.max(1, num("width"));
-  const height = Math.max(1, num("height"));
-  const web = Math.max(width, num("web"));
-  const repeat = Math.max(1, window.PRINTORA_REPEAT_MM?.($("repeat")?.value) || 0);
-  const gsm = Math.max(1, num("gsm"));
-  const waste = Math.max(0, num("waste"));
-  const matPrice = Math.max(0, window.PRINTORA_MATERIAL_PRICE?.() || num("matPrice"));
-  const colors = Math.max(1, num("colors"));
-  const inkPrice = Math.max(0, num("inkPrice"));
-  const inkUse = Math.max(0, num("inkUse"));
-
+  const hasStarted = ["qty","streams","width","height","web","repeat","gsm","matPrice","colors","inkPrice","inkUse"].some(id => String(document.getElementById(id)?.value || "").trim() !== "");
+  if (!hasStarted) return;
+  const qty = Math.max(1, Number(document.getElementById("qty")?.value || 0));
+  const streams = Math.floor(Number(document.getElementById("streams")?.value || 0));
+  const width = Number(document.getElementById("width")?.value || 0);
+  const height = Number(document.getElementById("height")?.value || 0);
+  const web = Number(document.getElementById("web")?.value || 0);
+  const repeat = Number(window.PRINTORA_REPEAT_MM?.(document.getElementById("repeat")?.value) || 0);
+  const gsm = Number(document.getElementById("gsm")?.value || 0);
+  const waste = Number(document.getElementById("waste")?.value || 0);
+  const matPrice = Number(window.PRINTORA_MATERIAL_PRICE?.() || document.getElementById("matPrice")?.value || 0);
+  const colors = Math.floor(Number(document.getElementById("colors")?.value || 0));
+  const inkPrice = Number(document.getElementById("inkPrice")?.value || 0);
+  const inkUse = Number(document.getElementById("inkUse")?.value || 0);
+  const extraMarkup = Math.max(0, Number(document.getElementById("markup")?.value || 0));
+  if (window.PRINTORA_SAFETY) {
+    const valid = window.PRINTORA_SAFETY.validateCommon({allowEmpty:false});
+    if (!valid.ok) { window.PRINTORA_SAFETY?.friendlyError && window.PRINTORA_TOAST?.(valid.errors[0], "error"); const r=document.getElementById("result"); if(r) r.innerHTML=`<div class="printora-safety-error-v40"><strong>Расчёт остановлен</strong><ul>${valid.errors.map(x=>`<li>${x}</li>`).join("")}</ul></div>`; return; }
+  }
   const repeats = Math.ceil(qty / streams);
   const meters = repeats * repeat / 1000 * (1 + waste / 100);
   const area = meters * web / 1000;
@@ -192,68 +198,33 @@ function calculate() {
   const inkKg = area * colors * inkUse / 1000;
   const materialCost = area * matPrice;
   const inkCost = inkKg * inkPrice;
-
   const setup = 25 + colors * 4;
   const speed = Math.max(35, 85 - colors * 3);
   const runMinutes = meters / speed;
-  const printCost = 2300 + (setup + runMinutes) / 60 * 3500;
-  const lamCost = $("lam")?.checked ? area * 19 + 850 : 0;
-  const dieCost = $("die")?.checked ? 1800 + qty * 0.028 : 0;
-
-  const total = materialCost + inkCost + printCost + lamCost + dieCost;
-
-  let markup = 0.30;
-  if (qty < 5000) markup = 0.52;
-  else if (qty < 15000) markup = 0.43;
-  else if (qty < 50000) markup = 0.36;
-
-  let price = Math.max(6500, total * (1 + markup));
-  price = Math.ceil(price / 100) * 100;
-
-  const pricePer1000 = qty > 0 ? price / qty * 1000 : 0;
-  const pricePerM2 = area > 0 ? price / area : 0;
-  const margin = price > 0 ? ((price - total) / price) * 100 : 0;
-  const title = buildTitle(qty, width, height);
-
-  const snapshot = {
-    mode: "quick",
-    title,
-    customerName: fieldValue("customerName"),
-    materialId: window.PRINTORA_MATERIAL?.id || "",
-    materialName: window.PRINTORA_MATERIAL?.name || "",
-    repeat_mm: repeat,
-    inputs: snapshotInputs(),
-    summary: {
-      qty,
-      width,
-      height,
-      price,
-      total,
-      meters,
-      area,
-      materialKg,
-      setup,
-      runMinutes,
-      printCost,
-      materialCost,
-      inkCost,
-      lamCost,
-      dieCost,
-      pricePer1000,
-      pricePerM2,
-      margin
-    }
-  };
-
-  window.PRINTCALC_LAST_CALC = snapshot;
-  renderResult(snapshot.summary);
-
-  if (window.PRINTCALC_LAST_CALC) {
-    window.PRINTCALC_LAST_CALC.result_text = (document.getElementById("result")?.innerText || "").trim();
-    window.dispatchEvent(new CustomEvent("printcalc:calculated", {
-      detail: window.PRINTCALC_LAST_CALC
-    }));
-  }
+  const fixedPrintCost = 2300 + setup / 60 * 3500;
+  const variablePrintCost = runMinutes / 60 * 3500;
+  const lamEnabled = Boolean(document.getElementById("lam")?.checked);
+  const dieEnabled = Boolean(document.getElementById("die")?.checked);
+  const lamCost = lamEnabled ? Math.max(0, Number(document.getElementById("lamPrice")?.value || 0)) : 0;
+  const cutCost = dieEnabled ? Math.max(0, Number(document.getElementById("diePrice")?.value || 0)) : 0;
+  const volumeMarkup = window.PRINTORA_SAFETY?.smoothVolumeMarkup?.(qty) ?? 30;
+  const markupRate = volumeMarkup + extraMarkup;
+  const variableLam = lamEnabled ? area * 19 : 0;
+  const variableCut = dieEnabled ? qty * 0.028 : 0;
+  const fixedCost = fixedPrintCost + lamCost + cutCost;
+  const variableCost = materialCost + inkCost + variablePrintCost + variableLam + variableCut;
+  const total = fixedCost + variableCost;
+  const markupAmount = total * markupRate / 100;
+  const price = Math.ceil(Math.max(6500, fixedCost * 1.30 + variableCost * (1 + markupRate / 100)) / 100) * 100;
+  const selected = window.PRINTORA_MATERIAL || null;
+  const customerName = String(document.getElementById("customer")?.value || document.getElementById("customerName")?.value || "").trim();
+  const calc = {mode:"quick", customerName, qty, streams, width, height, web, repeat, repeat_mm:repeat, gsm, waste, colors, matPrice, inkPrice, inkUse, meters, area, materialKg, inkKg, materialCost, inkCost, printHours:(setup+runMinutes)/60, printCost:fixedPrintCost+variablePrintCost, lamCost, cutCost, lamEnabled, dieEnabled, volumeMarkup, extraMarkup, markupRate, markupAmount, total, price, materialId:selected?.id||"", materialName:selected?.name||"", layout:window.PRINTORA_SAFETY?.getLayout?.({width,streams,materialWidth:web})||{}, summary:{total,price,meters,area,materialKg,inkKg,printHours:(setup+runMinutes)/60}, inputs:{qty,streams,width,height,web,repeat,repeat_mm:repeat,gsm,waste,colors,matPrice,inkPrice,inkUse,markup:extraMarkup,lam:lamEnabled,die:dieEnabled,materialId:selected?.id||"",materialName:selected?.name||"",customer:customerName}, __printora_v40:true};
+  const result=document.getElementById("result");
+  const rub=v=>Math.round(v||0).toLocaleString("ru-RU")+" ₽";
+  if(result) result.innerHTML=`<div class="result-top"><div><span>РАСЧЁТ ГОТОВ</span><h2>Ориентир по заказу</h2></div></div><div class="price-grid"><div class="price-box main"><span>Цена клиенту</span><b>${rub(calc.price)}</b></div><div class="price-box"><span>Себестоимость</span><b>${rub(calc.total)}</b></div></div><div class="stat-grid"><div class="stat"><span>Тираж</span><b>${calc.qty.toLocaleString("ru-RU")} шт.</b></div><div class="stat"><span>Метраж</span><b>${calc.meters.toFixed(1)} м</b></div><div class="stat"><span>Материал</span><b>${calc.materialKg.toFixed(2)} кг</b></div><div class="stat"><span>Время печати</span><b>${calc.printHours.toFixed(1)} ч</b></div></div><div class="breakdown"><div><span>Материал</span><b>${rub(calc.materialCost)}</b></div><div><span>Краска</span><b>${rub(calc.inkCost)}</b></div><div><span>Печать</span><b>${rub(calc.printCost)}</b></div><div><span>Ламинация</span><b>${rub(calc.lamCost)}</b></div><div><span>Вырубка</span><b>${rub(calc.cutCost)}</b></div><div><span>Объёмная наценка</span><b>${volumeMarkup.toFixed(1)}%</b></div><div><span>Доп. наценка</span><b>${extraMarkup.toFixed(1)}%</b></div></div><div class="printora-result-source-v40">${calc.materialName?`Материал: ${calc.materialName}`:"Материал введён вручную"} · ${calc.streams} ручьёв · раппорт ${calc.repeat.toLocaleString("ru-RU")} мм</div><div class="printora-quick-next-v40"><button type="button" class="printora-detail-transfer-v40">ПЕРЕВЕСТИ В ДЕТАЛЬНЫЙ РАСЧЁТ →</button></div>`;
+  window.PRINTCALC_LAST_CALC=calc;
+  window.currentQuickCalculation=calc;
+  document.querySelector(".printora-detail-transfer-v40")?.addEventListener("click",()=>{try{localStorage.setItem("printora_quick_to_detail_v40",JSON.stringify(calc));}catch(_){} window.location.href="./detail.html?from=quick";});
 }
 
 function setupAutoCalculation() {
