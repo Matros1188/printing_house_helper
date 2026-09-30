@@ -8,11 +8,27 @@
     window.__PRINTORA_SUPABASE_CLIENT = window.supabase.createClient(
       config.SUPABASE_URL,
       config.SUPABASE_ANON_KEY,
-      { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false, storage:window.localStorage, storageKey:STORAGE_KEY } }
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false,
+          storage: window.localStorage,
+          storageKey: STORAGE_KEY
+        }
+      }
     );
     return window.__PRINTORA_SUPABASE_CLIENT;
   }
   window.PRINTCALC_AUTH_CORE = window.PRINTCALC_AUTH_CORE || {};
   window.PRINTCALC_AUTH_CORE.storageKey = STORAGE_KEY;
   window.PRINTCALC_AUTH_CORE.getClient = getClient;
+  window.PRINTCALC_AUTH_CORE.getSession = async () => {
+    const client = getClient();
+    return client ? client.auth.getSession() : { data: { session: null }, error: null };
+  };
+  window.PRINTCALC_AUTH_CORE.signOut = async () => {
+    const client = getClient();
+    if (client) await client.auth.signOut({ scope: "local" });
+  };
 })();
