@@ -249,31 +249,28 @@
     }).filter(Boolean).filter((x)=>x.score>=72).sort((a,b)=>b.score-a.score || new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
   }
 
-  async function saveCalculation(source) {
-    if (!client) throw new Error("Supabase не подключён.");
-    const user = await refreshUser();
-    if (!user) return { saved:false, reason:"not-authenticated" };
-    const mode = source?.mode || (location.pathname.toLowerCase().includes("detail") ? "detail" : "quick");
-    if (!["quick","detail"].includes(mode)) throw new Error("Недопустимый режим сохранения.");
-    const orderNumber = String(source?.order_number || "").trim();
-    if (!orderNumber) throw new Error("Номер заказа обязателен для сохранения.");
-    const payload = {
-      ...source,
-      order_number: orderNumber,
-      saved_at: new Date().toISOString(),
-      version: "38"
-    };
-    const inserted = await client.from("calculations").insert({ user_id:user.id, mode, calculation_data:payload })
-      .select("id,user_id,mode,calculation_data,created_at").single();
-    if (inserted.error) throw inserted.error;
-    if (!inserted.data?.id || inserted.data.user_id !== user.id || inserted.data.mode !== mode) throw new Error("Запись создана, но проверка владельца не пройдена.");
-    const verify = await client.from("calculations").select("id,user_id,mode,calculation_data,created_at")
-      .eq("id", inserted.data.id).eq("user_id", user.id).maybeSingle();
-    if (verify.error) throw verify.error;
-    if (!verify.data?.id) throw new Error("Сохранённый заказ не подтвердился повторным чтением.");
-    window.dispatchEvent(new CustomEvent("printcalc:history-saved", { detail:verify.data }));
-    return { saved:true, row:verify.data };
+  async function saveCalculation(payload) {
+  if (!client || !currentUser) throw new Error("Войдите в аккаунт, чтобы сохранить расчёт.");
+  const cleanOrder = String(payload?.order_number || "").trim();
+  if (!cleanOrder) throw new Error("Номер заказа обязателен для сохранения.");
+  const key = cleanOrder.toLocaleLowerCase("ru-RU");
+  const duplicate = await duplicateOrderNumberExists(cleanOrder);
+  if (duplicate) throw new Error(`Заказ №${cleanOrder} уже существует в истории этого аккаунта.`);
+  const row = { user_id: currentUser.id, mode: payload?.mode === "detail" ? "detail" : "quick", order_number_key: key, calculation_data: payload };
+  const result = await client.from("calculations").insert(row).select("id,user_id,mode,order_number_key,calculation_data,created_at").single();
+  if (result.error) {
+    if (/PGRST205|42P01|schema cache/i.test(`${result.error.code||""} ${result.error.message||""}`)) {
+      throw new Error("Не создана таблица облачных данных PRINTORA «calculations». Выполните PRINTORA_V40_SUPABASE_MIGRATION.sql в Supabase → SQL Editor, затем обновите страницу.");
+    }
+    if (/23505|duplicate key|unique constraint/i.test(`${result.error.code||""} ${result.error.message||""}`)) {
+      throw new Error(`Заказ №${cleanOrder} уже существует в истории этого аккаунта.`);
+    }
+    throw result.error;
   }
+  if (!result.data?.id || result.data.user_id !== currentUser.id) throw new Error("Облако не подтвердило сохранение расчёта.");
+  window.dispatchEvent(new CustomEvent("printcalc:history-saved", {detail:result.data}));
+  return {saved:true,id:result.data.id,row:result.data};
+}
 
   async function handleSaveRequest(event) {
     if (saveInFlight) return;
