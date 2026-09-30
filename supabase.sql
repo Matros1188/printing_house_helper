@@ -82,3 +82,9 @@ create policy "Users delete own calculations" on public.calculations
 for delete using (auth.uid() = user_id);
 
 notify pgrst, 'reload schema';
+
+
+-- PRINTORA V40.1
+grant select, insert, update, delete on table public.calculations to authenticated;
+notify pgrst, 'reload schema';
+select to_regclass('public.calculations') as calculations_table;
