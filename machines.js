@@ -137,7 +137,7 @@
     setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");
   }catch(error){
     cloudReady=false;
-    setStorageStatus("Не удалось загрузить станки из аккаунта","local");
+    setStorageStatus(window.PRINTORA_FRIENDLY_ERROR?.(error)||error?.message||"Не удалось загрузить станки из аккаунта.","local");
     console.warn("PRINTORA machines cloud load:",error);
   }
 }
@@ -156,7 +156,12 @@
       createdAt:machine.createdAt
     }
   }).select("id,user_id,mode,calculation_data").single();
-  if(response.error) throw response.error;
+  if(response.error){
+    const friendly=window.PRINTORA_FRIENDLY_ERROR?.(response.error);
+    const err=new Error(friendly||response.error.message||"Не удалось сохранить станок.");
+    err.cause=response.error;
+    throw err;
+  }
   if(!response.data?.id || response.data.user_id!==storageNamespace) throw new Error("Облако не подтвердило сохранение станка.");
   machine.cloudId=response.data.id;
   return machine;
@@ -175,7 +180,12 @@
     }
   }).eq("id",machine.cloudId).eq("user_id",storageNamespace)
     .select("id,user_id,mode,calculation_data").maybeSingle();
-  if(response.error) throw response.error;
+  if(response.error){
+    const friendly=window.PRINTORA_FRIENDLY_ERROR?.(response.error);
+    const err=new Error(friendly||response.error.message||"Не удалось изменить станок.");
+    err.cause=response.error;
+    throw err;
+  }
   if(!response.data?.id || response.data.user_id!==storageNamespace) throw new Error("Изменение станка не подтверждено облаком.");
   return machine;
 }
@@ -212,7 +222,12 @@
   const client=await createClientIfNeeded();
   if(!client || storageNamespace==="guest" || !machine?.cloudId) return;
   const response=await client.from("calculations").delete().eq("id",machine.cloudId).eq("user_id",storageNamespace).select("id");
-  if(response.error) throw response.error;
+  if(response.error){
+    const friendly=window.PRINTORA_FRIENDLY_ERROR?.(response.error);
+    const err=new Error(friendly||response.error.message||"Не удалось удалить станок.");
+    err.cause=response.error;
+    throw err;
+  }
   if(!response.data?.length) throw new Error("Удаление станка не подтверждено облаком.");
 }
 
@@ -442,7 +457,7 @@
     closeMachineModal(); renderMachineList(); populateMachineSelect();
     window.dispatchEvent(new CustomEvent("printora:machine-saved",{detail:savedMachine}));
   }catch(error){
-    showFormMessage(error?.message||"Не удалось сохранить станок.","error");
+    showFormMessage(window.PRINTORA_FRIENDLY_ERROR?.(error)||error?.message||"Не удалось сохранить станок.","error");
     console.warn("PRINTORA machine save:",error);
   }finally{
     if(saveButton){saveButton.disabled=false;saveButton.textContent=originalEditingId?"Сохранить изменения":"Сохранить станок";}
