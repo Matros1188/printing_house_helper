@@ -390,36 +390,26 @@
   }
 
   function readMachineForm() {
-    const name = document.getElementById("pc-machine-name")?.value.trim() || "";
-
-    if (!name) {
-      showFormMessage("Укажите название станка.", "error");
-      return null;
-    }
-
-    const machine = normalizeMachine({
-      name,
-      type: document.getElementById("pc-machine-type")?.value || "Другое",
-      speed: safeNumber(document.getElementById("pc-machine-speed")?.value),
-      power: safeNumber(document.getElementById("pc-machine-power")?.value),
-      setup: safeNumber(document.getElementById("pc-machine-setup")?.value),
-      machineRate: safeNumber(document.getElementById("pc-machine-rate")?.value),
-      laborRate: safeNumber(document.getElementById("pc-machine-labor")?.value),
-      powerRate: safeNumber(document.getElementById("pc-machine-power-rate")?.value)
-    });
-
-    if (machine.speed <= 0) {
-      showFormMessage("Скорость должна быть больше нуля.", "error");
-      return null;
-    }
-
-    if (machine.power < 0 || machine.setup < 0 || machine.machineRate < 0 || machine.laborRate < 0 || machine.powerRate < 0) {
-      showFormMessage("Параметры станка не могут быть отрицательными.", "error");
-      return null;
-    }
-
-    return machine;
-  }
+  const name = document.getElementById("pc-machine-name")?.value.trim() || "";
+  if (!name) { showFormMessage("Укажите название станка.", "error"); return null; }
+  const machine = normalizeMachine({
+    name,
+    type: document.getElementById("pc-machine-type")?.value || "Другое",
+    speed: safeNumber(document.getElementById("pc-machine-speed")?.value),
+    power: safeNumber(document.getElementById("pc-machine-power")?.value),
+    setup: safeNumber(document.getElementById("pc-machine-setup")?.value),
+    machineRate: safeNumber(document.getElementById("pc-machine-rate")?.value),
+    laborRate: safeNumber(document.getElementById("pc-machine-labor")?.value),
+    powerRate: safeNumber(document.getElementById("pc-machine-power-rate")?.value)
+  });
+  if (machine.speed <= 0) { showFormMessage("Скорость должна быть больше нуля.", "error"); return null; }
+  if (machine.power <= 0) { showFormMessage("Мощность должна быть больше нуля.", "error"); return null; }
+  if (machine.setup < 0) { showFormMessage("Время наладки не может быть отрицательным.", "error"); return null; }
+  if (machine.machineRate <= 0) { showFormMessage("Ставка станка должна быть больше нуля.", "error"); return null; }
+  if (machine.laborRate <= 0) { showFormMessage("Ставка труда должна быть больше нуля.", "error"); return null; }
+  if (machine.powerRate <= 0) { showFormMessage("Тариф электроэнергии должен быть больше нуля.", "error"); return null; }
+  return machine;
+}
 
   async function saveMachineFromForm() {
   const formMachine=readMachineForm();
