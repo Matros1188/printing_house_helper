@@ -116,33 +116,14 @@
   }
 
   async function loadCloudMachines() {
-    const client = await createClientIfNeeded();
-    if (!client || storageNamespace === "guest") {
-      cloudReady = false;
-      setStorageStatus("Гость: станки сохраняются на этом устройстве", "local");
-      return;
+    const client=await createClientIfNeeded();
+    if(!client||storageNamespace==="guest"){cloudReady=false;setStorageStatus("Гость: станки сохраняются на этом устройстве","local");return;}
+    const all=[]; const page=500; let from=0;
+    while(true){
+      const response=await client.from("calculations").select("id,user_id,calculation_data,created_at,updated_at").eq("mode",MACHINE_MODE).eq("user_id",storageNamespace).order("created_at",{ascending:true}).range(from,from+page-1);
+      if(response.error)throw response.error; const rows=response.data||[]; all.push(...rows); if(rows.length<page)break; from+=page;
     }
-    const all = [];
-    const page = 500;
-    let from = 0;
-    while (true) {
-      const response = await client
-        .from("calculations")
-        .select("id,user_id,calculation_data,created_at,updated_at")
-        .eq("mode", MACHINE_MODE)
-        .eq("user_id", storageNamespace)
-        .order("created_at", { ascending: true })
-        .range(from, from + page - 1);
-      if (response.error) throw response.error;
-      const rows = response.data || [];
-      all.push(...rows);
-      if (rows.length < page) break;
-      from += page;
-    }
-    machines = all.map(row => normalizeMachine({ ...(row.calculation_data || {}), cloudId: row.id })).filter(machine => machine.name);
-    cloudReady = true;
-    saveLocalMachines();
-    setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах", "cloud");
+    machines=all.map(row=>normalizeMachine({...(row.calculation_data||{}),cloudId:row.id})).filter(m=>m.name); cloudReady=true; saveLocalMachines(); setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");
   }
 
   async function cloudInsert(machine) {
