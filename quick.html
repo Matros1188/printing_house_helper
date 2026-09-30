@@ -968,6 +968,7 @@ body::before {
 <label class="field"><span>Цена материала, ₽/м²</span><input id="matPrice" type="number" value="420"/></label>
 <label class="field"><span>Граммаж, г/м²</span><input id="gsm" type="number" value="80"/></label>
 <label class="field"><span>Отход, %</span><input id="waste" type="number" value="7"/></label>
+<label class="field"><span>Доп. наценка, %</span><input id="markupQuick" type="number" value="0" min="0" step="1" inputmode="decimal"></label>
 <label class="field"><span>Цветов</span><input id="colors" type="number" value="4"/></label>
 <label class="field"><span>Цена краски, ₽/кг</span><input id="inkPrice" type="number" value="900"/></label>
 <label class="field"><span>Расход краски, г/м²</span><input id="inkUse" type="number" value="1.6"/></label>
@@ -993,10 +994,12 @@ body::before {
 </div>
 </main>
 <footer><div class="wrap footer-in"></div></footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=401"></script>
 <script src="pc-auth-core.js?v=401"></script>
 <script src="printora-v38-ui.js?v=401"></script>
+<script src="printora-v40-safety.js?v=401"></script>
 <script src="auth.js?v=401"></script>
 <script src="printora-inputs-v36.js?v=401"></script>
 <script src="materials.js?v=401"></script>
@@ -1005,7 +1008,5 @@ body::before {
 <script src="proposal.js?v=401"></script>
 <script src="quick.js?v=401"></script>
 <script src="printora-header-v34.js?v=401"></script>
-
-<script src="printora-v40-safety.js?v=401"></script>
 </body>
 </html>
