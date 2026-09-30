@@ -157,16 +157,28 @@
   
 
   async function loadCloudHistory(user) {
-    if (!client || !user) return [];
-    const all = []; const page = 500; let from = 0;
-    while (true) {
-      const result = await client.from("calculations").select("id,user_id,mode,calculation_data,created_at")
-        .eq("user_id", user.id).in("mode", ["quick","detail"]).order("created_at", { ascending:false }).range(from, from+page-1);
-      if (result.error) throw result.error;
-      const rows = result.data || []; all.push(...rows); if (rows.length < page) break; from += page;
+  if (!client || !user) return [];
+  const all = [];
+  const page = 500;
+  let from = 0;
+  while (true) {
+    const result = await client.from("calculations")
+      .select("id,user_id,mode,calculation_data,created_at")
+      .eq("user_id", user.id)
+      .in("mode", ["quick", "detail"])
+      .order("created_at", { ascending: false })
+      .range(from, from + page - 1);
+    if (result.error) throw result.error;
+    const rows = result.data || [];
+    for (const row of rows) {
+      const kind = row?.calculation_data?.__printora_library || "";
+      if (kind !== "machine" && kind !== "material") all.push(row);
     }
-    return all;
+    if (rows.length < page) break;
+    from += page;
   }
+  return all;
+}
 
   function fingerprint(item) {
     const data = getData(item);
