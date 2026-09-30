@@ -20,7 +20,19 @@
     "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
   }[c]));
 
-  function localKey() { return `${LOCAL_PREFIX}${userId || "guest"}`; }
+function lowerMaterial(value) { return String(value ?? "").trim().toLocaleLowerCase("ru-RU"); }
+
+  function dedupeMaterials(list) {
+    const map = new Map();
+    for (const item of list || []) {
+      const m = normalize(item);
+      if (!m.name) continue;
+      const key = [lowerMaterial(m.name), lowerMaterial(m.type), Number(m.lengthM||0), Number(m.widthMm||0), Number(m.priceM2||0).toFixed(6)].join("|");
+      const previous = map.get(key);
+      if (!previous || (!previous.cloudId && m.cloudId)) map.set(key, m);
+    }
+    return Array.from(map.values());
+  }  function localKey() { return `${LOCAL_PREFIX}${userId || "guest"}`; }
 
   function getClient() {
     client = typeof core.getClient === "function" ? core.getClient() : null;
@@ -49,7 +61,7 @@
   function loadLocal() {
     try {
       const data = JSON.parse(localStorage.getItem(localKey()) || "[]");
-      materials = Array.isArray(data) ? data.map(normalize).filter(x => x.name) : [];
+      materials = dedupeMaterials(Array.isArray(data) ? data.map(normalize).filter(x => x.name) : []);
     } catch (_) { materials = []; }
   }
   function saveLocal() {
@@ -73,14 +85,12 @@
       const rows = r.data || [];
       for (const row of rows) {
         const data = row.calculation_data || {};
-        if (row.mode === LEGACY_MODE || data.__printora_library === LIBRARY_KIND) {
-          all.push({ ...data, cloudId: row.id });
-        }
+        if (row.mode === LEGACY_MODE || data.__printora_library === LIBRARY_KIND) all.push({ ...data, cloudId: row.id });
       }
       if (rows.length < page) break;
       from += page;
     }
-    materials = all.map(normalize).filter(x => x.name);
+    materials = dedupeMaterials(all.map(normalize).filter(x => x.name));
     saveLocal();
   }
 
@@ -232,7 +242,7 @@
       closeModal();
       window.dispatchEvent(new CustomEvent("printora:material-saved", { detail: saved }));
     } catch (error) {
-      message(error?.message || "Не удалось сохранить материал.", "error");
+      message(window.PRINTORA_FRIENDLY_ERROR?.(error) || error?.message || "Не удалось сохранить материал.", "error");
       console.warn("PRINTORA material save:", error);
     } finally {
       if (saveButton) { saveButton.disabled = false; saveButton.textContent = editingId ? "Сохранить изменения" : "Сохранить материал"; }
@@ -317,11 +327,27 @@
     });
   }
 
-  window.PRINTORA_MATERIALS = {
+function openManager() {
+    let modal = $("pc-material-manager-v40");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "pc-material-manager-v40";
+      modal.className = "pc-material-manager-v40";
+      modal.innerHTML = `<div class="pc-material-manager-card-v40" role="dialog" aria-modal="true"><button type="button" class="pc-material-manager-close-v40" aria-label="Закрыть">×</button><div class="eyebrow">СПРАВОЧНИК</div><h2>Мои материалы</h2><p>Материалы доступны в быстром и детальном расчёте.</p><div class="pc-material-manager-toolbar-v40"><input id="pc-material-search-v36" type="search" placeholder="Найти материал…" autocomplete="off"><span id="pc-material-count-v36">0 из 0</span></div><div id="pc-material-list-v36" class="pc-material-list-v36"></div><div class="pc-material-manager-actions-v40"><button type="button" class="secondary" data-close>Закрыть</button><button type="button" class="primary" data-add>+ ДОБАВИТЬ МАТЕРИАЛ</button></div></div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-close]")) modal.remove(); });
+      modal.querySelector("[data-add]")?.addEventListener("click", () => { openModal(); });
+    }
+    renderList();
+    modal.hidden = false;
+    setTimeout(() => $("pc-material-search-v36")?.focus(), 30);
+  }  window.PRINTORA_MATERIALS = {
     getAll: () => materials.slice(),
     open: openModal,
+    openManager,
+    selectById: id => { const s=$("materialSelect"); if(!s)return; s.value=id||""; s.dispatchEvent(new Event("change",{bubbles:true})); },
     getSelected: () => window.PRINTORA_MATERIAL || null,
-    refresh: async () => { if (userId) await loadCloud(); renderList(); populateSelect(); }
+    refresh: async () => { if (userId) { try { await loadCloud(); } catch (e) { console.warn("PRINTORA materials refresh:",e); } } renderList(); populateSelect(); }
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once:true});
   else init();
