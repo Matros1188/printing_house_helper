@@ -181,7 +181,8 @@
         .from("calculations")
         .select("id,user_id,mode,calculation_data,created_at")
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
+        .in("mode", ["quick", "detail"])
+      .order("created_at", { ascending: false })
         .range(from, from + page - 1);
       if (result.error) throw result.error;
       const rows = result.data || [];
@@ -339,6 +340,7 @@
       const customer = getCustomer(item);
       const detail = item.mode === "detail";
       const title = cleanTitle(item);
+      const orderNoV36 = data.order_number ? `№ ${escapeHtml(data.order_number)}` : "№ без номера";
       const when = formatDate(item.created_at || data.saved_at_client);
       const size = m.width && m.height ? `${m.width} × ${m.height} мм` : "";
       const extraDetails = buildExtraDetails(item, m);
@@ -354,6 +356,7 @@
 
               <span class="pc-history-kind-v22 ${detail ? "detail" : "quick"}">
                 <span class="pc-history-kind-dot-v22"></span>
+                <span class="pc-history-order-v36">${orderNoV36}</span>
                 ${detail ? "ДЕТАЛЬНЫЙ РАСЧЁТ" : "БЫСТРЫЙ РАСЧЁТ"}
               </span>
 
