@@ -27,7 +27,7 @@ function snapshotInputs() {
   const ids = [
     "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
     "matPrice", "colors", "inkPrice", "inkUse", "overhead", "admin",
-    "markup", "minimum", "lam", "die", "lamEnabled", "dieEnabled", "sideMargin", "labelGap", "extraCost", "materialSelect", "machineSelect"
+    "markup", "minimum", "lam", "die", "lamEnabled", "dieEnabled", "sideMargin", "labelGap", "extraCost", "materialSelect", "machineSelect", "sideMargin", "labelGap", "extraCost", "materialSelect", "machineSelect"
   ];
   const base = Object.fromEntries(ids.map(id => [id, fieldValue(id)]));
   base.repeatInput = fieldValue("repeat");
@@ -249,7 +249,7 @@ function setupAutoCalculation() {
   const ids = [
     "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
     "matPrice", "colors", "inkPrice", "inkUse", "overhead", "admin",
-    "markup", "minimum", "lam", "die", "lamEnabled", "dieEnabled", "sideMargin", "labelGap", "extraCost", "materialSelect", "machineSelect"
+    "markup", "minimum", "lam", "die", "lamEnabled", "dieEnabled", "sideMargin", "labelGap", "extraCost", "materialSelect", "machineSelect", "sideMargin", "labelGap", "extraCost", "materialSelect", "machineSelect"
   ];
 
   let timer = null;
