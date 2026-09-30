@@ -25,7 +25,7 @@ function fieldValue(id) {
 
 function snapshotInputs() {
   const ids = [
-    "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
+    "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
     "matPrice", "colors", "inkPrice", "inkUse", "lam", "die"
   ];
   return Object.fromEntries(ids.map(id => [id, fieldValue(id)]));
@@ -145,8 +145,7 @@ function renderResult(data) {
     window.dispatchEvent(new CustomEvent("printcalc:save-request", {
       detail: window.PRINTCALC_LAST_CALC
     }));
-    saveBtn.textContent = "Расчёт сохранён";
-  });
+});
 
   copyBtn?.addEventListener("click", async () => {
     try {
@@ -189,7 +188,7 @@ function calculate() {
 
   const setup = 25 + colors * 4;
   const speed = Math.max(35, 85 - colors * 3);
-  const runMinutes = meters / speed * 60;
+  const runMinutes = meters / speed;
   const printCost = 2300 + (setup + runMinutes) / 60 * 3500;
   const lamCost = $("lam")?.checked ? area * 19 + 850 : 0;
   const dieCost = $("die")?.checked ? 1800 + qty * 0.028 : 0;
@@ -237,6 +236,13 @@ function calculate() {
 
   window.PRINTCALC_LAST_CALC = snapshot;
   renderResult(snapshot.summary);
+
+  if (window.PRINTCALC_LAST_CALC) {
+    window.PRINTCALC_LAST_CALC.result_text = (document.getElementById("result")?.innerText || "").trim();
+    window.dispatchEvent(new CustomEvent("printcalc:calculated", {
+      detail: window.PRINTCALC_LAST_CALC
+    }));
+  }
 }
 
 function setupAutoCalculation() {
