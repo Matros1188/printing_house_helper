@@ -6,7 +6,7 @@
 <meta content="#0b1220" name="theme-color"/>
 <meta content="PRINTORA — расчёт заказов для типографии" name="description"/>
 
-<link href="style.css?v=381" rel="stylesheet"/>
+<link href="style.css?v=392" rel="stylesheet"/>
 <title>PRINTORA — расчёт и экономика типографии</title>
 
 
@@ -954,7 +954,7 @@ body::before {
 </span>
 <span class="pc-workspace-arrow">↓</span>
 </a>
-<a class="pc-workspace-card pc-workspace-materials-v38" href="#my-materials-v38"><span class="pc-workspace-card-no">04</span><span class="pc-workspace-icon">▤</span><span class="pc-workspace-content"><strong>Мои материалы</strong><small>Полотно, ширина, длина и цена из справочника</small></span><span class="pc-workspace-arrow">↓</span></a>
+<a class="pc-workspace-card pc-workspace-materials-v38" href="#my-materials-v38" data-printora-material-card="1"><span class="pc-workspace-card-no">04</span><span class="pc-workspace-icon">▤</span><span class="pc-workspace-content"><strong>Мои материалы</strong><small>Полотно, ширина, длина и цена из справочника</small></span><span class="pc-workspace-arrow">↓</span></a>
 </div>
 </div>
 </section>
@@ -1040,7 +1040,7 @@ body::before {
         </p>
       </div>
 
-      <button type="button" class="pc-machine-add-btn" id="pc-open-machine-modal">
+      <button type="button" class="pc-machine-add-btn pc-library-add-btn-v39" id="pc-open-machine-modal" data-machine-add="1">
         <span class="pc-machine-add-icon">+</span>
         ДОБАВИТЬ СТАНОК
       </button>
@@ -1059,7 +1059,8 @@ body::before {
 </section>
 
 
-<section class="section pc-my-materials-v38" id="my-materials-v38"><div class="wrap"><div class="pc-my-materials-head-v38"><div><div class="eyebrow">СПРАВОЧНИК</div><h2>Мои материалы</h2><p class="section-text">Материалы хранятся в вашем аккаунте и автоматически подставляются в калькуляторы.</p></div><button type="button" class="pc-material-add-btn-v36" id="pc-open-material-modal-v36"><span>+</span>ДОБАВИТЬ МАТЕРИАЛ</button></div><div class="pc-material-toolbar-v36"><div>МАТЕРИАЛЫ АККАУНТА</div><div class="pc-material-search-wrap-v36"><span>⌕</span><input id="pc-material-search-v36" type="search" placeholder="Найти материал..." autocomplete="off"></div></div><div id="pc-material-count-v36" class="pc-material-count-v36">0 из 0</div><div id="pc-material-list-v36" class="pc-material-list-v36"></div></div></section>
+
+<section class="section pc-my-materials-v38" id="my-materials-v38"><div class="wrap"><div class="pc-my-materials-head-v38"><div><div class="eyebrow">СПРАВОЧНИК</div><h2>Мои материалы</h2><p class="section-text">Материалы хранятся в вашем аккаунте и автоматически подставляются в калькуляторы.</p></div><button type="button" class="pc-material-add-btn-v36 pc-library-add-btn-v39" id="pc-open-material-modal-v36" data-material-add="1"><span>+</span>ДОБАВИТЬ МАТЕРИАЛ</button></div><div class="pc-material-toolbar-v36"><div>МАТЕРИАЛЫ АККАУНТА</div><div class="pc-material-search-wrap-v36"><span>⌕</span><input id="pc-material-search-v36" type="search" placeholder="Найти материал..." autocomplete="off"></div></div><div id="pc-material-count-v36" class="pc-material-count-v36">0 из 0</div><div id="pc-material-list-v36" class="pc-material-list-v36"></div></div></section>
 </main>
 
 <section class="section pc-my-materials-section-v36" id="my-materials">
@@ -1083,12 +1084,12 @@ body::before {
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js?v=381"></script>
-<script src="pc-auth-core.js?v=381"></script>
-<script src="printora-v38-ui.js?v=381"></script>
-<script src="auth.js?v=381"></script>
-<script src="materials.js?v=381"></script>
-<script src="machines.js?v=381"></script>
-<script src="printora-header-v34.js?v=381"></script>
+<script src="config.js?v=392"></script>
+<script src="pc-auth-core.js?v=392"></script>
+<script src="printora-v38-ui.js?v=392"></script>
+<script src="auth.js?v=392"></script>
+<script src="materials.js?v=392"></script>
+<script src="machines.js?v=392"></script>
+<script src="printora-header-v34.js?v=392"></script>
 </body>
 </html>
