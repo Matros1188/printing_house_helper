@@ -39,85 +39,28 @@
   }
   function saveLocal() { try { localStorage.setItem(localKey(), JSON.stringify(materials)); } catch (_) {} }
   async function loadCloud() {
-    const c = await getClient();
-    if (!c || !userId) { cloudReady = false; return; }
-    const all = [];
-    const page = 500;
-    let from = 0;
-    while (true) {
-      const r = await c.from("calculations")
-        .select("id,user_id,calculation_data,created_at")
-        .eq("user_id", userId)
-        .eq("mode", MODE)
-        .order("created_at", { ascending: true })
-        .range(from, from + page - 1);
-      if (r.error) throw r.error;
-      const rows = r.data || [];
-      all.push(...rows);
-      if (rows.length < page) break;
-      from += page;
+    const c = await getClient(); if (!c || !userId) { cloudReady=false; return; }
+    const all=[]; const page=500; let from=0;
+    while(true){
+      const r=await c.from("calculations").select("id,user_id,calculation_data,created_at").eq("user_id",userId).eq("mode",MODE).order("created_at",{ascending:true}).range(from,from+page-1);
+      if(r.error)throw r.error; const rows=r.data||[]; all.push(...rows); if(rows.length<page)break; from+=page;
     }
-    materials = all
-      .map(row => normalize({ ...(row.calculation_data || {}), cloudId: row.id }))
-      .filter(x => x.name);
-    cloudReady = true;
-    saveLocal();
+    materials=all.map(row=>normalize({...(row.calculation_data||{}),cloudId:row.id})).filter(x=>x.name); cloudReady=true; saveLocal();
   }
   async function cloudInsert(m) {
-    const c = await getClient();
-    if (!c || !userId) throw new Error("Войдите в аккаунт, чтобы сохранить материал в облаке.");
-    const r = await c.from("calculations")
-      .insert({
-        user_id: userId,
-        mode: MODE,
-        calculation_data: {
-          id: m.id, name: m.name, type: m.type,
-          lengthM: m.lengthM, widthMm: m.widthMm, priceM2: m.priceM2,
-          createdAt: m.createdAt
-        }
-      })
-      .select("id,user_id,mode,calculation_data,created_at")
-      .single();
-    if (r.error) throw r.error;
-    if (!r.data?.id || r.data.user_id !== userId || r.data.mode !== MODE) {
-      throw new Error("Материал создан, но не прошёл проверку владельца.");
-    }
-    m.cloudId = r.data.id;
-    return m;
+    const c=await getClient(); if(!c||!userId)throw new Error("Войдите в аккаунт, чтобы сохранить материал в облаке.");
+    const r=await c.from("calculations").insert({user_id:userId,mode:MODE,calculation_data:{id:m.id,name:m.name,type:m.type,lengthM:m.lengthM,widthMm:m.widthMm,priceM2:m.priceM2,createdAt:m.createdAt}}).select("id,user_id,mode").single();
+    if(r.error)throw r.error; if(!r.data?.id||r.data.user_id!==userId||r.data.mode!==MODE)throw new Error("Материал создан, но не прошёл проверку владельца."); m.cloudId=r.data.id; return m;
   }
   async function cloudUpdate(m) {
-    const c = await getClient();
-    if (!c || !userId || !m.cloudId) throw new Error("Облачная запись материала не найдена.");
-    const r = await c.from("calculations")
-      .update({
-        calculation_data: {
-          id: m.id, name: m.name, type: m.type,
-          lengthM: m.lengthM, widthMm: m.widthMm, priceM2: m.priceM2,
-          createdAt: m.createdAt, updatedAt: new Date().toISOString()
-        }
-      })
-      .eq("id", m.cloudId)
-      .eq("user_id", userId)
-      .eq("mode", MODE)
-      .select("id,user_id,mode")
-      .maybeSingle();
-    if (r.error) throw r.error;
-    if (!r.data?.id || r.data.user_id !== userId || r.data.mode !== MODE) {
-      throw new Error("Изменение материала не подтверждено облаком.");
-    }
-    return m;
+    const c=await getClient(); if(!c||!userId||!m.cloudId)throw new Error("Облачная запись материала не найдена.");
+    const r=await c.from("calculations").update({calculation_data:{id:m.id,name:m.name,type:m.type,lengthM:m.lengthM,widthMm:m.widthMm,priceM2:m.priceM2,createdAt:m.createdAt,updatedAt:new Date().toISOString()}}).eq("id",m.cloudId).eq("user_id",userId).eq("mode",MODE).select("id,user_id,mode").maybeSingle();
+    if(r.error)throw r.error; if(!r.data?.id||r.data.user_id!==userId||r.data.mode!==MODE)throw new Error("Изменение материала не подтверждено облаком."); return m;
   }
   async function cloudDelete(m) {
-    const c = await getClient();
-    if (!c || !userId || !m?.cloudId) throw new Error("Облачная запись материала не найдена.");
-    const r = await c.from("calculations")
-      .delete()
-      .eq("id", m.cloudId)
-      .eq("user_id", userId)
-      .eq("mode", MODE)
-      .select("id");
-    if (r.error) throw r.error;
-    if (!r.data?.length) throw new Error("Удаление материала не подтверждено облаком.");
+    const c=await getClient(); if(!c||!userId||!m?.cloudId)throw new Error("Облачная запись материала не найдена.");
+    const r=await c.from("calculations").delete().eq("id",m.cloudId).eq("user_id",userId).eq("mode",MODE).select("id");
+    if(r.error)throw r.error; if(!r.data?.length)throw new Error("Удаление материала не подтверждено облаком.");
   }
 
   function createModal() {
