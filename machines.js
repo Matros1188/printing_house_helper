@@ -12,6 +12,8 @@
   let previousMachines = [];
 
   const MACHINE_MODE = "machine";
+  const MACHINE_LEGACY_MODE = "machine";
+  const MACHINE_LIBRARY_KIND = "machine";
 
   function safeNumber(value, fallback = 0) {
     const n = Number(value);
@@ -86,109 +88,97 @@
   }
 
   async function createClientIfNeeded() {
-    if (
-      !supabaseLib ||
-      !config.SUPABASE_URL ||
-      !config.SUPABASE_ANON_KEY
-    ) {
-      return null;
-    }
-
-    if (!supabaseClient) {
-      supabaseClient = supabaseLib.createClient(
-        config.SUPABASE_URL,
-        config.SUPABASE_ANON_KEY
-      );
-    }
-
-    return supabaseClient;
+  if (window.PRINTCALC_AUTH_CORE?.getClient) {
+    supabaseClient = window.PRINTCALC_AUTH_CORE.getClient() || supabaseClient;
+    if (supabaseClient) return supabaseClient;
   }
+  if (!supabaseClient && supabaseLib && config.SUPABASE_URL && config.SUPABASE_ANON_KEY) {
+    supabaseClient = supabaseLib.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY, {
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storage:window.localStorage,storageKey:"printcalc-flexo-auth"}
+    });
+  }
+  return supabaseClient;
+}
 
   async function getUserId() {
-    const client = await createClientIfNeeded();
-    if (!client) return null;
-    try {
-      const response = await client.auth.getSession();
-      return response?.data?.session?.user?.id || null;
-    } catch (error) {
-      return null;
-    }
-  }
+  const client = await createClientIfNeeded();
+  if (!client) return null;
+  try { return (await client.auth.getSession())?.data?.session?.user?.id || null; } catch (_) { return null; }
+}
 
   async function loadCloudMachines() {
-    const client=await createClientIfNeeded();
-    if(!client||storageNamespace==="guest"){cloudReady=false;setStorageStatus("Гость: станки сохраняются на этом устройстве","local");return;}
-    const all=[]; const page=500; let from=0;
-    while(true){
-      const response=await client.from("calculations").select("id,user_id,calculation_data,created_at,updated_at").eq("mode",MACHINE_MODE).eq("user_id",storageNamespace).order("created_at",{ascending:true}).range(from,from+page-1);
-      if(response.error)throw response.error; const rows=response.data||[]; all.push(...rows); if(rows.length<page)break; from+=page;
-    }
-    machines=all.map(row=>normalizeMachine({...(row.calculation_data||{}),cloudId:row.id})).filter(m=>m.name); cloudReady=true; saveLocalMachines(); setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");
+  const client = await createClientIfNeeded();
+  if (!client || storageNamespace === "guest") {
+    cloudReady=false;
+    setStorageStatus("Гость: станки сохраняются на этом устройстве","local");
+    return;
   }
+  try {
+    const all=[]; let from=0; const page=500;
+    while(true){
+      const response=await client.from("calculations")
+        .select("id,user_id,mode,calculation_data,created_at,updated_at")
+        .eq("user_id",storageNamespace)
+        .in("mode",[MACHINE_MODE,MACHINE_LEGACY_MODE])
+        .order("created_at",{ascending:true})
+        .range(from,from+page-1);
+      if(response.error) throw response.error;
+      const rows=response.data||[];
+      for(const row of rows){
+        const data=row.calculation_data||{};
+        if(row.mode===MACHINE_LEGACY_MODE || data.__printora_library===MACHINE_LIBRARY_KIND) all.push({...data,cloudId:row.id});
+      }
+      if(rows.length<page) break;
+      from+=page;
+    }
+    machines=all.map(normalizeMachine).filter(m=>m.name);
+    cloudReady=true;
+    saveLocalMachines();
+    setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");
+  }catch(error){
+    cloudReady=false;
+    setStorageStatus("Не удалось загрузить станки из аккаунта","local");
+    console.warn("PRINTORA machines cloud load:",error);
+  }
+}
 
   async function cloudInsert(machine) {
-    const client = await createClientIfNeeded();
-    if (!client || storageNamespace === "guest") return machine;
-
-    const payload = {
-      user_id: storageNamespace,
-      mode: MACHINE_MODE,
-      calculation_data: {
-        id: machine.id,
-        name: machine.name,
-        type: machine.type,
-        speed: machine.speed,
-        power: machine.power,
-        setup: machine.setup,
-        machineRate: machine.machineRate,
-        laborRate: machine.laborRate,
-        powerRate: machine.powerRate,
-        createdAt: machine.createdAt
-      }
-    };
-
-    const response = await client
-      .from("calculations")
-      .insert(payload)
-      .select("id")
-      .maybeSingle();
-
-    if (response.error) throw response.error;
-
-    machine.cloudId = response.data?.id || null;
-    return machine;
-  }
+  const client=await createClientIfNeeded();
+  if(!client || storageNamespace==="guest") return machine;
+  const response=await client.from("calculations").insert({
+    user_id:storageNamespace,
+    mode:MACHINE_MODE,
+    calculation_data:{
+      __printora_library:MACHINE_LIBRARY_KIND,
+      id:machine.id,name:machine.name,type:machine.type,
+      speed:machine.speed,power:machine.power,setup:machine.setup,
+      machineRate:machine.machineRate,laborRate:machine.laborRate,powerRate:machine.powerRate,
+      createdAt:machine.createdAt
+    }
+  }).select("id,user_id,mode,calculation_data").single();
+  if(response.error) throw response.error;
+  if(!response.data?.id || response.data.user_id!==storageNamespace) throw new Error("Облако не подтвердило сохранение станка.");
+  machine.cloudId=response.data.id;
+  return machine;
+}
 
   async function cloudUpdate(machine) {
-    const client = await createClientIfNeeded();
-    if (!client || storageNamespace === "guest" || !machine.cloudId) {
-      return machine;
+  const client=await createClientIfNeeded();
+  if(!client || storageNamespace==="guest" || !machine?.cloudId) throw new Error("Облачная запись станка не найдена.");
+  const response=await client.from("calculations").update({
+    calculation_data:{
+      __printora_library:MACHINE_LIBRARY_KIND,
+      id:machine.id,name:machine.name,type:machine.type,
+      speed:machine.speed,power:machine.power,setup:machine.setup,
+      machineRate:machine.machineRate,laborRate:machine.laborRate,powerRate:machine.powerRate,
+      createdAt:machine.createdAt,updatedAt:new Date().toISOString()
     }
-
-    const response = await client
-      .from("calculations")
-      .update({
-        calculation_data: {
-          id: machine.id,
-          name: machine.name,
-          type: machine.type,
-          speed: machine.speed,
-          power: machine.power,
-          setup: machine.setup,
-          machineRate: machine.machineRate,
-          laborRate: machine.laborRate,
-          powerRate: machine.powerRate,
-          createdAt: machine.createdAt,
-          updatedAt: new Date().toISOString()
-        }
-      })
-      .eq("id", machine.cloudId)
-      .eq("user_id", storageNamespace)
-      .eq("mode", MACHINE_MODE);
-
-    if (response.error) throw response.error;
-    return machine;
-  }
+  }).eq("id",machine.cloudId).eq("user_id",storageNamespace)
+    .select("id,user_id,mode,calculation_data").maybeSingle();
+  if(response.error) throw response.error;
+  if(!response.data?.id || response.data.user_id!==storageNamespace) throw new Error("Изменение станка не подтверждено облаком.");
+  return machine;
+}
 
   async function syncAllToCloud() {
     const client = await createClientIfNeeded();
@@ -219,20 +209,12 @@
   }
 
   async function cloudDelete(machine) {
-    const client = await createClientIfNeeded();
-    if (!client || storageNamespace === "guest" || !machine?.cloudId) {
-      return;
-    }
-
-    const response = await client
-      .from("calculations")
-      .delete()
-      .eq("id", machine.cloudId)
-      .eq("user_id", storageNamespace)
-      .eq("mode", MACHINE_MODE);
-
-    if (response.error) throw response.error;
-  }
+  const client=await createClientIfNeeded();
+  if(!client || storageNamespace==="guest" || !machine?.cloudId) return;
+  const response=await client.from("calculations").delete().eq("id",machine.cloudId).eq("user_id",storageNamespace).select("id");
+  if(response.error) throw response.error;
+  if(!response.data?.length) throw new Error("Удаление станка не подтверждено облаком.");
+}
 
   async function switchNamespace() {
     previousMachines = machines.slice();
@@ -440,42 +422,42 @@
   }
 
   async function saveMachineFromForm() {
-    const formMachine = readMachineForm();
-    if (!formMachine) return;
-    const loggedIn = storageNamespace !== "guest";
-    if (loggedIn && !cloudReady) {
-      showFormMessage("Облако станков недоступно. Выполните миграцию Supabase и обновите страницу.", "error");
-      return;
-    }
-    try {
-      if (editingId) {
-        const index = machines.findIndex(item => item.id === editingId);
-        if (index < 0) return;
-        let savedMachine = {
-          ...machines[index], ...formMachine,
-          id: machines[index].id,
-          cloudId: machines[index].cloudId,
-          createdAt: machines[index].createdAt,
-          updatedAt: new Date().toISOString()
-        };
-        if (loggedIn) savedMachine = await cloudUpdate(savedMachine);
-        machines[index] = savedMachine;
-      } else {
-        let savedMachine = formMachine;
-        if (loggedIn) savedMachine = await cloudInsert(savedMachine);
-        machines.push(savedMachine);
-      }
-      if (!saveLocalMachines()) throw new Error("Не удалось сохранить станок на устройстве.");
-      setStorageStatus(
-        loggedIn ? "Сохраняется в аккаунте и доступно на ваших устройствах" : "Гость: станки сохраняются на этом устройстве",
-        loggedIn ? "cloud" : "local"
-      );
-      closeMachineModal(); renderMachineList(); populateMachineSelect();
-    } catch (error) {
-      showFormMessage(error?.message || "Не удалось сохранить станок.", "error");
-      console.warn("PRINTORA machine save", error);
-    }
+  const formMachine=readMachineForm();
+  if(!formMachine) return;
+  if(storageNamespace==="guest"){
+    const liveUserId=await getUserId();
+    if(liveUserId){ storageNamespace=liveUserId; loadLocalMachines(); }
   }
+  const duplicateName=machines.some(item=>item.id!==editingId && item.name.toLocaleLowerCase("ru-RU")===formMachine.name.toLocaleLowerCase("ru-RU"));
+  if(duplicateName){ showFormMessage("Станок с таким названием уже есть.","error"); return; }
+  const isGuest=storageNamespace==="guest";
+  const saveButton=document.getElementById("pc-machine-save");
+  if(saveButton){saveButton.disabled=true;saveButton.textContent="Сохраняем…";}
+  const originalEditingId=editingId;
+  try{
+    let savedMachine;
+    if(originalEditingId){
+      const index=machines.findIndex(item=>item.id===originalEditingId);
+      if(index<0) throw new Error("Станок не найден.");
+      savedMachine={...machines[index],...formMachine,id:machines[index].id,cloudId:machines[index].cloudId,createdAt:machines[index].createdAt,updatedAt:new Date().toISOString()};
+      if(!isGuest) savedMachine=await cloudUpdate(savedMachine);
+      machines[index]=savedMachine;
+    }else{
+      savedMachine=formMachine;
+      if(!isGuest) savedMachine=await cloudInsert(savedMachine);
+      machines.push(savedMachine);
+    }
+    if(!saveLocalMachines()) throw new Error("Не удалось сохранить станок на этом устройстве.");
+    setStorageStatus(isGuest?"Гость: станок сохранён на этом устройстве":"Сохраняется в аккаунте и доступно на ваших устройствах",isGuest?"local":"cloud");
+    closeMachineModal(); renderMachineList(); populateMachineSelect();
+    window.dispatchEvent(new CustomEvent("printora:machine-saved",{detail:savedMachine}));
+  }catch(error){
+    showFormMessage(error?.message||"Не удалось сохранить станок.","error");
+    console.warn("PRINTORA machine save:",error);
+  }finally{
+    if(saveButton){saveButton.disabled=false;saveButton.textContent=originalEditingId?"Сохранить изменения":"Сохранить станок";}
+  }
+}
 
   async function deleteMachine(machineId) {
     const machine = machines.find(item => item.id === machineId);
@@ -711,18 +693,24 @@
   }
 
   function initHomeManager() {
-    installV18MachineAuthBridge();
-    if (!document.getElementById("pc-machine-list")) return;
-
-    createManagerModal();
-
-    document.getElementById("pc-open-machine-modal")?.addEventListener("click", () => {
-      openMachineModal();
+  installV18MachineAuthBridge();
+  createManagerModal();
+  const trigger=document.getElementById("pc-open-machine-modal");
+  if(trigger) trigger.onclick=event=>{event.preventDefault();event.stopPropagation();openMachineModal();};
+  if(!window.PRINTORA_MACHINE_ADD_DELEGATE){
+    window.PRINTORA_MACHINE_ADD_DELEGATE=true;
+    document.addEventListener("click",event=>{
+      const button=event.target?.closest?.("[data-machine-add]");
+      if(!button)return;
+      event.preventDefault(); event.stopPropagation(); openMachineModal();
     });
-
-    document.getElementById("pc-machine-search")?.addEventListener("input", renderMachineList);
-    renderMachineList();
   }
+  document.getElementById("pc-machine-search")?.addEventListener("input",renderMachineList);
+  renderMachineList();
+  window.PRINTORA_MACHINES = window.PRINTORA_MACHINES || {};
+  window.PRINTORA_MACHINES.open = () => openMachineModal();
+  window.PRINTORA_MACHINES.refresh = () => renderMachineList();
+}
 
   async function init() {
     await switchNamespace();
