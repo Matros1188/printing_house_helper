@@ -9786,3 +9786,108 @@ h1,h2,h3,h4,h5,h6{text-wrap:balance;overflow-wrap:anywhere}
 .pc-material-manager-v40{position:fixed;inset:0;z-index:5300;display:grid;place-items:center;padding:16px;background:rgba(22,31,48,.34);backdrop-filter:blur(8px)}
 .pc-material-manager-v40[hidden]{display:none!important}.pc-material-manager-card-v40{width:min(760px,100%);max-height:min(88svh,760px);overflow:auto;border:1px solid rgba(255,255,255,.85);border-radius:18px;background:#fff;padding:20px;box-shadow:0 30px 90px rgba(15,24,40,.22)}
 .pc-material-manager-close-v40{float:right;width:34px;height:34px;border:1px solid #e3e8ef;border-radius:10px;background:#fff;color:#778398;font-size:20px}.pc-material-manager-card-v40 h2{margin:5px 50px 5px 0}.pc-material-manager-card-v40 p{color:#718096;font-size:11px}.pc-material-manager-toolbar-v40{display:flex;gap:10px;align-items:center;margin:13px 0}.pc-material-manager-toolbar-v40 input{flex:1;min-height:40px;border:1px solid #e3e8ef;border-radius:10px;padding:0 11px;font:700 11px/1 inherit}.pc-material-manager-toolbar-v40 span{font-size:9px;color:#7d899c;white-space:nowrap}.pc-material-manager-actions-v40{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.pc-material-manager-actions-v40 button{min-height:40px;border-radius:10px;padding:0 13px;border:1px solid #e3e8ef;font-weight:850;font-size:9px}.pc-material-manager-actions-v40 .primary{background:#315fe4;color:#fff;border-color:#315fe4}
+
+/* ================================================================
+   PRINTORA V38.1 — ONE STAGE DESIGN / UX SYSTEM
+   ================================================================ */
+:root {
+  --pr38-bg:#f4f6f9; --pr38-surface:#fff; --pr38-soft:#f8fafc; --pr38-text:#172238; --pr38-text2:#30405a;
+  --pr38-muted:#718096; --pr38-muted2:#98a3b4; --pr38-border:#dfe5ee; --pr38-border2:#e9edf3;
+  --pr38-blue:#315fe4; --pr38-blue-dark:#254fc7; --pr38-green:#218b62; --pr38-red:#bb4c4c; --pr38-amber:#b87926;
+  --pr38-radius:14px; --pr38-shadow:0 8px 24px rgba(24,34,56,.045),0 2px 6px rgba(24,34,56,.025);
+}
+html,body{min-width:0!important;max-width:100%!important;overflow-x:hidden!important}
+body{background:var(--pr38-bg)!important;color:var(--pr38-text)!important}
+body::before{opacity:.045!important;background-size:40px 40px!important}
+.wrap{width:min(1180px,calc(100% - 32px))!important}
+.printora-header-v34{min-height:68px!important;background:rgba(255,255,255,.93)!important;border-bottom:1px solid rgba(223,229,238,.9)!important;box-shadow:0 3px 14px rgba(24,34,56,.03)!important;backdrop-filter:blur(16px)!important}
+.printora-header-inner-v34{min-height:68px!important;padding:8px 0!important;gap:12px!important}
+.printora-brand-v34{gap:9px!important;max-width:260px!important;min-width:0!important}
+.printora-mark-v34{width:38px!important;height:38px!important;flex:0 0 38px!important;filter:drop-shadow(0 5px 10px rgba(49,95,228,.11))!important}
+.printora-brand-text-v34 strong{font-size:14px!important;letter-spacing:-.02em!important}
+.printora-brand-text-v34 small{font-size:8px!important;letter-spacing:.14em!important}
+.printora-brand-text-v34 em{font-size:6.5px!important;line-height:1.1!important;white-space:nowrap!important;color:var(--pr38-muted)!important}
+.printora-header-actions-v34{gap:7px!important}
+.printora-header-actions-v34 a,.printora-header-actions-v34 button{min-height:38px!important;padding:0 12px!important;border-radius:10px!important;border:1px solid var(--pr38-border)!important;background:#fff!important;color:var(--pr38-text2)!important;font-size:10px!important;font-weight:850!important;box-shadow:0 2px 7px rgba(24,34,56,.025)!important}
+.printora-header-actions-v34 .printora-cabinet-button-v34,.printora-header-actions-v34 .printora-account-button-v34{color:var(--pr38-blue)!important;border-color:rgba(49,95,228,.18)!important;background:#f7f9ff!important}
+.calc-main{padding-top:18px!important;padding-bottom:72px!important}
+.calc-title{margin-bottom:18px!important}
+.calc-title h1{margin:4px 0 6px!important;font-size:clamp(30px,4vw,43px)!important;line-height:1!important;letter-spacing:-.045em!important}
+.calc-title p{margin:0!important;color:var(--pr38-muted)!important;font-size:13px!important}
+.eyebrow,.panel-label{font-size:9px!important;letter-spacing:.13em!important;font-weight:900!important}
+.calc-grid{gap:14px!important;align-items:start!important}
+.panel,.result,.pc-production-panel,.pc-service-item{border:1px solid var(--pr38-border)!important;border-radius:var(--pr38-radius)!important;background:#fff!important;box-shadow:var(--pr38-shadow)!important}
+.panel{padding:18px!important}
+.panel h2,.result h2{letter-spacing:-.025em!important}
+.fields{gap:9px!important}
+.field{gap:5px!important}
+.field>span{color:var(--pr38-text2)!important;font-size:10px!important;font-weight:760!important}
+.field input,.field select,.pc-material-select-field-v36 select,.pc-machine-select-field select{min-height:43px!important;border-radius:10px!important;border:1px solid var(--pr38-border)!important;background:#fff!important;color:var(--pr38-text)!important;box-shadow:none!important;outline:none!important;transition:border-color .14s ease,box-shadow .14s ease,background .14s ease!important}
+.field input:focus,.field select:focus{border-color:rgba(49,95,228,.72)!important;box-shadow:0 0 0 3px rgba(49,95,228,.10)!important}
+.field.is-error-v38 input,.field.is-error-v38 select{border-color:rgba(187,76,76,.72)!important;box-shadow:0 0 0 3px rgba(187,76,76,.08)!important}
+.check-row{min-height:42px!important;padding:9px 10px!important;border:1px solid var(--pr38-border2)!important;border-radius:10px!important;background:var(--pr38-soft)!important}
+.calc-btn{min-height:46px!important;border-radius:11px!important;box-shadow:0 10px 22px rgba(49,95,228,.15)!important}
+.result{position:sticky;top:82px}
+.pc-production-panel{border-left:3px solid var(--pr38-blue)!important}
+.pc-machine-source-note,.pc-manual-mode-note,.pc-operation-note{font-size:10px!important;color:var(--pr38-muted)!important}
+.pc-field-origin{color:var(--pr38-muted2)!important;font-size:8px!important}
+.is-from-directory-v38 input{border-color:rgba(33,139,98,.45)!important;background:#fbfefc!important}
+.printora-source-note-v38{display:block;margin-top:3px;color:var(--pr38-green);font-size:8px;line-height:1.25}
+.printora-capacity-v38{display:flex!important;align-items:flex-start!important;gap:10px!important;margin:10px 0 0!important;padding:11px 12px!important;border:1px solid #d9e7f9!important;border-radius:11px!important;background:#f7faff!important}
+.printora-capacity-v38[hidden]{display:none!important}
+.printora-capacity-v38.is-error{border-color:rgba(187,76,76,.25)!important;background:#fff8f8!important}
+.printora-capacity-v38.is-limit{border-color:rgba(184,121,38,.23)!important;background:#fffaf2!important}
+.printora-capacity-icon-v38{display:grid;place-items:center;width:26px;height:26px;flex:0 0 26px;border-radius:8px;background:#eaf1ff;color:var(--pr38-blue);font-weight:950}
+.printora-capacity-v38.is-error .printora-capacity-icon-v38{background:#fdecec;color:var(--pr38-red)}
+.printora-capacity-v38.is-limit .printora-capacity-icon-v38{background:#fff0d7;color:var(--pr38-amber)}
+.printora-capacity-v38 strong{display:block;font-size:10px}.printora-capacity-v38 p{margin:3px 0 0;color:var(--pr38-text2);font-size:9px;line-height:1.45}.printora-capacity-v38 small{display:block;margin-top:4px;color:var(--pr38-muted);font-size:8px;line-height:1.4}
+.printora-layout-v38{margin-top:10px;padding:10px 11px;border:1px solid var(--pr38-border2);border-radius:11px;background:#fbfcfe}
+.printora-layout-v38[hidden]{display:none!important}.printora-layout-v38 svg{display:block;width:100%;height:auto;margin-top:6px}.printora-layout-v38 .material{fill:#f5f7fa;stroke:#cfd8e4;stroke-width:1}.printora-layout-v38 rect.active{fill:#eaf1ff;stroke:#315fe4;stroke-width:.8}.printora-layout-v38 rect.ghost{fill:transparent;stroke:#cfd7e3;stroke-width:.55;stroke-dasharray:2 2}.printora-layout-v38 .dim{stroke:#a7b2c2;stroke-width:.65}.printora-layout-v38 text{fill:#7d899c;font-size:6px;font-family:inherit}.printora-layout-v38.has-error rect.active{fill:#fff0f0;stroke:#bb4c4c}.printora-layout-head-v38,.printora-layout-foot-v38{display:flex;justify-content:space-between;gap:10px;align-items:center}.printora-layout-head-v38 span{color:#8792a5;font-size:8px;font-weight:900;letter-spacing:.10em}.printora-layout-head-v38 small,.printora-layout-foot-v38 span{color:var(--pr38-muted);font-size:8px}.printora-layout-foot-v38{margin-top:5px}.printora-layout-foot-v38 .ok{color:var(--pr38-green);font-weight:800}.printora-layout-foot-v38 .bad{color:var(--pr38-red);font-weight:900}
+.printora-dialog-v38-backdrop{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:18px;background:rgba(22,31,48,.34);backdrop-filter:blur(8px)}
+.printora-dialog-v38{width:min(540px,100%);max-height:min(88svh,720px);overflow:auto;border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:20px;background:#fff;box-shadow:0 30px 90px rgba(15,24,40,.22);position:relative}.printora-dialog-close-v38{position:absolute;top:10px;right:10px;width:34px;height:34px;border:1px solid var(--pr38-border);border-radius:10px;background:#fff;color:#778398;font-size:21px;cursor:pointer}.printora-dialog-eyebrow-v38{color:var(--pr38-blue);font-size:8px;font-weight:900;letter-spacing:.13em}.printora-dialog-v38 h2{margin:5px 40px 14px 0;color:var(--pr38-text);font-size:22px;letter-spacing:-.035em}.printora-dialog-text-v38{margin:0;color:var(--pr38-text2);font-size:12px;line-height:1.55}.printora-save-summary-v38{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:14px}.printora-save-summary-v38 div{padding:10px;border:1px solid var(--pr38-border2);border-radius:10px;background:#fafbfd;min-width:0}.printora-save-summary-v38 span{display:block;color:var(--pr38-muted2);font-size:7px;font-weight:900;letter-spacing:.1em}.printora-save-summary-v38 b{display:block;margin-top:3px;color:var(--pr38-text);font-size:12px;overflow-wrap:anywhere}.printora-dialog-field-v38{display:flex;flex-direction:column;gap:5px;margin-top:4px}.printora-dialog-field-v38 span{color:var(--pr38-text2);font-size:10px;font-weight:800}.printora-dialog-field-v38 input{min-height:46px;padding:0 12px;border:1px solid var(--pr38-border);border-radius:11px;font:800 14px/1 inherit;outline:0}.printora-dialog-field-v38 input:focus{border-color:var(--pr38-blue);box-shadow:0 0 0 3px rgba(49,95,228,.10)}.printora-dialog-field-v38 input.error{border-color:var(--pr38-red)}.printora-dialog-field-v38 small{color:var(--pr38-muted);font-size:8px;line-height:1.4}.printora-dialog-actions-v38{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.printora-dialog-actions-v38 button{min-height:42px;padding:0 14px;border-radius:10px;border:1px solid var(--pr38-border);cursor:pointer;font-size:10px;font-weight:850}.printora-dialog-actions-v38 button.secondary{background:#fff;color:var(--pr38-text2)}.printora-dialog-actions-v38 button.primary{background:var(--pr38-blue);color:#fff;border-color:var(--pr38-blue);box-shadow:0 9px 20px rgba(49,95,228,.17)}
+.printora-similar-list-v38{display:grid;gap:7px;margin-top:12px}.printora-similar-list-v38 article{display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center;padding:9px;border:1px solid var(--pr38-border2);border-radius:10px;background:#fafbfd}.printora-similar-list-v38 article>b{color:var(--pr38-green);font-size:12px}.printora-similar-list-v38 strong{display:block;color:var(--pr38-text);font-size:10px}.printora-similar-list-v38 span{display:block;margin-top:2px;color:var(--pr38-muted);font-size:8px}
+.printora-toast-host-v38{position:fixed;left:50%;bottom:18px;z-index:6000;transform:translateX(-50%);display:grid;gap:6px;pointer-events:none;width:min(420px,calc(100vw - 28px))}.printora-toast-v38{opacity:0;transform:translateY(5px);padding:10px 12px;border:1px solid var(--pr38-border);border-radius:11px;background:#fff;color:var(--pr38-text);box-shadow:0 12px 28px rgba(15,24,40,.12);font-size:10px;font-weight:750;transition:.18s ease}.printora-toast-v38.show{opacity:1;transform:none}.printora-toast-v38.error{border-color:rgba(187,76,76,.22);color:var(--pr38-red)}
+.pc-workspace-materials-v38{border-color:rgba(49,95,228,.2)!important;background:#f8faff!important}
+.pc-my-materials-v38{border-top:1px solid var(--pr38-border2);padding:54px 0 64px}.pc-my-materials-v38 h2{margin:6px 0 8px!important;font-size:clamp(27px,3vw,37px)!important;letter-spacing:-.045em}.pc-my-materials-head-v38{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.printora-mobile-nav-v38{display:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(49,95,228,.18)!important;outline-offset:1px!important}
+.result .note{color:var(--pr38-muted)!important;font-size:10px!important}.pc-history-order-v36{font-size:8px!important}
+h1,h2,h3,h4,h5,h6{text-wrap:balance;overflow-wrap:anywhere}
+@media(max-width:900px){.calc-grid{grid-template-columns:1fr!important}.result{position:static!important}}
+@media(max-width:760px){body{padding-bottom:70px!important}.wrap{width:min(100% - 24px,1180px)!important}.printora-header-v34{min-height:60px!important}.printora-header-inner-v34{min-height:60px!important;padding:7px 0!important}.printora-mark-v34{width:34px!important;height:34px!important;flex-basis:34px!important}.printora-brand-text-v34 strong{font-size:13px!important}.printora-brand-text-v34 small{font-size:7px!important}.printora-brand-text-v34 em{font-size:5.5px!important}.printora-header-actions-v34 .printora-back-v34{display:none!important}.printora-header-actions-v34 a,.printora-header-actions-v34 button{min-height:36px!important;padding:0 9px!important;font-size:9px!important}.calc-main{padding-top:12px!important}.calc-title h1{font-size:30px!important}.panel{padding:14px!important;border-radius:13px!important}.fields{grid-template-columns:1fr 1fr!important}.pc-production-choice{grid-template-columns:1fr!important}.printora-save-summary-v38{grid-template-columns:1fr 1fr}.printora-mobile-nav-v38{position:fixed;left:10px;right:10px;bottom:9px;z-index:4500;display:grid;grid-template-columns:repeat(4,1fr);padding:5px;border:1px solid rgba(223,229,238,.9);border-radius:15px;background:rgba(255,255,255,.95);box-shadow:0 14px 34px rgba(15,24,40,.13);backdrop-filter:blur(16px)}.printora-mobile-nav-v38 a{display:flex;min-width:0;min-height:48px;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:10px;color:#7a869a}.printora-mobile-nav-v38 a.active{color:var(--pr38-blue);background:#f2f6ff}.printora-mobile-nav-v38 a span{font-size:16px;line-height:1}.printora-mobile-nav-v38 a small{font-size:7px;font-weight:850}.pc-my-materials-head-v38{align-items:stretch;flex-direction:column}}
+@media(max-width:430px){.fields{grid-template-columns:1fr!important}.printora-save-summary-v38{grid-template-columns:1fr}.printora-dialog-actions-v38{display:grid;grid-template-columns:1fr 1fr}.printora-dialog-actions-v38 button{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+/* ================================================================
+   END PRINTORA V38.1
+   ================================================================ */
+
+/* ================================================================
+   PRINTORA V39 — LIBRARY ACTION UNIFICATION
+   ================================================================ */
+.pc-library-add-btn-v39,.pc-machine-add-btn,.pc-material-add-btn-v36,.pc-machine-empty-add{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+  min-height:47px!important;min-width:190px!important;padding:0 16px!important;
+  border:1px solid rgba(49,95,228,.24)!important;border-radius:12px!important;
+  background:linear-gradient(135deg,#315fe4,#4b69df)!important;color:#fff!important;
+  font:850 10px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;
+  letter-spacing:.02em!important;box-shadow:0 10px 24px rgba(49,95,228,.16)!important;
+  cursor:pointer!important;text-decoration:none!important;
+  transition:transform .14s ease,box-shadow .14s ease,background .14s ease!important;
+}
+.pc-library-add-btn-v39:hover,.pc-machine-add-btn:hover,.pc-material-add-btn-v36:hover,.pc-machine-empty-add:hover{
+  background:linear-gradient(135deg,#254fc7,#5562ce)!important;box-shadow:0 13px 27px rgba(49,95,228,.20)!important;transform:translateY(-1px)!important;
+}
+.pc-library-add-btn-v39:active,.pc-machine-add-btn:active,.pc-material-add-btn-v36:active,.pc-machine-empty-add:active{transform:translateY(0)!important}
+.pc-library-add-btn-v39:disabled,.pc-machine-add-btn:disabled,.pc-material-add-btn-v36:disabled,.pc-machine-empty-add:disabled{opacity:.62!important;cursor:not-allowed!important;transform:none!important}
+.pc-material-modal-v36[hidden]{display:none!important}.pc-material-modal-v36{z-index:5200!important}
+@media(max-width:760px){.pc-library-add-btn-v39,.pc-machine-add-btn,.pc-material-add-btn-v36,.pc-machine-empty-add{width:100%!important;min-width:0!important}}
+
+/* ================================================================
+   PRINTORA V40.1 — MANAGER SAFETY / LIBRARY MANAGER
+   ================================================================ */
+.printora-safety-error-v40{padding:16px;border:1px solid rgba(187,76,76,.25);border-radius:12px;background:#fff8f8;color:#8e3030}
+.printora-safety-error-v40 strong{display:block;font-size:13px;margin-bottom:8px}.printora-safety-error-v40 ul{margin:0;padding-left:18px;font-size:11px;line-height:1.55}
+.printora-detail-transfer-v40{margin-top:12px;width:100%;min-height:45px;border:0;border-radius:11px;background:#315fe4;color:#fff;font:850 10px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:.02em;cursor:pointer;box-shadow:0 10px 24px rgba(49,95,228,.15)}
+.pc-material-manager-v40{position:fixed;inset:0;z-index:5300;display:grid;place-items:center;padding:16px;background:rgba(22,31,48,.34);backdrop-filter:blur(8px)}
+.pc-material-manager-v40[hidden]{display:none!important}.pc-my-materials-v40{margin-top:28px}.pc-my-materials-head-v40{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 0}.pc-my-materials-head-v40 .section-text{max-width:680px}.pc-library-add-btn-v40,.pc-material-add-btn-v40{min-height:44px;border:0;border-radius:12px;background:#315fe4;color:#fff;padding:0 16px;font:850 10px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;letter-spacing:.02em;white-space:nowrap;cursor:pointer;box-shadow:0 10px 24px rgba(49,95,228,.14)}.pc-material-add-btn-v40 span{font-size:15px;margin-right:5px}.pc-my-materials-open-v40{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid #e5e9f0;border-radius:13px;background:#fafbfd;color:#718096;font-size:11px}.pc-material-open-manager-v40{border:0;background:transparent;color:#315fe4;font:850 10px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;cursor:pointer;white-space:nowrap}.pc-material-manager-card-v40{width:min(760px,100%);max-height:min(88svh,760px);overflow:auto;border:1px solid rgba(255,255,255,.85);border-radius:18px;background:#fff;padding:20px;box-shadow:0 30px 90px rgba(15,24,40,.22)}
+.pc-material-manager-close-v40{float:right;width:34px;height:34px;border:1px solid #e3e8ef;border-radius:10px;background:#fff;color:#778398;font-size:20px}.pc-material-manager-card-v40 h2{margin:5px 50px 5px 0}.pc-material-manager-card-v40 p{color:#718096;font-size:11px}.pc-material-manager-toolbar-v40{display:flex;gap:10px;align-items:center;margin:13px 0}.pc-material-manager-toolbar-v40 input{flex:1;min-height:40px;border:1px solid #e3e8ef;border-radius:10px;padding:0 11px;font:700 11px/1 inherit}.pc-material-manager-toolbar-v40 span{font-size:9px;color:#7d899c;white-space:nowrap}.pc-material-manager-actions-v40{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.pc-material-manager-actions-v40 button{min-height:40px;border-radius:10px;padding:0 13px;border:1px solid #e3e8ef;font-weight:850;font-size:9px}.pc-material-manager-actions-v40 .primary{background:#315fe4;color:#fff;border-color:#315fe4}
