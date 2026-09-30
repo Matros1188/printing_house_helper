@@ -25,7 +25,7 @@ function fieldValue(id) {
 
 function snapshotInputs() {
   const ids = [
-    "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
+    "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
     "matPrice", "colors", "inkPrice", "inkUse", "overhead", "admin",
     "markup", "minimum", "lam", "die", "lamEnabled", "dieEnabled"
   ];
@@ -207,8 +207,7 @@ function renderResult(data) {
     window.dispatchEvent(new CustomEvent("printcalc:save-request", {
       detail: window.PRINTCALC_LAST_CALC
     }));
-    saveBtn.textContent = "Расчёт сохранён";
-  });
+});
 
   copyBtn?.addEventListener("click", async () => {
     try {
@@ -341,6 +340,13 @@ function calculate() {
 
   window.PRINTCALC_LAST_CALC = snapshot;
   renderResult(snapshot.summary);
+
+  if (window.PRINTCALC_LAST_CALC) {
+    window.PRINTCALC_LAST_CALC.result_text = (document.getElementById("result")?.innerText || "").trim();
+    window.dispatchEvent(new CustomEvent("printcalc:calculated", {
+      detail: window.PRINTCALC_LAST_CALC
+    }));
+  }
 }
 
 function setupAutoCalculation() {
