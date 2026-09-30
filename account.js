@@ -3,12 +3,6 @@
 
   const core = window.PRINTCALC_AUTH_CORE || {};
   const client = core.getClient ? core.getClient() : null;
-  const HISTORY_KEYS = [
-    "printcalc_history_cache_v7::",
-    "printcalc_history_cache_v6::",
-    "printcalc_history_cache_v5::",
-    "printcalc_history_cache_v4::",
-  ];
 
   let allHistoryRows = [];
 
@@ -160,29 +154,20 @@
     return rawTitle;
   }
 
-  function localHistory(userId) {
-    const rows = [];
-    for (const prefix of HISTORY_KEYS) {
-      try {
-        const value = JSON.parse(localStorage.getItem(prefix + userId) || "[]");
-        if (Array.isArray(value)) rows.push(...value);
-      } catch (_) {}
-    }
-    return rows;
-  }
+  
 
   async function loadCloudHistory(user) {
-    if (!client) return [];
+    if (!client || !user) return [];
     const all = [];
-    let from = 0;
     const page = 500;
+    let from = 0;
     while (true) {
       const result = await client
         .from("calculations")
         .select("id,user_id,mode,calculation_data,created_at")
         .eq("user_id", user.id)
         .in("mode", ["quick", "detail"])
-      .order("created_at", { ascending: false })
+        .order("created_at", { ascending: false })
         .range(from, from + page - 1);
       if (result.error) throw result.error;
       const rows = result.data || [];
@@ -205,24 +190,7 @@
     ].join("|");
   }
 
-  function mergeRows(cloud, local) {
-    const map = new Map();
-    [...local, ...cloud].forEach((item) => {
-      if (!item) return;
-      const key = fingerprint(item);
-      const previous = map.get(key);
-      if (!previous) {
-        map.set(key, item);
-        return;
-      }
-      const previousLocal = String(previous.id || "").startsWith("local-");
-      const currentLocal = String(item.id || "").startsWith("local-");
-      if (previousLocal && !currentLocal) map.set(key, item);
-    });
-    return [...map.values()].sort(
-      (a, b) => dateValue(b.created_at || getData(b).saved_at_client) - dateValue(a.created_at || getData(a).saved_at_client)
-    );
-  }
+  
 
   function metrics(item) {
     const data = getData(item);
@@ -549,28 +517,18 @@
       window.location.replace("./?auth=1");
       return;
     }
-
     const email = $("pc-account-email");
     if (email) email.textContent = user.email || "Рабочий аккаунт";
-
-    const localRows = localHistory(user.id);
-    let cloudRows = [];
-    let cloudReadOk = false;
     try {
-      cloudRows = await loadCloudHistory(user);
-      cloudReadOk = true;
+      allHistoryRows = await loadCloudHistory(user);
     } catch (error) {
-      console.warn("PRINTCALC: history cloud read", error);
+      console.warn("PRINTORA: history cloud read", error);
+      const box = $("pc-history");
+      if (box) box.innerHTML = `<div class="pc-empty">Не удалось загрузить облачную историю: ${escapeHtml(error?.message || "ошибка")}</div>`;
+      allHistoryRows = [];
     }
-
-    // При нормальной работе показываем только облако.
-    // Иначе один компьютер может показывать локальные записи,
-    // которых нет на телефоне. localStorage остаётся только fallback.
-    allHistoryRows = cloudReadOk ? cloudRows : localRows;
-
     const count = $("pc-calculation-count");
     if (count) count.textContent = String(allHistoryRows.length);
-
     renderFilterFields();
     applyFilters();
   }
@@ -595,9 +553,6 @@
       applyFilters();
     });
     window.addEventListener("printcalc:history-saved", loadAccount);
-    window.addEventListener("storage", (event) => {
-      if (event.key && event.key.includes("printcalc_history_cache_")) loadAccount();
-    });
     loadAccount();
   }
 
