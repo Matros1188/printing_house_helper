@@ -260,7 +260,7 @@
   const result = await client.from("calculations").insert(row).select("id,user_id,mode,order_number_key,calculation_data,created_at").single();
   if (result.error) {
     if (/PGRST205|42P01|schema cache/i.test(`${result.error.code||""} ${result.error.message||""}`)) {
-      throw new Error("Не создана таблица облачных данных PRINTORA «calculations». Выполните PRINTORA_V40_SUPABASE_MIGRATION.sql в Supabase → SQL Editor, затем обновите страницу.");
+      throw new Error("Не создана таблица облачных данных PRINTORA «calculations» или Supabase ещё не обновил схему. Выполните PRINTORA_V40_SUPABASE_MIGRATION.sql один раз в Supabase → SQL Editor, дождитесь «Success», затем обновите страницу. Материалы, станки и история используют одну таблицу calculations.");
     }
     if (/23505|duplicate key|unique constraint/i.test(`${result.error.code||""} ${result.error.message||""}`)) {
       throw new Error(`Заказ №${cleanOrder} уже существует в истории этого аккаунта.`);
