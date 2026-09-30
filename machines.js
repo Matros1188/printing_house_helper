@@ -12,6 +12,8 @@
   let previousMachines = [];
 
   const MACHINE_MODE = "machine";
+  const MACHINE_CLOUD_TABLE = "printora_machines";
+  const MACHINE_CLOUD_SOURCE = "v40.1";
   const MACHINE_LEGACY_MODE = "machine";
   const MACHINE_LIBRARY_KIND = "machine";
 
@@ -87,16 +89,9 @@
     };
   }
 
-  async function createClientIfNeeded() {
-  if (window.PRINTCALC_AUTH_CORE?.getClient) {
-    supabaseClient = window.PRINTCALC_AUTH_CORE.getClient() || supabaseClient;
-    if (supabaseClient) return supabaseClient;
-  }
-  if (!supabaseClient && supabaseLib && config.SUPABASE_URL && config.SUPABASE_ANON_KEY) {
-    supabaseClient = supabaseLib.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY, {
-      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storage:window.localStorage,storageKey:"printcalc-flexo-auth"}
-    });
-  }
+  async function createClientIfNeeded(){
+  if(window.PRINTCALC_AUTH_CORE?.getClient){supabaseClient=window.PRINTCALC_AUTH_CORE.getClient()||supabaseClient;if(supabaseClient)return supabaseClient;}
+  if(!supabaseClient&&supabaseLib&&config.SUPABASE_URL&&config.SUPABASE_ANON_KEY){supabaseClient=supabaseLib.createClient(config.SUPABASE_URL,config.SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storage:window.localStorage,storageKey:"printcalc-flexo-auth"}});}
   return supabaseClient;
 }
 
@@ -106,88 +101,34 @@
   try { return (await client.auth.getSession())?.data?.session?.user?.id || null; } catch (_) { return null; }
 }
 
-  async function loadCloudMachines() {
-  const client = await createClientIfNeeded();
-  if (!client || storageNamespace === "guest") {
-    cloudReady=false;
-    setStorageStatus("Гость: станки сохраняются на этом устройстве","local");
-    return;
-  }
-  try {
-    const all=[]; let from=0; const page=500;
+  async function loadCloudMachines(){
+  const client=await createClientIfNeeded(); if(!client||storageNamespace==="guest"){cloudReady=false;return;}
+  try{
+    const all=[];let from=0;const page=500;
     while(true){
-      const response=await client.from("calculations")
-        .select("id,user_id,mode,calculation_data,created_at,updated_at")
-        .eq("user_id",storageNamespace)
-        .in("mode",[MACHINE_MODE,MACHINE_LEGACY_MODE])
-        .order("created_at",{ascending:true})
-        .range(from,from+page-1);
-      if(response.error) throw response.error;
-      const rows=response.data||[];
-      for(const row of rows){
-        const data=row.calculation_data||{};
-        if(row.mode===MACHINE_LEGACY_MODE || data.__printora_library===MACHINE_LIBRARY_KIND) all.push({...data,cloudId:row.id});
-      }
-      if(rows.length<page) break;
-      from+=page;
+      const r=await client.from(MACHINE_CLOUD_TABLE).select("id,user_id,name,data,created_at,updated_at").eq("user_id",storageNamespace).order("created_at",{ascending:true}).range(from,from+page-1);
+      if(r.error)throw r.error;
+      for(const row of r.data||[])all.push(normalizeMachine({...row.data,name:row.name,cloudId:row.id,cloudSource:MACHINE_CLOUD_SOURCE,createdAt:row.created_at}));
+      if((r.data||[]).length<page)break;from+=page;
     }
-    machines=all.map(normalizeMachine).filter(m=>m.name);
-    cloudReady=true;
-    saveLocalMachines();
-    setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");
-  }catch(error){
-    cloudReady=false;
-    setStorageStatus(window.PRINTORA_FRIENDLY_ERROR?.(error)||error?.message||"Не удалось загрузить станки из аккаунта.","local");
-    console.warn("PRINTORA machines cloud load:",error);
-  }
+    const pending=machines.filter(m=>m.cloudSource!==MACHINE_CLOUD_SOURCE);
+    const map=new Map();
+    for(const item of [...all,...pending]){const key=String(item.name||"").trim().replace(/\s+/g," ").toLocaleLowerCase("ru-RU");if(!key)continue;const old=map.get(key);if(!old||(item.cloudSource===MACHINE_CLOUD_SOURCE&&old.cloudSource!==MACHINE_CLOUD_SOURCE))map.set(key,item);}
+    machines=[...map.values()];cloudReady=true;saveLocalMachines();setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");window.dispatchEvent(new CustomEvent("printcalc:machines-ready",{detail:machines.slice()}));
+  }catch(error){cloudReady=false;setStorageStatus("Локальная копия сохранена; облачная синхронизация ожидает настройки","local");window.dispatchEvent(new CustomEvent("printora:cloud-error",{detail:{error,context:"Станки"}}));console.warn("PRINTORA machines cloud load:",error);}
 }
 
-  async function cloudInsert(machine) {
-  const client=await createClientIfNeeded();
-  if(!client || storageNamespace==="guest") return machine;
-  const response=await client.from("calculations").insert({
-    user_id:storageNamespace,
-    mode:MACHINE_MODE,
-    calculation_data:{
-      __printora_library:MACHINE_LIBRARY_KIND,
-      id:machine.id,name:machine.name,type:machine.type,
-      speed:machine.speed,power:machine.power,setup:machine.setup,
-      machineRate:machine.machineRate,laborRate:machine.laborRate,powerRate:machine.powerRate,
-      createdAt:machine.createdAt
-    }
-  }).select("id,user_id,mode,calculation_data").single();
-  if(response.error){
-    const friendly=window.PRINTORA_FRIENDLY_ERROR?.(response.error);
-    const err=new Error(friendly||response.error.message||"Не удалось сохранить станок.");
-    err.cause=response.error;
-    throw err;
-  }
-  if(!response.data?.id || response.data.user_id!==storageNamespace) throw new Error("Облако не подтвердило сохранение станка.");
-  machine.cloudId=response.data.id;
-  return machine;
+  async function cloudInsert(machine){
+  const client=await createClientIfNeeded();if(!client||storageNamespace==="guest")return machine;
+  const response=await client.from(MACHINE_CLOUD_TABLE).insert({user_id:storageNamespace,name:machine.name,data:{id:machine.id,name:machine.name,type:machine.type,speed:machine.speed,power:machine.power,setup:machine.setup,machineRate:machine.machineRate,laborRate:machine.laborRate,powerRate:machine.powerRate,createdAt:machine.createdAt}}).select("id,user_id,name,data,created_at").single();
+  if(response.error){if(response.error.code==="23505"){const q=await client.from(MACHINE_CLOUD_TABLE).select("id,user_id,name,data,created_at").eq("user_id",storageNamespace).eq("name_key",machine.name.toLocaleLowerCase("ru-RU")).maybeSingle();if(!q.error&&q.data?.id){const cloud=normalizeMachine({...q.data.data,name:q.data.name,cloudId:q.data.id,cloudSource:MACHINE_CLOUD_SOURCE,createdAt:q.data.created_at});Object.assign(machine,cloud);return machine;}}throw response.error;}
+  if(!response.data?.id||response.data.user_id!==storageNamespace)throw new Error("Станок создан, но облако не подтвердило владельца.");machine.cloudId=response.data.id;machine.cloudSource=MACHINE_CLOUD_SOURCE;return machine;
 }
 
-  async function cloudUpdate(machine) {
-  const client=await createClientIfNeeded();
-  if(!client || storageNamespace==="guest" || !machine?.cloudId) throw new Error("Облачная запись станка не найдена.");
-  const response=await client.from("calculations").update({
-    calculation_data:{
-      __printora_library:MACHINE_LIBRARY_KIND,
-      id:machine.id,name:machine.name,type:machine.type,
-      speed:machine.speed,power:machine.power,setup:machine.setup,
-      machineRate:machine.machineRate,laborRate:machine.laborRate,powerRate:machine.powerRate,
-      createdAt:machine.createdAt,updatedAt:new Date().toISOString()
-    }
-  }).eq("id",machine.cloudId).eq("user_id",storageNamespace)
-    .select("id,user_id,mode,calculation_data").maybeSingle();
-  if(response.error){
-    const friendly=window.PRINTORA_FRIENDLY_ERROR?.(response.error);
-    const err=new Error(friendly||response.error.message||"Не удалось изменить станок.");
-    err.cause=response.error;
-    throw err;
-  }
-  if(!response.data?.id || response.data.user_id!==storageNamespace) throw new Error("Изменение станка не подтверждено облаком.");
-  return machine;
+  async function cloudUpdate(machine){
+  const client=await createClientIfNeeded();if(!client||storageNamespace==="guest"||!machine?.cloudId||machine.cloudSource!==MACHINE_CLOUD_SOURCE)return machine;
+  const response=await client.from(MACHINE_CLOUD_TABLE).update({name:machine.name,data:{id:machine.id,name:machine.name,type:machine.type,speed:machine.speed,power:machine.power,setup:machine.setup,machineRate:machine.machineRate,laborRate:machine.laborRate,powerRate:machine.powerRate,createdAt:machine.createdAt,updatedAt:new Date().toISOString()}}).eq("id",machine.cloudId).eq("user_id",storageNamespace).select("id,user_id,name,data").maybeSingle();
+  if(response.error)throw response.error;if(!response.data?.id)throw new Error("Изменение станка не подтверждено облаком.");return machine;
 }
 
   async function syncAllToCloud() {
@@ -218,17 +159,9 @@
     }
   }
 
-  async function cloudDelete(machine) {
-  const client=await createClientIfNeeded();
-  if(!client || storageNamespace==="guest" || !machine?.cloudId) return;
-  const response=await client.from("calculations").delete().eq("id",machine.cloudId).eq("user_id",storageNamespace).select("id");
-  if(response.error){
-    const friendly=window.PRINTORA_FRIENDLY_ERROR?.(response.error);
-    const err=new Error(friendly||response.error.message||"Не удалось удалить станок.");
-    err.cause=response.error;
-    throw err;
-  }
-  if(!response.data?.length) throw new Error("Удаление станка не подтверждено облаком.");
+  async function cloudDelete(machine){
+  const client=await createClientIfNeeded();if(!client||storageNamespace==="guest"||!machine?.cloudId||machine.cloudSource!==MACHINE_CLOUD_SOURCE)return;
+  const response=await client.from(MACHINE_CLOUD_TABLE).delete().eq("id",machine.cloudId).eq("user_id",storageNamespace).select("id");if(response.error)throw response.error;
 }
 
   async function switchNamespace() {
@@ -404,64 +337,35 @@
     editingId = null;
   }
 
-  function readMachineForm() {
-  const name = document.getElementById("pc-machine-name")?.value.trim() || "";
-  if (!name) { showFormMessage("Укажите название станка.", "error"); return null; }
-  const machine = normalizeMachine({
-    name,
-    type: document.getElementById("pc-machine-type")?.value || "Другое",
-    speed: safeNumber(document.getElementById("pc-machine-speed")?.value),
-    power: safeNumber(document.getElementById("pc-machine-power")?.value),
-    setup: safeNumber(document.getElementById("pc-machine-setup")?.value),
-    machineRate: safeNumber(document.getElementById("pc-machine-rate")?.value),
-    laborRate: safeNumber(document.getElementById("pc-machine-labor")?.value),
-    powerRate: safeNumber(document.getElementById("pc-machine-power-rate")?.value)
-  });
-  if (machine.speed <= 0) { showFormMessage("Скорость должна быть больше нуля.", "error"); return null; }
-  if (machine.power <= 0) { showFormMessage("Мощность должна быть больше нуля.", "error"); return null; }
-  if (machine.setup < 0) { showFormMessage("Время наладки не может быть отрицательным.", "error"); return null; }
-  if (machine.machineRate <= 0) { showFormMessage("Ставка станка должна быть больше нуля.", "error"); return null; }
-  if (machine.laborRate <= 0) { showFormMessage("Ставка труда должна быть больше нуля.", "error"); return null; }
-  if (machine.powerRate <= 0) { showFormMessage("Тариф электроэнергии должен быть больше нуля.", "error"); return null; }
+  function readMachineForm(){
+  const name=document.getElementById("pc-machine-name")?.value.trim()||"";if(!name){showFormMessage("Укажите название станка.","error");return null;}
+  const machine=normalizeMachine({name,type:document.getElementById("pc-machine-type")?.value||"Другое",speed:safeNumber(document.getElementById("pc-machine-speed")?.value),power:safeNumber(document.getElementById("pc-machine-power")?.value),setup:safeNumber(document.getElementById("pc-machine-setup")?.value),machineRate:safeNumber(document.getElementById("pc-machine-rate")?.value),laborRate:safeNumber(document.getElementById("pc-machine-labor")?.value),powerRate:safeNumber(document.getElementById("pc-machine-power-rate")?.value)});
+  if(machine.speed<=0)return showFormMessage("Скорость должна быть больше нуля.","error")||null;
+  if(machine.power<=0)return showFormMessage("Мощность должна быть больше нуля.","error")||null;
+  if(machine.setup<0)return showFormMessage("Время наладки не может быть отрицательным.","error")||null;
+  if(machine.machineRate<=0)return showFormMessage("Ставка станка должна быть больше нуля.","error")||null;
+  if(machine.laborRate<=0)return showFormMessage("Ставка труда должна быть больше нуля.","error")||null;
+  if(machine.powerRate<=0)return showFormMessage("Тариф электроэнергии должен быть больше нуля.","error")||null;
   return machine;
 }
 
-  async function saveMachineFromForm() {
-  const formMachine=readMachineForm();
-  if(!formMachine) return;
-  if(storageNamespace==="guest"){
-    const liveUserId=await getUserId();
-    if(liveUserId){ storageNamespace=liveUserId; loadLocalMachines(); }
-  }
-  const duplicateName=machines.some(item=>item.id!==editingId && item.name.toLocaleLowerCase("ru-RU")===formMachine.name.toLocaleLowerCase("ru-RU"));
-  if(duplicateName){ showFormMessage("Станок с таким названием уже есть.","error"); return; }
-  const isGuest=storageNamespace==="guest";
-  const saveButton=document.getElementById("pc-machine-save");
-  if(saveButton){saveButton.disabled=true;saveButton.textContent="Сохраняем…";}
-  const originalEditingId=editingId;
+  async function saveMachineFromForm(){
+  const formMachine=readMachineForm();if(!formMachine)return;
+  if(storageNamespace==="guest"){const live=await getUserId();if(live){storageNamespace=live;loadLocalMachines();}}
+  const key=formMachine.name.toLocaleLowerCase("ru-RU").replace(/\s+/g," ").trim();if(machines.some(item=>item.id!==editingId&&item.name.toLocaleLowerCase("ru-RU").replace(/\s+/g," ").trim()===key)){showFormMessage("Станок с таким названием уже есть.","error");return;}
+  const saveButton=document.getElementById("pc-machine-save");if(saveButton){saveButton.disabled=true;saveButton.textContent="Сохраняем…";}const original=editingId;
   try{
-    let savedMachine;
-    if(originalEditingId){
-      const index=machines.findIndex(item=>item.id===originalEditingId);
-      if(index<0) throw new Error("Станок не найден.");
-      savedMachine={...machines[index],...formMachine,id:machines[index].id,cloudId:machines[index].cloudId,createdAt:machines[index].createdAt,updatedAt:new Date().toISOString()};
-      if(!isGuest) savedMachine=await cloudUpdate(savedMachine);
-      machines[index]=savedMachine;
-    }else{
-      savedMachine=formMachine;
-      if(!isGuest) savedMachine=await cloudInsert(savedMachine);
-      machines.push(savedMachine);
+    let saved;
+    if(original){const index=machines.findIndex(x=>x.id===original);if(index<0)throw new Error("Станок не найден.");saved={...machines[index],...formMachine,id:machines[index].id,cloudId:machines[index].cloudId,cloudSource:machines[index].cloudSource,createdAt:machines[index].createdAt,updatedAt:new Date().toISOString()};machines[index]=saved;}
+    else{saved=formMachine;machines.push(saved);}
+    saveLocalMachines();
+    if(storageNamespace!=="guest"){
+      try{saved=original?await cloudUpdate(saved):await cloudInsert(saved);const idx=machines.findIndex(x=>x.id===saved.id);if(idx>=0)machines[idx]=saved;cloudReady=true;saveLocalMachines();setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах","cloud");}
+      catch(error){window.dispatchEvent(new CustomEvent("printora:cloud-error",{detail:{error,context:"Станок"}}));}
     }
-    if(!saveLocalMachines()) throw new Error("Не удалось сохранить станок на этом устройстве.");
-    setStorageStatus(isGuest?"Гость: станок сохранён на этом устройстве":"Сохраняется в аккаунте и доступно на ваших устройствах",isGuest?"local":"cloud");
-    closeMachineModal(); renderMachineList(); populateMachineSelect();
-    window.dispatchEvent(new CustomEvent("printora:machine-saved",{detail:savedMachine}));
-  }catch(error){
-    showFormMessage(window.PRINTORA_FRIENDLY_ERROR?.(error)||error?.message||"Не удалось сохранить станок.","error");
-    console.warn("PRINTORA machine save:",error);
-  }finally{
-    if(saveButton){saveButton.disabled=false;saveButton.textContent=originalEditingId?"Сохранить изменения":"Сохранить станок";}
-  }
+    closeMachineModal();renderMachineList();populateMachineSelect();window.dispatchEvent(new CustomEvent("printora:machine-saved",{detail:saved}));
+  }catch(error){showFormMessage(window.PRINTORA_FRIENDLY_ERROR?.(error)||error?.message||"Не удалось сохранить станок.","error");}
+  finally{if(saveButton){saveButton.disabled=false;saveButton.textContent=original?"Сохранить изменения":"Сохранить станок";}}
 }
 
   async function deleteMachine(machineId) {
