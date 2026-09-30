@@ -119,50 +119,30 @@
     const client = await createClientIfNeeded();
     if (!client || storageNamespace === "guest") {
       cloudReady = false;
-      setStorageStatus(
-        "Гость: станки сохраняются на этом устройстве",
-        "local"
-      );
+      setStorageStatus("Гость: станки сохраняются на этом устройстве", "local");
       return;
     }
-
-    try {
+    const all = [];
+    const page = 500;
+    let from = 0;
+    while (true) {
       const response = await client
         .from("calculations")
-        .select("id,calculation_data,created_at,updated_at")
+        .select("id,user_id,calculation_data,created_at,updated_at")
         .eq("mode", MACHINE_MODE)
         .eq("user_id", storageNamespace)
         .order("created_at", { ascending: true })
-        .limit(100);
-
+        .range(from, from + page - 1);
       if (response.error) throw response.error;
-
-      const cloud = (response.data || [])
-        .map(row => normalizeMachine({
-          ...(row.calculation_data || {}),
-          cloudId: row.id
-        }))
-        .filter(machine => machine.name);
-
-      cloudReady = true;
-
-      if (cloud.length) {
-        machines = cloud;
-        saveLocalMachines();
-      }
-
-      setStorageStatus(
-        "Сохраняется в аккаунте и доступно на ваших устройствах",
-        "cloud"
-      );
-    } catch (error) {
-      cloudReady = false;
-      setStorageStatus(
-        "Аккаунт: локальная копия сохранена на этом устройстве",
-        "local"
-      );
-      console.warn("PRINTCALC machines cloud load:", error);
+      const rows = response.data || [];
+      all.push(...rows);
+      if (rows.length < page) break;
+      from += page;
     }
+    machines = all.map(row => normalizeMachine({ ...(row.calculation_data || {}), cloudId: row.id })).filter(machine => machine.name);
+    cloudReady = true;
+    saveLocalMachines();
+    setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах", "cloud");
   }
 
   async function cloudInsert(machine) {
@@ -222,6 +202,7 @@
         }
       })
       .eq("id", machine.cloudId)
+      .eq("user_id", storageNamespace)
       .eq("mode", MACHINE_MODE);
 
     if (response.error) throw response.error;
@@ -266,6 +247,7 @@
       .from("calculations")
       .delete()
       .eq("id", machine.cloudId)
+      .eq("user_id", storageNamespace)
       .eq("mode", MACHINE_MODE);
 
     if (response.error) throw response.error;
@@ -289,10 +271,6 @@
     }
 
     await loadCloudMachines();
-
-    if (storageNamespace !== "guest" && previousMachines.length && machines.length) {
-      await syncAllToCloud();
-    }
   }
 
   function machineTypeLabel(type) {
@@ -483,75 +461,57 @@
   async function saveMachineFromForm() {
     const formMachine = readMachineForm();
     if (!formMachine) return;
-
-    let savedMachine = null;
-
-    if (editingId) {
-      const index = machines.findIndex(item => item.id === editingId);
-      if (index < 0) return;
-
-      savedMachine = {
-        ...machines[index],
-        ...formMachine,
-        id: machines[index].id,
-        cloudId: machines[index].cloudId,
-        createdAt: machines[index].createdAt,
-        updatedAt: new Date().toISOString()
-      };
-
-      machines[index] = savedMachine;
-    } else {
-      savedMachine = formMachine;
-      machines.push(savedMachine);
-    }
-
-    if (!saveLocalMachines()) {
-      showFormMessage("Не удалось сохранить станок на этом устройстве.", "error");
+    const loggedIn = storageNamespace !== "guest";
+    if (loggedIn && !cloudReady) {
+      showFormMessage("Облако станков недоступно. Выполните миграцию Supabase и обновите страницу.", "error");
       return;
     }
-
     try {
-      if (storageNamespace !== "guest") {
-        savedMachine = editingId
-          ? await cloudUpdate(savedMachine)
-          : await cloudInsert(savedMachine);
-        const idx = machines.findIndex(item => item.id === savedMachine.id);
-        if (idx >= 0) machines[idx] = savedMachine;
-        saveLocalMachines();
-        cloudReady = true;
-        setStorageStatus("Сохраняется в аккаунте и доступно на ваших устройствах", "cloud");
+      if (editingId) {
+        const index = machines.findIndex(item => item.id === editingId);
+        if (index < 0) return;
+        let savedMachine = {
+          ...machines[index], ...formMachine,
+          id: machines[index].id,
+          cloudId: machines[index].cloudId,
+          createdAt: machines[index].createdAt,
+          updatedAt: new Date().toISOString()
+        };
+        if (loggedIn) savedMachine = await cloudUpdate(savedMachine);
+        machines[index] = savedMachine;
+      } else {
+        let savedMachine = formMachine;
+        if (loggedIn) savedMachine = await cloudInsert(savedMachine);
+        machines.push(savedMachine);
       }
+      if (!saveLocalMachines()) throw new Error("Не удалось сохранить станок на устройстве.");
+      setStorageStatus(
+        loggedIn ? "Сохраняется в аккаунте и доступно на ваших устройствах" : "Гость: станки сохраняются на этом устройстве",
+        loggedIn ? "cloud" : "local"
+      );
+      closeMachineModal(); renderMachineList(); populateMachineSelect();
     } catch (error) {
-      setStorageStatus("Изменение сохранено на этом устройстве; облачная копия не обновилась", "local");
-      console.warn("PRINTCALC machine cloud save:", error);
+      showFormMessage(error?.message || "Не удалось сохранить станок.", "error");
+      console.warn("PRINTORA machine save", error);
     }
-
-    closeMachineModal();
-    renderMachineList();
-    populateMachineSelect();
   }
 
   async function deleteMachine(machineId) {
     const machine = machines.find(item => item.id === machineId);
     if (!machine) return;
+    const accepted = window.confirm(`Удалить станок «${machine.name}»?
 
-    const accepted = window.confirm(
-      `Удалить станок «${machine.name}»?\n\nОн исчезнет из списка выбора в детальном расчёте.`
-    );
-
+Он исчезнет из списка выбора в детальном расчёте.`);
     if (!accepted) return;
-
     try {
-      await cloudDelete(machine);
+      if (storageNamespace !== "guest") await cloudDelete(machine);
+      machines = machines.filter(item => item.id !== machineId);
+      saveLocalMachines();
+      renderMachineList(); populateMachineSelect();
     } catch (error) {
-      console.warn("PRINTCALC machine cloud delete:", error);
-      setStorageStatus("Удалено локально; облачная запись пока не удалена", "local");
+      setStorageStatus(error?.message || "Не удалось удалить станок из облака", "local");
+      console.warn("PRINTORA machine cloud delete", error);
     }
-
-    machines = machines.filter(item => item.id !== machineId);
-    saveLocalMachines();
-    renderMachineList();
-    populateMachineSelect();
   }
 
   function getFilteredMachines() {
