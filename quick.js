@@ -28,7 +28,14 @@ function snapshotInputs() {
     "customerName", "qty", "streams", "width", "height", "web", "repeat", "gsm", "waste",
     "matPrice", "colors", "inkPrice", "inkUse", "lam", "die"
   ];
-  return Object.fromEntries(ids.map(id => [id, fieldValue(id)]));
+  const base = Object.fromEntries(ids.map(id => [id, fieldValue(id)]));
+  base.repeatInput = fieldValue("repeat");
+  base.repeatMm = window.PRINTORA_REPEAT_MM?.(fieldValue("repeat")) || 0;
+  base.repeatUnit = window.PRINTORA_PARSE_REPEAT?.(fieldValue("repeat"))?.unit || "mm";
+  base.material = window.PRINTORA_MATERIAL || null;
+  base.materialId = window.PRINTORA_MATERIAL?.id || "";
+  base.materialName = window.PRINTORA_MATERIAL?.name || "";
+  return base;
 }
 
 function applySnapshot(snapshot) {
@@ -170,10 +177,10 @@ function calculate() {
   const width = Math.max(1, num("width"));
   const height = Math.max(1, num("height"));
   const web = Math.max(width, num("web"));
-  const repeat = Math.max(1, num("repeat"));
+  const repeat = Math.max(1, window.PRINTORA_REPEAT_MM?.($("repeat")?.value) || 0);
   const gsm = Math.max(1, num("gsm"));
   const waste = Math.max(0, num("waste"));
-  const matPrice = Math.max(0, num("matPrice"));
+  const matPrice = Math.max(0, window.PRINTORA_MATERIAL_PRICE?.() || num("matPrice"));
   const colors = Math.max(1, num("colors"));
   const inkPrice = Math.max(0, num("inkPrice"));
   const inkUse = Math.max(0, num("inkUse"));
@@ -183,7 +190,7 @@ function calculate() {
   const area = meters * web / 1000;
   const materialKg = area * gsm / 1000;
   const inkKg = area * colors * inkUse / 1000;
-  const materialCost = materialKg * matPrice;
+  const materialCost = area * matPrice;
   const inkCost = inkKg * inkPrice;
 
   const setup = 25 + colors * 4;
@@ -211,6 +218,10 @@ function calculate() {
   const snapshot = {
     mode: "quick",
     title,
+    customerName: fieldValue("customerName"),
+    materialId: window.PRINTORA_MATERIAL?.id || "",
+    materialName: window.PRINTORA_MATERIAL?.name || "",
+    repeat_mm: repeat,
     inputs: snapshotInputs(),
     summary: {
       qty,
